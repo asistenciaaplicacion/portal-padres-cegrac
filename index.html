@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Portal de Padres | CEGRAC</title>
+
+  <link
+    rel="stylesheet"
+    href="padres_prueba.css"
+  >
+
+</head>
+
+<body>
+
+  <!-- =====================================================
+       ENCABEZADO PÚBLICO
+       SOLO APARECE EN LOGIN / RECUPERACIÓN
+       ===================================================== -->
+
+  <header
+    id="encabezadoPublicoPadresPrueba"
+    class="encabezado-publico-padres-prueba"
+  >
+
+    <div class="encabezado-contenido-padres-prueba">
+
+      <div class="escudo-cegrac-padres-prueba">
+        CEGRAC
+      </div>
+
+      <div>
+        <h1>Centro Escolar General Rafael Ávila Camacho</h1>
+        <p>Portal de Padres de Familia</p>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       CONTENEDOR PRINCIPAL
+       ===================================================== -->
+
+  <main class="contenedor-principal-padres-prueba">
+
+
+    <!-- ===================================================
+         PANTALLA DE LOGIN
+         =================================================== -->
+
+    <section
+      id="formLoginPadresPrueba"
+      class="pantalla-login-padres-prueba"
+    >
+
+      <div class="tarjeta-login-padres-prueba">
+
+        <div class="encabezado-login-padres-prueba">
+
+          <div class="logo-login-padres-prueba">
+            CEGRAC
+          </div>
+
+          <h2>Portal de Padres</h2>
+
+          <p>
+            Consulta la información escolar de tu hijo o hija.
+          </p>
+
+        </div>
+
+
+        <form
+          id="formLoginRealPadresPrueba"
+        >
+
+          <div class="campo-padres-prueba">
+
+            <label for="uidPadresPrueba">
+              Usuario
+            </label>
+
+            <input
+              type="text"
+              id="uidPadresPrueba"
+              autocomplete="username"
+              placeholder="Ingresa tu usuario"
+            >
+
+          </div>
+
+
+          <div class="campo-padres-prueba">
+
+            <label for="passwordPadresPrueba">
+              Contraseña
+            </label>
+
+            <input
+              type="password"
+              id="passwordPadresPrueba"
+              autocomplete="current-password"
+              placeholder="Ingresa tu contraseña"
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="btnIngresarPadresPrueba"
+            class="boton-principal-padres-prueba"
+          >
+            Ingresar
+          </button>
+
+        </form>
+
+
+        <button
+          type="button"
+          id="btnMostrarRecuperacionPadresPrueba"
+          class="boton-secundario-padres-prueba"
+        >
+          ¿Olvidaste tu contraseña?
+        </button>
+
+
+        <div
+          id="mensajePadresPrueba"
+          class="mensaje-info-padres-prueba"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CAMBIO DE CONTRASEÑA
+         =================================================== -->
+
+    <section
+      id="panelCambioPasswordPadresPrueba"
+      class="pantalla-secundaria-padres-prueba"
+      hidden
+    >
+
+      <div class="tarjeta-login-padres-prueba">
+
+        <h2>Cambiar contraseña</h2>
+
+        <p id="alumnoCambioPasswordPadresPrueba"></p>
+
+        <form id="formCambioPasswordPadresPrueba">
+
+          <div class="campo-padres-prueba">
+
+            <label for="nuevoPasswordInicialPadresPrueba">
+              Nueva contraseña
+            </label>
+
+            <input
+              type="password"
+              id="nuevoPasswordInicialPadresPrueba"
+              autocomplete="new-password"
+            >
+
+          </div>
+
+
+          <div class="campo-padres-prueba">
+
+            <label for="confirmarPasswordInicialPadresPrueba">
+              Confirmar contraseña
+            </label>
+
+            <input
+              type="password"
+              id="confirmarPasswordInicialPadresPrueba"
+              autocomplete="new-password"
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="btnCambiarPasswordInicialPadresPrueba"
+            class="boton-principal-padres-prueba"
+          >
+            Guardar nueva contraseña
+          </button>
+
+        </form>
+
+
+        <div
+          id="mensajeCambioPasswordPadresPrueba"
+          class="mensaje-info-padres-prueba"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         SOLICITAR RECUPERACIÓN
+         =================================================== -->
+
+    <section
+      id="panelSolicitarRecuperacionPadresPrueba"
+      class="pantalla-secundaria-padres-prueba"
+      hidden
+    >
+
+      <div class="tarjeta-login-padres-prueba">
+
+        <h2>Recuperar contraseña</h2>
+
+        <p>
+          Solicita un código de recuperación.
+        </p>
+
+        <form
+          id="formSolicitarRecuperacionPadresPrueba"
+        >
+
+          <div class="campo-padres-prueba">
+
+            <label for="uidRecuperacionPadresPrueba">
+              UID del alumno
+            </label>
+
+            <input
+              type="text"
+              id="uidRecuperacionPadresPrueba"
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="btnSolicitarCodigoPadresPrueba"
+            class="boton-principal-padres-prueba"
+          >
+            Enviar código
+          </button>
+
+        </form>
+
+
+        <button
+          type="button"
+          id="btnCancelarRecuperacionPadresPrueba"
+          class="boton-secundario-padres-prueba"
+        >
+          Regresar al acceso
+        </button>
+
+
+        <div
+          id="mensajeSolicitarRecuperacionPadresPrueba"
+          class="mensaje-info-padres-prueba"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         RESTABLECER CONTRASEÑA
+         =================================================== -->
+
+    <section
+      id="panelRestablecerPasswordPadresPrueba"
+      class="pantalla-secundaria-padres-prueba"
+      hidden
+    >
+
+      <div class="tarjeta-login-padres-prueba">
+
+        <h2>Restablecer contraseña</h2>
+
+        <form
+          id="formRestablecerPasswordPadresPrueba"
+        >
+
+          <div class="campo-padres-prueba">
+
+            <label for="codigoRecuperacionPadresPrueba">
+              Código de recuperación
+            </label>
+
+            <input
+              type="text"
+              id="codigoRecuperacionPadresPrueba"
+              inputmode="numeric"
+              maxlength="6"
+            >
+
+          </div>
+
+
+          <div class="campo-padres-prueba">
+
+            <label for="nuevoPasswordRecuperacionPadresPrueba">
+              Nueva contraseña
+            </label>
+
+            <input
+              type="password"
+              id="nuevoPasswordRecuperacionPadresPrueba"
+              autocomplete="new-password"
+            >
+
+          </div>
+
+
+          <div class="campo-padres-prueba">
+
+            <label for="confirmarPasswordRecuperacionPadresPrueba">
+              Confirmar contraseña
+            </label>
+
+            <input
+              type="password"
+              id="confirmarPasswordRecuperacionPadresPrueba"
+              autocomplete="new-password"
+            >
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="btnRestablecerPasswordPadresPrueba"
+            class="boton-principal-padres-prueba"
+          >
+            Cambiar contraseña
+          </button>
+
+        </form>
+
+
+        <button
+          type="button"
+          id="btnReenviarCodigoPadresPrueba"
+          class="boton-secundario-padres-prueba"
+        >
+          Enviar otro código
+        </button>
+
+
+        <button
+          type="button"
+          id="btnVolverLoginDesdeRecuperacionPadresPrueba"
+          class="boton-secundario-padres-prueba"
+        >
+          Regresar al acceso
+        </button>
+
+
+        <div
+          id="mensajeRestablecerPasswordPadresPrueba"
+          class="mensaje-info-padres-prueba"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         PORTAL COMPLETO
+         IMPORTANTE:
+         ESTÁ OCULTO AL INICIO
+         =================================================== -->
+
+    <section
+      id="panelPadresPrueba"
+      class="portal-padres-prueba"
+      hidden
+    >
+
+      <!-- ================================================
+           CABECERA DEL PORTAL
+           ================================================ -->
+
+      <div class="cabecera-portal-padres-prueba">
+
+        <div>
+
+          <div class="marca-portal-padres-prueba">
+            CEGRAC
+          </div>
+
+          <h1>
+            Portal de Padres
+          </h1>
+
+          <p>
+            Información escolar
+          </p>
+
+        </div>
+
+
+        <div class="acciones-portal-padres-prueba">
+
+          <button
+            type="button"
+            id="btnActualizarExpedientePadresPrueba"
+            class="boton-secundario-padres-prueba"
+          >
+            Actualizar información
+          </button>
+
+          <button
+            type="button"
+            id="btnCerrarSesionPadresPrueba"
+            class="boton-salir-padres-prueba"
+          >
+            Cerrar sesión
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================================
+           IDENTIDAD DEL ALUMNO
+           ================================================ -->
+
+      <section class="identidad-alumno-padres-prueba">
+
+        <div>
+
+          <span>Alumno</span>
+
+          <strong id="nombreAlumnoPadresPrueba">
+            —
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>Grado</span>
+
+          <strong id="gradoAlumnoPadresPrueba">
+            —
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>Grupo</span>
+
+          <strong id="grupoAlumnoPadresPrueba">
+            —
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>Ciclo escolar</span>
+
+          <strong id="cicloEscolarPadresPrueba">
+            —
+          </strong>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================================================
+           MENÚ
+           ================================================ -->
+
+      <nav class="menu-portal-padres-prueba">
+
+        <button
+          type="button"
+          data-modulo-padres="resumen"
+        >
+          Resumen
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="asistencia"
+        >
+          Asistencia
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="reportes"
+        >
+          Reportes
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="justificantes"
+        >
+          Justificantes
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="citatorios"
+        >
+          Citatorios
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="calificaciones"
+        >
+          Calificaciones
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="pases"
+        >
+          Pases de salida
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="seguimiento"
+        >
+          Seguimiento
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="riesgo"
+        >
+          Riesgo escolar
+        </button>
+
+        <button
+          type="button"
+          data-modulo-padres="perfil"
+        >
+          Mi perfil
+        </button>
+
+      </nav>
+
+
+      <!-- ================================================
+           CONTENIDO
+           ================================================ -->
+
+      <div class="contenido-portal-padres-prueba">
+
+
+        <!-- RESUMEN -->
+
+        <section
+          data-vista-padres="resumen"
+          class="vista-portal-padres-prueba"
+        >
+
+          <h2>Resumen escolar</h2>
+
+          <div class="tarjetas-resumen-padres-prueba">
+
+            <div>
+              <span>Asistencias</span>
+              <strong id="resumenAsistenciasPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Faltas</span>
+              <strong id="resumenFaltasPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Asistencia</span>
+              <strong id="resumenPorcentajePadresPrueba">0%</strong>
+            </div>
+
+            <div>
+              <span>Reportes</span>
+              <strong id="resumenReportesPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Citatorios</span>
+              <strong id="resumenCitatoriosPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Promedio</span>
+              <strong id="resumenPromedioPadresPrueba">—</strong>
+            </div>
+
+            <div>
+              <span>Riesgo</span>
+              <strong id="resumenRiesgoPadresPrueba">—</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ASISTENCIA -->
+
+        <section
+          data-vista-padres="asistencia"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Asistencia</h2>
+
+          <div class="resumen-modulo-padres-prueba">
+
+            <div>
+              <span>Asistencias</span>
+              <strong id="totalAsistenciasPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Faltas</span>
+              <strong id="totalFaltasPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Porcentaje</span>
+              <strong id="porcentajeAsistenciaPadresPrueba">0%</strong>
+            </div>
+
+            <div>
+              <span>Registros</span>
+              <strong id="totalRegistrosAsistenciaPadresPrueba">0</strong>
+            </div>
+
+          </div>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Estado</th>
+                  <th>Puntualidad</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaAsistenciaPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- REPORTES -->
+
+        <section
+          data-vista-padres="reportes"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Reportes escolares</h2>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Tipo</th>
+                  <th>Docente</th>
+                  <th>Descripción</th>
+                  <th>Acción</th>
+                  <th>Estatus</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaReportesPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- JUSTIFICANTES -->
+
+        <section
+          data-vista-padres="justificantes"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Justificantes</h2>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Motivo</th>
+                  <th>Solicita</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaJustificantesPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- CITATORIOS -->
+
+        <section
+          data-vista-padres="citatorios"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Citatorios</h2>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Motivo</th>
+                  <th>Responsable</th>
+                  <th>Seguimiento</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaCitatoriosPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- CALIFICACIONES -->
+
+        <section
+          data-vista-padres="calificaciones"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Calificaciones</h2>
+
+          <div class="promedio-general-padres-prueba">
+
+            Promedio general:
+
+            <strong id="promedioGeneralPadresPrueba">
+              —
+            </strong>
+
+          </div>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Materia</th>
+                  <th>Periodo 1</th>
+                  <th>Periodo 2</th>
+                  <th>Periodo 3</th>
+                  <th>Promedio</th>
+                  <th>Situación</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaCalificacionesPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- PASES -->
+
+        <section
+          data-vista-padres="pases"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Pases de salida</h2>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Motivo</th>
+                  <th>Autorizado por</th>
+                  <th>Hora salida</th>
+                  <th>Estatus</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaPasesSalidaPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- SEGUIMIENTO -->
+
+        <section
+          data-vista-padres="seguimiento"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Seguimiento tutorial</h2>
+
+          <div class="tabla-contenedor-padres-prueba">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Motivo</th>
+                  <th>Responsable</th>
+                  <th>Próximo seguimiento</th>
+                  <th>Estatus</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="cuerpoTablaSeguimientoPadresPrueba"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- RIESGO -->
+
+        <section
+          data-vista-padres="riesgo"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Riesgo escolar</h2>
+
+          <div
+            id="tarjetaRiesgoPadresPrueba"
+            class="tarjeta-riesgo-padres-prueba"
+          >
+
+            <h3 id="nivelRiesgoPadresPrueba">
+              Sin consultar
+            </h3>
+
+            <p>
+              Puntaje:
+              <strong id="puntajeRiesgoPadresPrueba">
+                0
+              </strong>
+            </p>
+
+            <ul id="listaMotivosRiesgoPadresPrueba"></ul>
+
+          </div>
+
+
+          <div class="indicadores-riesgo-padres-prueba">
+
+            <div>
+              <span>Inasistencias</span>
+              <strong id="indicadorInasistenciasPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Reportes</span>
+              <strong id="indicadorReportesRiesgoPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Citatorios</span>
+              <strong id="indicadorCitatoriosRiesgoPadresPrueba">0</strong>
+            </div>
+
+            <div>
+              <span>Pases de salida</span>
+              <strong id="indicadorPasesRiesgoPadresPrueba">0</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- PERFIL -->
+
+        <section
+          data-vista-padres="perfil"
+          class="vista-portal-padres-prueba"
+          hidden
+        >
+
+          <h2>Mi perfil</h2>
+
+          <div class="perfil-datos-padres-prueba">
+
+            <p>
+              <span>Alumno</span>
+              <strong id="perfilAlumnoPadresPrueba">—</strong>
+            </p>
+
+            <p>
+              <span>Grado y grupo</span>
+              <strong id="perfilGrupoPadresPrueba">—</strong>
+            </p>
+
+            <p>
+              <span>Tutor</span>
+              <strong id="perfilTutorPadresPrueba">—</strong>
+            </p>
+
+          </div>
+
+
+          <form
+            id="formActualizarPerfilPadresPrueba"
+            class="formulario-perfil-padres-prueba"
+          >
+
+            <div class="campo-padres-prueba">
+
+              <label for="telefonoTutorPadresPrueba">
+                Teléfono
+              </label>
+
+              <input
+                type="tel"
+                id="telefonoTutorPadresPrueba"
+              >
+
+            </div>
+
+
+            <div class="campo-padres-prueba">
+
+              <label for="correoTutorPadresPrueba">
+                Correo electrónico
+              </label>
+
+              <input
+                type="email"
+                id="correoTutorPadresPrueba"
+              >
+
+            </div>
+
+
+            <div class="campo-padres-prueba">
+
+              <label for="passwordActualPerfilPadresPrueba">
+                Contraseña actual
+              </label>
+
+              <input
+                type="password"
+                id="passwordActualPerfilPadresPrueba"
+              >
+
+            </div>
+
+
+            <button
+              type="submit"
+              id="btnGuardarPerfilPadresPrueba"
+              class="boton-principal-padres-prueba"
+            >
+              Guardar datos de contacto
+            </button>
+
+          </form>
+
+
+          <div
+            id="mensajePerfilPadresPrueba"
+            class="mensaje-info-padres-prueba"
+          ></div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+  <script src="padres_prueba.js"></script>
+
+</body>
+</html>

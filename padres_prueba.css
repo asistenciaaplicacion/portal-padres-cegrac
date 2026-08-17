@@ -1,0 +1,1279 @@
+/* ============================================================
+   CEGRAC V3
+   PORTAL DE PADRES
+   CSS PARA EL INDEX ACTUAL
+   ============================================================ */
+
+
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+
+:root {
+  --azul: #123f6d;
+  --azul-oscuro: #092d50;
+  --azul-medio: #24618f;
+  --azul-claro: #eaf3fa;
+
+  --dorado: #d7a52f;
+  --verde: #279463;
+
+  --fondo: #edf4f9;
+  --blanco: #ffffff;
+
+  --texto: #24364a;
+  --texto-suave: #6a7785;
+
+  --borde: #d9e3ec;
+
+  --rojo: #c53a35;
+  --rojo-claro: #fdeceb;
+
+  --amarillo: #bb8200;
+  --amarillo-claro: #fff4d1;
+
+  --verde-claro: #e5f5ed;
+
+  --sombra:
+    0 18px 45px rgba(17, 60, 99, 0.13);
+
+  --sombra-suave:
+    0 6px 20px rgba(17, 60, 99, 0.08);
+}
+
+
+/* ============================================================
+   CRÍTICO
+   RESPETAR TODOS LOS hidden DEL HTML
+   ============================================================ */
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   GENERAL
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+html {
+  background: var(--fondo);
+}
+
+body {
+  min-height: 100vh;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  color: var(--texto);
+
+  background:
+    linear-gradient(
+      135deg,
+      #e9f2f8 0%,
+      #f7fafc 55%,
+      #e7eff6 100%
+    );
+
+  overflow-x: hidden;
+}
+
+
+/* ============================================================
+   ENCABEZADO PÚBLICO
+   ============================================================ */
+
+.encabezado-publico-padres-prueba {
+  width: 100%;
+
+  padding: 18px 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--azul-oscuro),
+      var(--azul)
+    );
+
+  color: white;
+
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.13);
+}
+
+
+.encabezado-contenido-padres-prueba {
+  width: 100%;
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+.escudo-cegrac-padres-prueba {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 70px;
+
+  border: 2px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.12);
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+
+.encabezado-contenido-padres-prueba h1 {
+  margin: 0 0 4px;
+
+  color: white;
+
+  font-size: clamp(21px, 3vw, 30px);
+
+  line-height: 1.15;
+}
+
+
+.encabezado-contenido-padres-prueba p {
+  margin: 0;
+
+  color: rgba(255,255,255,.82);
+
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+   ============================================================ */
+
+.contenedor-principal-padres-prueba {
+  width: 100%;
+
+  min-height:
+    calc(100vh - 106px);
+
+  padding:
+    38px 20px 55px;
+}
+
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+
+.pantalla-login-padres-prueba,
+.pantalla-secundaria-padres-prueba {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: flex-start;
+}
+
+
+.tarjeta-login-padres-prueba {
+  width: 100%;
+  max-width: 470px;
+
+  padding: 34px 36px;
+
+  background: white;
+
+  border: 1px solid var(--borde);
+
+  border-radius: 22px;
+
+  box-shadow: var(--sombra);
+}
+
+
+.encabezado-login-padres-prueba {
+  margin-bottom: 28px;
+
+  text-align: center;
+}
+
+
+.logo-login-padres-prueba {
+  width: 82px;
+  height: 82px;
+
+  margin:
+    0 auto 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--azul),
+      var(--azul-medio)
+    );
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(18,63,109,.22);
+}
+
+
+.tarjeta-login-padres-prueba h2 {
+  margin:
+    0 0 7px;
+
+  color: var(--azul);
+
+  font-size: 27px;
+
+  text-align: center;
+}
+
+
+.tarjeta-login-padres-prueba > p,
+.encabezado-login-padres-prueba p {
+  margin:
+    0 0 20px;
+
+  color: var(--texto-suave);
+
+  text-align: center;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   CAMPOS
+   ============================================================ */
+
+.campo-padres-prueba {
+  width: 100%;
+
+  margin-bottom: 18px;
+}
+
+
+.campo-padres-prueba label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #35485b;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.campo-padres-prueba input {
+  width: 100%;
+  height: 47px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid #cbd7e2;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: white;
+
+  color: var(--texto);
+
+  font-size: 15px;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+
+.campo-padres-prueba input:focus {
+  border-color: var(--azul-medio);
+
+  box-shadow:
+    0 0 0 3px rgba(36, 97, 143, .13);
+}
+
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+
+.boton-principal-padres-prueba,
+.boton-secundario-padres-prueba,
+.boton-salir-padres-prueba {
+  min-height: 44px;
+
+  padding:
+    10px 18px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    transform .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+
+.boton-principal-padres-prueba {
+  width: 100%;
+
+  margin-top: 4px;
+
+  border:
+    1px solid var(--azul);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--azul),
+      var(--azul-medio)
+    );
+
+  color: white;
+
+  box-shadow:
+    0 6px 16px rgba(18,63,109,.18);
+}
+
+
+.boton-principal-padres-prueba:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 20px rgba(18,63,109,.23);
+}
+
+
+.boton-secundario-padres-prueba {
+  width: 100%;
+
+  margin-top: 11px;
+
+  border:
+    1px solid #b9c9d8;
+
+  background: white;
+
+  color: var(--azul);
+}
+
+
+.boton-secundario-padres-prueba:hover {
+  background: var(--azul-claro);
+}
+
+
+.boton-salir-padres-prueba {
+  border:
+    1px solid #d8a4a0;
+
+  background: white;
+
+  color: var(--rojo);
+}
+
+
+.boton-salir-padres-prueba:hover {
+  background: var(--rojo-claro);
+}
+
+
+button:disabled {
+  opacity: .55;
+
+  cursor: not-allowed;
+
+  transform: none !important;
+}
+
+
+/* ============================================================
+   MENSAJES
+   ============================================================ */
+
+.mensaje-info-padres-prueba,
+.mensaje-exito-padres-prueba,
+.mensaje-error-padres-prueba {
+  margin-top: 16px;
+
+  padding: 11px 13px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+
+.mensaje-info-padres-prueba {
+  background: var(--azul-claro);
+
+  color: var(--azul);
+}
+
+
+.mensaje-exito-padres-prueba {
+  background: var(--verde-claro);
+
+  color: #167049;
+}
+
+
+.mensaje-error-padres-prueba {
+  background: var(--rojo-claro);
+
+  color: var(--rojo);
+}
+
+
+/* ============================================================
+   PORTAL COMPLETO
+   ============================================================ */
+
+.portal-padres-prueba {
+  width: 100%;
+  max-width: 1220px;
+
+  margin: 0 auto;
+
+  background: white;
+
+  border: 1px solid var(--borde);
+
+  border-radius: 22px;
+
+  box-shadow: var(--sombra);
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   CABECERA PORTAL
+   ============================================================ */
+
+.cabecera-portal-padres-prueba {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding:
+    24px 28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--azul-oscuro),
+      var(--azul)
+    );
+
+  color: white;
+}
+
+
+.marca-portal-padres-prueba {
+  margin-bottom: 3px;
+
+  color: var(--dorado);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+
+.cabecera-portal-padres-prueba h1 {
+  margin:
+    0 0 3px;
+
+  color: white;
+
+  font-size: 25px;
+}
+
+
+.cabecera-portal-padres-prueba p {
+  margin: 0;
+
+  color:
+    rgba(255,255,255,.78);
+
+  font-size: 13px;
+}
+
+
+.acciones-portal-padres-prueba {
+  display: flex;
+
+  gap: 10px;
+}
+
+
+.acciones-portal-padres-prueba
+.boton-secundario-padres-prueba {
+  width: auto;
+
+  margin: 0;
+
+  border-color:
+    rgba(255,255,255,.55);
+
+  background:
+    rgba(255,255,255,.12);
+
+  color: white;
+}
+
+
+.acciones-portal-padres-prueba
+.boton-secundario-padres-prueba:hover {
+  background:
+    rgba(255,255,255,.22);
+}
+
+
+.acciones-portal-padres-prueba
+.boton-salir-padres-prueba {
+  background:
+    rgba(255,255,255,.94);
+}
+
+
+/* ============================================================
+   IDENTIDAD ALUMNO
+   ============================================================ */
+
+.identidad-alumno-padres-prueba {
+  display: grid;
+
+  grid-template-columns:
+    minmax(250px, 2fr)
+    repeat(3, minmax(110px, 1fr));
+
+  gap: 1px;
+
+  background: var(--borde);
+
+  border-bottom:
+    1px solid var(--borde);
+}
+
+
+.identidad-alumno-padres-prueba > div {
+  padding:
+    18px 20px;
+
+  background:
+    #f8fbfd;
+}
+
+
+.identidad-alumno-padres-prueba span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--texto-suave);
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: .35px;
+}
+
+
+.identidad-alumno-padres-prueba strong {
+  display: block;
+
+  color: var(--azul);
+
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   MENÚ DEL PORTAL
+   ============================================================ */
+
+.menu-portal-padres-prueba {
+  display: flex;
+
+  gap: 7px;
+
+  padding:
+    12px 16px;
+
+  background:
+    #f1f5f8;
+
+  border-bottom:
+    1px solid var(--borde);
+
+  overflow-x: auto;
+}
+
+
+.menu-portal-padres-prueba button {
+  flex:
+    0 0 auto;
+
+  min-height: 38px;
+
+  padding:
+    8px 14px;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #536679;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+
+.menu-portal-padres-prueba button:hover {
+  background: white;
+
+  color: var(--azul);
+}
+
+
+.menu-portal-padres-prueba button.activo {
+  background: var(--azul);
+
+  color: white;
+
+  box-shadow:
+    0 3px 9px rgba(18,63,109,.16);
+}
+
+
+/* ============================================================
+   CONTENIDO
+   ============================================================ */
+
+.contenido-portal-padres-prueba {
+  padding:
+    28px;
+}
+
+
+.vista-portal-padres-prueba {
+  width: 100%;
+}
+
+
+.vista-portal-padres-prueba h2 {
+  margin:
+    0 0 20px;
+
+  color: var(--azul);
+
+  font-size: 23px;
+}
+
+
+/* ============================================================
+   RESUMEN
+   ============================================================ */
+
+.tarjetas-resumen-padres-prueba {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(150px, 1fr));
+
+  gap: 14px;
+}
+
+
+.tarjetas-resumen-padres-prueba > div {
+  min-height: 105px;
+
+  padding: 18px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fbfd
+    );
+
+  box-shadow:
+    var(--sombra-suave);
+}
+
+
+.tarjetas-resumen-padres-prueba span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--texto-suave);
+
+  font-size: 13px;
+}
+
+
+.tarjetas-resumen-padres-prueba strong {
+  display: block;
+
+  color: var(--azul);
+
+  font-size: 27px;
+}
+
+
+/* ============================================================
+   RESÚMENES DE MÓDULO
+   ============================================================ */
+
+.resumen-modulo-padres-prueba {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 14px;
+
+  margin-bottom: 22px;
+}
+
+
+.resumen-modulo-padres-prueba > div {
+  padding: 17px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 12px;
+
+  background: #f8fbfd;
+}
+
+
+.resumen-modulo-padres-prueba span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--texto-suave);
+
+  font-size: 12px;
+}
+
+
+.resumen-modulo-padres-prueba strong {
+  color: var(--azul);
+
+  font-size: 23px;
+}
+
+
+/* ============================================================
+   PROMEDIO
+   ============================================================ */
+
+.promedio-general-padres-prueba {
+  width: fit-content;
+
+  min-width: 210px;
+
+  margin-bottom: 20px;
+
+  padding:
+    16px 20px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 12px;
+
+  background: var(--azul-claro);
+
+  color: var(--texto-suave);
+}
+
+
+.promedio-general-padres-prueba strong {
+  margin-left: 8px;
+
+  color: var(--azul);
+
+  font-size: 25px;
+}
+
+
+/* ============================================================
+   TABLAS
+   ============================================================ */
+
+.tabla-contenedor-padres-prueba {
+  width: 100%;
+
+  overflow-x: auto;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 12px;
+}
+
+
+.tabla-contenedor-padres-prueba table {
+  width: 100%;
+
+  min-width: 680px;
+
+  border-collapse: collapse;
+
+  background: white;
+
+  font-size: 13px;
+}
+
+
+.tabla-contenedor-padres-prueba th {
+  padding:
+    12px 14px;
+
+  background: var(--azul);
+
+  color: white;
+
+  text-align: left;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+.tabla-contenedor-padres-prueba td {
+  padding:
+    12px 14px;
+
+  border-bottom:
+    1px solid #e7edf2;
+
+  color: var(--texto);
+
+  vertical-align: top;
+}
+
+
+.tabla-contenedor-padres-prueba
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+.tabla-contenedor-padres-prueba
+tbody tr:hover {
+  background: #f7fafc;
+}
+
+
+.celda-mensaje-tabla-padres-prueba {
+  padding: 25px !important;
+
+  color: var(--texto-suave) !important;
+
+  text-align: center;
+}
+
+
+/* ============================================================
+   RIESGO
+   ============================================================ */
+
+.tarjeta-riesgo-padres-prueba {
+  padding:
+    22px;
+
+  margin-bottom: 20px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 14px;
+
+  background: #f8fbfd;
+}
+
+
+.tarjeta-riesgo-padres-prueba h3 {
+  margin:
+    0 0 8px;
+
+  color: var(--azul);
+
+  font-size: 27px;
+}
+
+
+.tarjeta-riesgo-padres-prueba p {
+  margin:
+    0 0 12px;
+}
+
+
+.tarjeta-riesgo-padres-prueba ul {
+  margin:
+    15px 0 0;
+
+  padding-left: 20px;
+}
+
+
+.riesgo-sin-riesgo {
+  background: var(--verde-claro);
+}
+
+
+.riesgo-bajo {
+  background: #eaf4fb;
+}
+
+
+.riesgo-medio {
+  background: var(--amarillo-claro);
+}
+
+
+.riesgo-alto {
+  background: var(--rojo-claro);
+}
+
+
+.indicadores-riesgo-padres-prueba {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 14px;
+}
+
+
+.indicadores-riesgo-padres-prueba > div {
+  padding: 17px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 12px;
+
+  background: white;
+
+  box-shadow:
+    var(--sombra-suave);
+}
+
+
+.indicadores-riesgo-padres-prueba span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--texto-suave);
+
+  font-size: 12px;
+}
+
+
+.indicadores-riesgo-padres-prueba strong {
+  color: var(--azul);
+
+  font-size: 23px;
+}
+
+
+/* ============================================================
+   PERFIL
+   ============================================================ */
+
+.perfil-datos-padres-prueba {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 14px;
+
+  margin-bottom: 22px;
+}
+
+
+.perfil-datos-padres-prueba p {
+  margin: 0;
+
+  padding:
+    17px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 12px;
+
+  background: #f8fbfd;
+}
+
+
+.perfil-datos-padres-prueba span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--texto-suave);
+
+  font-size: 12px;
+}
+
+
+.perfil-datos-padres-prueba strong {
+  color: var(--azul);
+
+  font-size: 15px;
+}
+
+
+.formulario-perfil-padres-prueba {
+  max-width: 600px;
+
+  padding:
+    22px;
+
+  border:
+    1px solid var(--borde);
+
+  border-radius: 13px;
+
+  background: #f8fbfd;
+}
+
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+.menu-portal-padres-prueba::-webkit-scrollbar,
+.tabla-contenedor-padres-prueba::-webkit-scrollbar {
+  height: 8px;
+}
+
+
+.menu-portal-padres-prueba::-webkit-scrollbar-track,
+.tabla-contenedor-padres-prueba::-webkit-scrollbar-track {
+  background: #e6edf3;
+}
+
+
+.menu-portal-padres-prueba::-webkit-scrollbar-thumb,
+.tabla-contenedor-padres-prueba::-webkit-scrollbar-thumb {
+  background: #94a9bc;
+
+  border-radius: 10px;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  .identidad-alumno-padres-prueba {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .tarjetas-resumen-padres-prueba {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .resumen-modulo-padres-prueba {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .indicadores-riesgo-padres-prueba {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .perfil-datos-padres-prueba {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* ============================================================
+   CELULAR
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  .encabezado-publico-padres-prueba {
+    padding:
+      14px 15px;
+  }
+
+
+  .escudo-cegrac-padres-prueba {
+    width: 54px;
+    height: 54px;
+
+    flex-basis: 54px;
+  }
+
+
+  .encabezado-contenido-padres-prueba h1 {
+    font-size: 18px;
+  }
+
+
+  .encabezado-contenido-padres-prueba p {
+    font-size: 12px;
+  }
+
+
+  .contenedor-principal-padres-prueba {
+    padding:
+      18px 9px 30px;
+  }
+
+
+  .tarjeta-login-padres-prueba {
+    padding:
+      27px 20px;
+
+    border-radius: 16px;
+  }
+
+
+  .portal-padres-prueba {
+    border-radius: 14px;
+  }
+
+
+  .cabecera-portal-padres-prueba {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    padding:
+      20px;
+  }
+
+
+  .acciones-portal-padres-prueba {
+    flex-direction: column;
+  }
+
+
+  .acciones-portal-padres-prueba button {
+    width: 100% !important;
+  }
+
+
+  .identidad-alumno-padres-prueba {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .contenido-portal-padres-prueba {
+    padding:
+      20px 14px;
+  }
+
+
+  .tarjetas-resumen-padres-prueba,
+  .resumen-modulo-padres-prueba,
+  .indicadores-riesgo-padres-prueba {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .promedio-general-padres-prueba {
+    width: 100%;
+  }
+
+}
