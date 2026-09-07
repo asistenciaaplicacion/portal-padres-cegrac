@@ -1,6 +1,20 @@
+// ============================================================
+// PORTAL DE PADRES CEGRAC
+// FRONTEND INDEPENDIENTE DE PRUEBA
+// ARCHIVO COMPLETO
+// ============================================================
+
+// ============================================================
+// SOLO EDITA ESTA CONSTANTE
+// Debe contener la URL publicada de Portal_Padres_CEGRAC_API
+// y terminar en /exec
+// ============================================================
 const API_PADRES =
   'https://script.google.com/macros/s/AKfycbzot5BIsffX7iD2eVmjHpwB8Tdm3RTbJ8fY54AOsvDWbpOBCE7cooahxbHplrbX2AiuWA/exec';
 
+// ============================================================
+// NO MODIFICAR DESDE AQUÍ
+// ============================================================
 const CLAVE_TOKEN_PADRES_PRUEBA =
   'CEGRAC_TOKEN_PADRES_PRUEBA';
 
@@ -13,6 +27,10 @@ const MODULOS_CARGADOS_PADRES_PRUEBA =
 let MODULO_ACTUAL_PADRES_PRUEBA =
   'asistencia';
 
+
+// ============================================================
+// UTILIDADES
+// ============================================================
 
 function elementoPadresPrueba(id) {
 
@@ -60,12 +78,14 @@ function primerValorPadresPrueba(
     return reemplazo;
   }
 
+
   for (
     const clave of claves
   ) {
 
     const valor =
       objeto[clave];
+
 
     if (
       valor !== undefined &&
@@ -76,6 +96,7 @@ function primerValorPadresPrueba(
       return valor;
     }
   }
+
 
   return reemplazo;
 }
@@ -94,6 +115,7 @@ function primerArregloPadresPrueba(
     return [];
   }
 
+
   for (
     const clave of claves
   ) {
@@ -108,6 +130,7 @@ function primerArregloPadresPrueba(
     }
   }
 
+
   return [];
 }
 
@@ -121,19 +144,45 @@ function mostrarMensajeElementoPadresPrueba(
   const elemento =
     elementoPadresPrueba(id);
 
+
   if (!elemento) {
 
     return;
   }
 
+
+  const texto =
+    String(
+      mensaje || ''
+    ).trim();
+
+
   elemento.textContent =
-    mensaje || '';
+    texto;
+
 
   elemento.classList.remove(
+
     'mensaje-exito-padres-prueba',
+
     'mensaje-error-padres-prueba',
+
     'mensaje-info-padres-prueba'
   );
+
+
+  if (!texto) {
+
+    elemento.hidden =
+      true;
+
+    return;
+  }
+
+
+  elemento.hidden =
+    false;
+
 
   const clase =
 
@@ -147,6 +196,7 @@ function mostrarMensajeElementoPadresPrueba(
 
         : 'mensaje-info-padres-prueba';
 
+
   elemento.classList.add(
     clase
   );
@@ -159,8 +209,11 @@ function mostrarMensajePadresPrueba(
 ) {
 
   mostrarMensajeElementoPadresPrueba(
+
     'mensajePadresPrueba',
+
     mensaje,
+
     tipo
   );
 }
@@ -172,8 +225,11 @@ function mostrarMensajeCambioPasswordPadresPrueba(
 ) {
 
   mostrarMensajeElementoPadresPrueba(
+
     'mensajeCambioPasswordPadresPrueba',
+
     mensaje,
+
     tipo
   );
 }
@@ -186,8 +242,11 @@ function mostrarMensajeRecuperacionPadresPrueba(
 ) {
 
   mostrarMensajeElementoPadresPrueba(
+
     id,
+
     mensaje,
+
     tipo
   );
 }
@@ -200,8 +259,11 @@ function mostrarMensajeModuloPadresPrueba(
 ) {
 
   mostrarMensajeElementoPadresPrueba(
+
     id,
+
     mensaje,
+
     tipo
   );
 }
@@ -219,8 +281,10 @@ function cambiarEstadoBotonPadresPrueba(
     return;
   }
 
+
   boton.disabled =
     Boolean(cargando);
+
 
   boton.textContent =
 
@@ -239,16 +303,19 @@ function formatearFechaPadresPrueba(
   const texto =
     String(valor ?? '').trim();
 
+
   if (!texto) {
 
     return '—';
   }
+
 
   const iso =
 
     texto.match(
       /^(\d{4})-(\d{2})-(\d{2})/
     );
+
 
   if (iso) {
 
@@ -261,11 +328,13 @@ function formatearFechaPadresPrueba(
     );
   }
 
+
   const latina =
 
     texto.match(
       /^(\d{1,2})\/(\d{1,2})\/(\d{4})/
     );
+
 
   if (latina) {
 
@@ -289,8 +358,10 @@ function formatearFechaPadresPrueba(
     );
   }
 
+
   const fecha =
     new Date(texto);
+
 
   if (
     !Number.isNaN(
@@ -299,7 +370,9 @@ function formatearFechaPadresPrueba(
   ) {
 
     return new Intl.DateTimeFormat(
+
       'es-MX',
+
       {
         day:
           '2-digit',
@@ -310,8 +383,10 @@ function formatearFechaPadresPrueba(
         year:
           'numeric'
       }
+
     ).format(fecha);
   }
+
 
   return texto;
 }
@@ -324,16 +399,19 @@ function formatearHoraPadresPrueba(
   const texto =
     String(valor ?? '').trim();
 
+
   if (!texto) {
 
     return '—';
   }
+
 
   const hora =
 
     texto.match(
       /(\d{1,2}):(\d{2})(?::\d{2})?/
     );
+
 
   return hora
 
@@ -365,8 +443,10 @@ function formatearCalificacionPadresPrueba(
     return '—';
   }
 
+
   const numero =
     Number(valor);
+
 
   if (
     !Number.isFinite(numero)
@@ -374,6 +454,7 @@ function formatearCalificacionPadresPrueba(
 
     return String(valor);
   }
+
 
   return Number.isInteger(numero)
 
@@ -394,8 +475,10 @@ function crearCeldaPadresPrueba(
       'td'
     );
 
+
   celda.textContent =
     textoPadresPrueba(valor);
+
 
   if (clase) {
 
@@ -403,6 +486,7 @@ function crearCeldaPadresPrueba(
       clase
     );
   }
+
 
   return celda;
 }
@@ -420,12 +504,15 @@ function mostrarFilaMensajePadresPrueba(
       idCuerpo
     );
 
+
   if (!cuerpo) {
 
     return;
   }
 
+
   cuerpo.replaceChildren();
+
 
   const fila =
 
@@ -433,25 +520,31 @@ function mostrarFilaMensajePadresPrueba(
       'tr'
     );
 
+
   const celda =
 
     document.createElement(
       'td'
     );
 
+
   celda.colSpan =
     columnas;
 
+
   celda.textContent =
     mensaje;
+
 
   celda.classList.add(
     'celda-mensaje-tabla-padres-prueba'
   );
 
+
   fila.appendChild(
     celda
   );
+
 
   cuerpo.appendChild(
     fila
@@ -474,6 +567,7 @@ function respuestaSesionInvalidaPadresPrueba(
       ''
 
     ).toUpperCase();
+
 
   return (
 
@@ -500,9 +594,12 @@ function finalizarSesionInvalidaPadresPrueba(
     CLAVE_TOKEN_PADRES_PRUEBA
   );
 
+
   MODULOS_CARGADOS_PADRES_PRUEBA.clear();
 
+
   ocultarSesionPadresPrueba();
+
 
   mostrarMensajePadresPrueba(
 
@@ -513,6 +610,10 @@ function finalizarSesionInvalidaPadresPrueba(
   );
 }
 
+
+// ============================================================
+// API
+// ============================================================
 
 async function enviarPostPadresPrueba(
   datos
@@ -528,6 +629,7 @@ async function enviarPostPadresPrueba(
       'Todavía no se ha colocado la URL de la API.'
     );
   }
+
 
   const respuesta =
 
@@ -549,11 +651,14 @@ async function enviarPostPadresPrueba(
       }
     );
 
+
   const texto =
 
     await respuesta.text();
 
+
   let json;
+
 
   try {
 
@@ -565,14 +670,18 @@ async function enviarPostPadresPrueba(
   } catch (error) {
 
     console.error(
+
       'Respuesta recibida:',
+
       texto
     );
+
 
     throw new Error(
       'El servidor no devolvió una respuesta JSON válida.'
     );
   }
+
 
   if (
     !respuesta.ok
@@ -586,9 +695,14 @@ async function enviarPostPadresPrueba(
     );
   }
 
+
   return json;
 }
 
+
+// ============================================================
+// CONTROL DE PANTALLAS DE ACCESO
+// ============================================================
 
 function mostrarEncabezadoPublicoPadresPrueba(
   mostrar
@@ -599,6 +713,7 @@ function mostrarEncabezadoPublicoPadresPrueba(
     elementoPadresPrueba(
       'encabezadoPublicoPadresPrueba'
     );
+
 
   if (encabezado) {
 
@@ -618,6 +733,7 @@ function mostrarBotonRecuperacionPadresPrueba(
       'btnMostrarRecuperacionPadresPrueba'
     );
 
+
   if (boton) {
 
     boton.hidden =
@@ -634,11 +750,13 @@ function ocultarCambioPasswordInicialPadresPrueba() {
       'panelCambioPasswordPadresPrueba'
     );
 
+
   const nuevo =
 
     elementoPadresPrueba(
       'nuevoPasswordInicialPadresPrueba'
     );
+
 
   const confirmar =
 
@@ -646,11 +764,13 @@ function ocultarCambioPasswordInicialPadresPrueba() {
       'confirmarPasswordInicialPadresPrueba'
     );
 
+
   if (panel) {
 
     panel.hidden =
       true;
   }
+
 
   if (nuevo) {
 
@@ -658,14 +778,18 @@ function ocultarCambioPasswordInicialPadresPrueba() {
       '';
   }
 
+
   if (confirmar) {
 
     confirmar.value =
       '';
   }
 
+
   mostrarMensajeCambioPasswordPadresPrueba(
+
     '',
+
     'info'
   );
 }
@@ -679,11 +803,13 @@ function ocultarPanelesRecuperacionPadresPrueba() {
       'panelSolicitarRecuperacionPadresPrueba'
     );
 
+
   const restablecer =
 
     elementoPadresPrueba(
       'panelRestablecerPasswordPadresPrueba'
     );
+
 
   if (solicitar) {
 
@@ -691,11 +817,13 @@ function ocultarPanelesRecuperacionPadresPrueba() {
       true;
   }
 
+
   if (restablecer) {
 
     restablecer.hidden =
       true;
   }
+
 
   [
 
@@ -717,6 +845,7 @@ function ocultarPanelesRecuperacionPadresPrueba() {
           id
         );
 
+
       if (campo) {
 
         campo.value =
@@ -725,15 +854,23 @@ function ocultarPanelesRecuperacionPadresPrueba() {
     }
   );
 
+
   mostrarMensajeRecuperacionPadresPrueba(
+
     'mensajeSolicitarRecuperacionPadresPrueba',
+
     '',
+
     'info'
   );
 
+
   mostrarMensajeRecuperacionPadresPrueba(
+
     'mensajeRestablecerPasswordPadresPrueba',
+
     '',
+
     'info'
   );
 }
@@ -753,11 +890,13 @@ function mostrarCambioPasswordInicialPadresPrueba(
     false
   );
 
+
   const login =
 
     elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
+
 
   const panel =
 
@@ -765,11 +904,13 @@ function mostrarCambioPasswordInicialPadresPrueba(
       'panelPadresPrueba'
     );
 
+
   const cambio =
 
     elementoPadresPrueba(
       'panelCambioPasswordPadresPrueba'
     );
+
 
   const alumno =
 
@@ -777,11 +918,13 @@ function mostrarCambioPasswordInicialPadresPrueba(
       'alumnoCambioPasswordPadresPrueba'
     );
 
+
   if (login) {
 
     login.hidden =
       true;
   }
+
 
   if (panel) {
 
@@ -789,11 +932,13 @@ function mostrarCambioPasswordInicialPadresPrueba(
       true;
   }
 
+
   if (cambio) {
 
     cambio.hidden =
       false;
   }
+
 
   if (alumno) {
 
@@ -809,8 +954,11 @@ function mostrarCambioPasswordInicialPadresPrueba(
         : 'Cuenta del Portal de Padres';
   }
 
+
   mostrarMensajeCambioPasswordPadresPrueba(
+
     'Escribe y confirma una nueva contraseña.',
+
     'info'
   );
 }
@@ -830,11 +978,13 @@ function mostrarSolicitudRecuperacionPadresPrueba() {
     false
   );
 
+
   const login =
 
     elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
+
 
   const panel =
 
@@ -842,11 +992,13 @@ function mostrarSolicitudRecuperacionPadresPrueba() {
       'panelPadresPrueba'
     );
 
+
   const solicitar =
 
     elementoPadresPrueba(
       'panelSolicitarRecuperacionPadresPrueba'
     );
+
 
   const uidLogin =
 
@@ -860,11 +1012,13 @@ function mostrarSolicitudRecuperacionPadresPrueba() {
 
     ).trim();
 
+
   const uidRecuperacion =
 
     elementoPadresPrueba(
       'uidRecuperacionPadresPrueba'
     );
+
 
   if (login) {
 
@@ -872,17 +1026,20 @@ function mostrarSolicitudRecuperacionPadresPrueba() {
       true;
   }
 
+
   if (panel) {
 
     panel.hidden =
       true;
   }
 
+
   if (solicitar) {
 
     solicitar.hidden =
       false;
   }
+
 
   if (
     uidRecuperacion &&
@@ -893,14 +1050,21 @@ function mostrarSolicitudRecuperacionPadresPrueba() {
       uidLogin;
   }
 
+
   mostrarMensajePadresPrueba(
+
     '',
+
     'info'
   );
 
+
   mostrarMensajeRecuperacionPadresPrueba(
+
     'mensajeSolicitarRecuperacionPadresPrueba',
+
     'Escribe el UID del alumno para solicitar el código.',
+
     'info'
   );
 }
@@ -918,11 +1082,13 @@ function mostrarRestablecimientoRecuperacionPadresPrueba() {
     false
   );
 
+
   const login =
 
     elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
+
 
   const panel =
 
@@ -930,11 +1096,13 @@ function mostrarRestablecimientoRecuperacionPadresPrueba() {
       'panelPadresPrueba'
     );
 
+
   const solicitar =
 
     elementoPadresPrueba(
       'panelSolicitarRecuperacionPadresPrueba'
     );
+
 
   const restablecer =
 
@@ -942,11 +1110,13 @@ function mostrarRestablecimientoRecuperacionPadresPrueba() {
       'panelRestablecerPasswordPadresPrueba'
     );
 
+
   if (login) {
 
     login.hidden =
       true;
   }
+
 
   if (panel) {
 
@@ -954,11 +1124,13 @@ function mostrarRestablecimientoRecuperacionPadresPrueba() {
       true;
   }
 
+
   if (solicitar) {
 
     solicitar.hidden =
       true;
   }
+
 
   if (restablecer) {
 
@@ -968,17 +1140,23 @@ function mostrarRestablecimientoRecuperacionPadresPrueba() {
 }
 
 
+// ============================================================
+// CAMBIO OBLIGATORIO DE CONTRASEÑA
+// ============================================================
+
 async function cambiarPasswordInicialPadresPrueba(
   evento
 ) {
 
   evento.preventDefault();
 
+
   const token =
 
     sessionStorage.getItem(
       CLAVE_TOKEN_PADRES_PRUEBA
     );
+
 
   const nuevo =
 
@@ -992,6 +1170,7 @@ async function cambiarPasswordInicialPadresPrueba(
 
     ).trim();
 
+
   const confirmar =
 
     String(
@@ -1004,11 +1183,13 @@ async function cambiarPasswordInicialPadresPrueba(
 
     ).trim();
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnCambiarPasswordInicialPadresPrueba'
     );
+
 
   if (!token) {
 
@@ -1017,42 +1198,55 @@ async function cambiarPasswordInicialPadresPrueba(
     return;
   }
 
+
   if (
     !nuevo ||
     !confirmar
   ) {
 
     mostrarMensajeCambioPasswordPadresPrueba(
+
       'Escribe y confirma la nueva contraseña.',
+
       'info'
     );
 
+
     return;
   }
+
 
   if (
     nuevo.length < 6
   ) {
 
     mostrarMensajeCambioPasswordPadresPrueba(
+
       'La contraseña debe tener al menos 6 caracteres.',
+
       'error'
     );
 
+
     return;
   }
+
 
   if (
     nuevo !== confirmar
   ) {
 
     mostrarMensajeCambioPasswordPadresPrueba(
+
       'Las contraseñas no coinciden.',
+
       'error'
     );
 
+
     return;
   }
+
 
   if (
     nuevo.toLowerCase() ===
@@ -1060,24 +1254,36 @@ async function cambiarPasswordInicialPadresPrueba(
   ) {
 
     mostrarMensajeCambioPasswordPadresPrueba(
+
       'La nueva contraseña debe ser diferente de la contraseña inicial.',
+
       'error'
     );
+
 
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Guardando...',
+
     'Guardar nueva contraseña'
   );
 
+
   mostrarMensajeCambioPasswordPadresPrueba(
+
     'Actualizando la contraseña...',
+
     'info'
   );
+
 
   try {
 
@@ -1098,6 +1304,7 @@ async function cambiarPasswordInicialPadresPrueba(
           confirmar
       });
 
+
     if (
       !datos.success
     ) {
@@ -1112,17 +1319,24 @@ async function cambiarPasswordInicialPadresPrueba(
           datos.mensaje
         );
 
+
         return;
       }
 
+
       mostrarMensajeCambioPasswordPadresPrueba(
+
         datos.mensaje ||
+
         'No fue posible actualizar la contraseña.',
+
         'error'
       );
 
+
       return;
     }
+
 
     if (
       !datos.token
@@ -1133,20 +1347,29 @@ async function cambiarPasswordInicialPadresPrueba(
       );
     }
 
+
     sessionStorage.setItem(
+
       CLAVE_TOKEN_PADRES_PRUEBA,
+
       datos.token
     );
+
 
     mostrarSesionPadresPrueba(
       datos
     );
 
+
     mostrarMensajePadresPrueba(
+
       datos.mensaje ||
+
       'Contraseña actualizada correctamente.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -1154,23 +1377,36 @@ async function cambiarPasswordInicialPadresPrueba(
       error
     );
 
+
     mostrarMensajeCambioPasswordPadresPrueba(
+
       error.message ||
+
       'No fue posible actualizar la contraseña.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Guardando...',
+
       'Guardar nueva contraseña'
     );
   }
 }
 
+
+// ============================================================
+// SESIÓN
+// ============================================================
 
 function mostrarSesionPadresPrueba(
   datos
@@ -1188,11 +1424,13 @@ function mostrarSesionPadresPrueba(
     false
   );
 
+
   const login =
 
     elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
+
 
   const panel =
 
@@ -1200,8 +1438,10 @@ function mostrarSesionPadresPrueba(
       'panelPadresPrueba'
     );
 
+
   const alumno =
     datos?.alumno || {};
+
 
   if (login) {
 
@@ -1209,11 +1449,13 @@ function mostrarSesionPadresPrueba(
       true;
   }
 
+
   if (panel) {
 
     panel.hidden =
       false;
   }
+
 
   const nombre =
 
@@ -1221,11 +1463,13 @@ function mostrarSesionPadresPrueba(
       'nombreAlumnoPadresPrueba'
     );
 
+
   const grado =
 
     elementoPadresPrueba(
       'gradoAlumnoPadresPrueba'
     );
+
 
   const grupo =
 
@@ -1233,41 +1477,52 @@ function mostrarSesionPadresPrueba(
       'grupoAlumnoPadresPrueba'
     );
 
+
   const estado =
 
     elementoPadresPrueba(
       'estadoSesionPadresPrueba'
     );
 
+
   if (nombre) {
 
     nombre.textContent =
 
       textoPadresPrueba(
+
         alumno.nombre,
+
         'Alumno'
       );
   }
+
 
   if (grado) {
 
     grado.textContent =
 
       textoPadresPrueba(
+
         alumno.grado,
+
         'Sin grado'
       );
   }
+
 
   if (grupo) {
 
     grupo.textContent =
 
       textoPadresPrueba(
+
         alumno.grupo,
+
         'Sin grupo'
       );
   }
+
 
   if (estado) {
 
@@ -1275,10 +1530,14 @@ function mostrarSesionPadresPrueba(
       'Sesión segura activa.';
   }
 
+
   MODULOS_CARGADOS_PADRES_PRUEBA.clear();
 
+
   mostrarModuloPadresPrueba(
+
     'asistencia',
+
     true
   );
 }
@@ -1288,34 +1547,53 @@ function limpiarPortalPadresPrueba() {
 
   MODULOS_CARGADOS_PADRES_PRUEBA.clear();
 
+
   MODULO_ACTUAL_PADRES_PRUEBA =
     'asistencia';
 
+
   limpiarAsistenciaPadresPrueba();
 
+
   mostrarFilaMensajePadresPrueba(
+
     'cuerpoTablaReportesPadresPrueba',
+
     7,
+
     'Selecciona esta sección para consultar los reportes.'
   );
 
+
   mostrarFilaMensajePadresPrueba(
+
     'cuerpoTablaJustificantesPadresPrueba',
+
     4,
+
     'Selecciona esta sección para consultar los justificantes.'
   );
 
+
   mostrarFilaMensajePadresPrueba(
+
     'cuerpoTablaCitatoriosPadresPrueba',
+
     5,
+
     'Selecciona esta sección para consultar los citatorios.'
   );
 
+
   mostrarFilaMensajePadresPrueba(
+
     'cuerpoTablaCalificacionesPadresPrueba',
+
     6,
+
     'Selecciona esta sección para consultar las calificaciones.'
   );
+
 
   [
 
@@ -1334,12 +1612,16 @@ function limpiarPortalPadresPrueba() {
     ) {
 
       mostrarMensajeModuloPadresPrueba(
+
         id,
+
         '',
+
         'info'
       );
     }
   );
+
 
   limpiarRiesgoPadresPrueba();
 
@@ -1363,11 +1645,13 @@ function ocultarSesionPadresPrueba() {
     true
   );
 
+
   const login =
 
     elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
+
 
   const panel =
 
@@ -1375,11 +1659,13 @@ function ocultarSesionPadresPrueba() {
       'panelPadresPrueba'
     );
 
+
   const uid =
 
     elementoPadresPrueba(
       'uidPadresPrueba'
     );
+
 
   const password =
 
@@ -1387,11 +1673,13 @@ function ocultarSesionPadresPrueba() {
       'passwordPadresPrueba'
     );
 
+
   if (login) {
 
     login.hidden =
       false;
   }
+
 
   if (panel) {
 
@@ -1399,11 +1687,13 @@ function ocultarSesionPadresPrueba() {
       true;
   }
 
+
   if (uid) {
 
     uid.value =
       '';
   }
+
 
   if (password) {
 
@@ -1419,6 +1709,7 @@ async function iniciarSesionPadresPrueba(
 
   evento.preventDefault();
 
+
   const uid =
 
     String(
@@ -1431,6 +1722,7 @@ async function iniciarSesionPadresPrueba(
 
     ).trim();
 
+
   const password =
 
     String(
@@ -1442,11 +1734,13 @@ async function iniciarSesionPadresPrueba(
       ''
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnIngresarPadresPrueba'
     );
+
 
   if (
     !uid ||
@@ -1454,24 +1748,36 @@ async function iniciarSesionPadresPrueba(
   ) {
 
     mostrarMensajePadresPrueba(
+
       'Escribe el UID y la contraseña.',
+
       'info'
     );
+
 
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Ingresando...',
+
     'Ingresar'
   );
 
+
   mostrarMensajePadresPrueba(
+
     'Validando la cuenta...',
+
     'info'
   );
+
 
   try {
 
@@ -1489,28 +1795,39 @@ async function iniciarSesionPadresPrueba(
           password
       });
 
+
     if (
       !datos.success ||
       !datos.token
     ) {
 
       mostrarMensajePadresPrueba(
+
         datos.mensaje ||
+
         'No fue posible iniciar sesión.',
+
         'error'
       );
+
 
       return;
     }
 
+
     sessionStorage.setItem(
+
       CLAVE_TOKEN_PADRES_PRUEBA,
+
       datos.token
     );
 
+
     sessionStorage.removeItem(
+
       CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
+
 
     const campoPassword =
 
@@ -1518,11 +1835,13 @@ async function iniciarSesionPadresPrueba(
         'passwordPadresPrueba'
       );
 
+
     if (campoPassword) {
 
       campoPassword.value =
         '';
     }
+
 
     if (
       datos.requiereCambioPassword
@@ -1532,22 +1851,31 @@ async function iniciarSesionPadresPrueba(
         datos
       );
 
+
       mostrarMensajePadresPrueba(
+
         'Acceso correcto. Debes cambiar la contraseña inicial.',
+
         'info'
       );
 
+
       return;
     }
+
 
     mostrarSesionPadresPrueba(
       datos
     );
 
+
     mostrarMensajePadresPrueba(
+
       'Sesión iniciada correctamente.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -1555,18 +1883,27 @@ async function iniciarSesionPadresPrueba(
       error
     );
 
+
     mostrarMensajePadresPrueba(
+
       error.message ||
+
       'No fue posible conectar con el servidor.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Ingresando...',
+
       'Ingresar'
     );
   }
@@ -1581,18 +1918,25 @@ async function cerrarSesionPadresPrueba() {
       CLAVE_TOKEN_PADRES_PRUEBA
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnCerrarSesionPadresPrueba'
     );
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Cerrando sesión...',
+
     'Cerrar sesión'
   );
+
 
   try {
 
@@ -1608,11 +1952,13 @@ async function cerrarSesionPadresPrueba() {
       });
     }
 
+
   } catch (error) {
 
     console.error(
       error
     );
+
 
   } finally {
 
@@ -1620,21 +1966,31 @@ async function cerrarSesionPadresPrueba() {
       CLAVE_TOKEN_PADRES_PRUEBA
     );
 
+
     sessionStorage.removeItem(
       CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
 
+
     ocultarSesionPadresPrueba();
 
+
     mostrarMensajePadresPrueba(
+
       'Sesión cerrada correctamente.',
+
       'exito'
     );
 
+
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Cerrando sesión...',
+
       'Cerrar sesión'
     );
   }
@@ -1644,26 +2000,26 @@ async function cerrarSesionPadresPrueba() {
 async function restaurarSesionPadresPrueba() {
 
   const token =
-
     sessionStorage.getItem(
       CLAVE_TOKEN_PADRES_PRUEBA
     );
 
+
   if (!token) {
 
     const uidRecuperacion =
-
       sessionStorage.getItem(
         CLAVE_UID_RECUPERACION_PADRES_PRUEBA
       );
 
+
     if (uidRecuperacion) {
 
       const campo =
-
         elementoPadresPrueba(
           'uidRecuperacionPadresPrueba'
         );
+
 
       if (campo) {
 
@@ -1671,31 +2027,41 @@ async function restaurarSesionPadresPrueba() {
           uidRecuperacion;
       }
 
+
       mostrarRestablecimientoRecuperacionPadresPrueba();
 
+
       mostrarMensajeRecuperacionPadresPrueba(
+
         'mensajeRestablecerPasswordPadresPrueba',
+
         'Escribe el código enviado al correo registrado.',
+
         'info'
       );
 
+
       return;
     }
+
 
     ocultarSesionPadresPrueba();
 
     return;
   }
 
+
   mostrarMensajePadresPrueba(
+
     'Verificando la sesión...',
+
     'info'
   );
+
 
   try {
 
     const validacion =
-
       await enviarPostPadresPrueba({
 
         accion:
@@ -1705,16 +2071,19 @@ async function restaurarSesionPadresPrueba() {
           token
       });
 
+
     if (
       !validacion.success ||
       !validacion.sesionValida
     ) {
 
       throw new Error(
+
         validacion.mensaje ||
         'La sesión ya no es válida.'
       );
     }
+
 
     if (
       validacion.requiereCambioPassword
@@ -1724,16 +2093,20 @@ async function restaurarSesionPadresPrueba() {
         validacion
       );
 
+
       mostrarMensajePadresPrueba(
+
         'Debes cambiar la contraseña inicial para continuar.',
+
         'info'
       );
+
 
       return;
     }
 
-    const respuestaPerfil =
 
+    const respuestaPerfil =
       await enviarPostPadresPrueba({
 
         accion:
@@ -1743,22 +2116,25 @@ async function restaurarSesionPadresPrueba() {
           token
       });
 
+
     if (
       !respuestaPerfil.success ||
       respuestaPerfil.sesionValida === false
     ) {
 
       throw new Error(
+
         respuestaPerfil.mensaje ||
         'No fue posible recuperar el perfil.'
       );
     }
 
-    const perfil =
 
+    const perfil =
       normalizarPerfilPadresPrueba(
         respuestaPerfil
       );
+
 
     mostrarSesionPadresPrueba({
 
@@ -1775,10 +2151,14 @@ async function restaurarSesionPadresPrueba() {
       }
     });
 
+
     mostrarMensajePadresPrueba(
+
       'Sesión restaurada correctamente.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -1786,18 +2166,25 @@ async function restaurarSesionPadresPrueba() {
       error
     );
 
+
     finalizarSesionInvalidaPadresPrueba(
+
       'La sesión terminó. Ingresa nuevamente.'
     );
   }
 }
 
 
+// ============================================================
+// RECUPERACIÓN DE CONTRASEÑA
+// ============================================================
+
 async function solicitarCodigoRecuperacionPadresPrueba(
   evento
 ) {
 
   evento.preventDefault();
+
 
   const uid =
 
@@ -1811,35 +2198,51 @@ async function solicitarCodigoRecuperacionPadresPrueba(
 
     ).trim();
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnSolicitarCodigoPadresPrueba'
     );
 
+
   if (!uid) {
 
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeSolicitarRecuperacionPadresPrueba',
+
       'Escribe el UID del alumno.',
+
       'info'
     );
+
 
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Enviando...',
+
     'Enviar código'
   );
 
+
   mostrarMensajeRecuperacionPadresPrueba(
+
     'mensajeSolicitarRecuperacionPadresPrueba',
+
     'Procesando la solicitud...',
+
     'info'
   );
+
 
   try {
 
@@ -1854,33 +2257,49 @@ async function solicitarCodigoRecuperacionPadresPrueba(
           uid
       });
 
+
     if (
       !datos.success
     ) {
 
       mostrarMensajeRecuperacionPadresPrueba(
+
         'mensajeSolicitarRecuperacionPadresPrueba',
+
         datos.mensaje ||
+
         'No fue posible procesar la recuperación.',
+
         'error'
       );
+
 
       return;
     }
 
+
     sessionStorage.setItem(
+
       CLAVE_UID_RECUPERACION_PADRES_PRUEBA,
+
       uid
     );
 
+
     mostrarRestablecimientoRecuperacionPadresPrueba();
 
+
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       datos.mensaje ||
+
       'Revisa el correo registrado y escribe el código recibido.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -1888,19 +2307,29 @@ async function solicitarCodigoRecuperacionPadresPrueba(
       error
     );
 
+
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeSolicitarRecuperacionPadresPrueba',
+
       error.message ||
+
       'No fue posible conectar con el servidor.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Enviando...',
+
       'Enviar código'
     );
   }
@@ -1915,31 +2344,44 @@ async function reenviarCodigoRecuperacionPadresPrueba() {
       CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnReenviarCodigoPadresPrueba'
     );
 
+
   if (!uid) {
 
     mostrarSolicitudRecuperacionPadresPrueba();
 
+
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Enviando...',
+
     'Enviar otro código'
   );
 
+
   mostrarMensajeRecuperacionPadresPrueba(
+
     'mensajeRestablecerPasswordPadresPrueba',
+
     'Procesando el nuevo envío...',
+
     'info'
   );
+
 
   try {
 
@@ -1954,18 +2396,28 @@ async function reenviarCodigoRecuperacionPadresPrueba() {
           uid
       });
 
+
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       datos.mensaje ||
+
       (
         datos.success
+
           ? 'Solicitud procesada. Revisa nuevamente el correo registrado.'
+
           : 'No fue posible procesar la solicitud.'
       ),
+
       datos.success
+
         ? 'exito'
+
         : 'error'
     );
+
 
   } catch (error) {
 
@@ -1973,19 +2425,29 @@ async function reenviarCodigoRecuperacionPadresPrueba() {
       error
     );
 
+
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       error.message ||
+
       'No fue posible conectar con el servidor.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Enviando...',
+
       'Enviar otro código'
     );
   }
@@ -1998,11 +2460,13 @@ async function restablecerPasswordRecuperacionPadresPrueba(
 
   evento.preventDefault();
 
+
   const uid =
 
     sessionStorage.getItem(
       CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
+
 
   const codigo =
 
@@ -2019,6 +2483,7 @@ async function restablecerPasswordRecuperacionPadresPrueba(
       ''
     );
 
+
   const nueva =
 
     String(
@@ -2030,6 +2495,7 @@ async function restablecerPasswordRecuperacionPadresPrueba(
       ''
 
     ).trim();
+
 
   const confirmar =
 
@@ -2043,70 +2509,94 @@ async function restablecerPasswordRecuperacionPadresPrueba(
 
     ).trim();
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnRestablecerPasswordPadresPrueba'
     );
 
+
   if (!uid) {
 
     mostrarSolicitudRecuperacionPadresPrueba();
 
+
     return;
   }
+
 
   if (
     codigo.length !== 6
   ) {
 
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       'El código debe contener exactamente seis dígitos.',
+
       'error'
     );
 
+
     return;
   }
+
 
   if (
     nueva.length < 8
   ) {
 
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       'La nueva contraseña debe contener al menos 8 caracteres.',
+
       'error'
     );
 
+
     return;
   }
+
 
   if (
     nueva.length > 64
   ) {
 
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       'La nueva contraseña es demasiado larga.',
+
       'error'
     );
 
+
     return;
   }
+
 
   if (
     nueva !== confirmar
   ) {
 
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       'Las contraseñas no coinciden.',
+
       'error'
     );
 
+
     return;
   }
+
 
   if (
     nueva.toLowerCase() ===
@@ -2114,26 +2604,40 @@ async function restablecerPasswordRecuperacionPadresPrueba(
   ) {
 
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       'La nueva contraseña no puede ser la contraseña inicial.',
+
       'error'
     );
+
 
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Cambiando...',
+
     'Cambiar contraseña'
   );
 
+
   mostrarMensajeRecuperacionPadresPrueba(
+
     'mensajeRestablecerPasswordPadresPrueba',
+
     'Validando el código...',
+
     'info'
   );
+
 
   try {
 
@@ -2154,25 +2658,34 @@ async function restablecerPasswordRecuperacionPadresPrueba(
           nueva
       });
 
+
     if (
       !datos.success
     ) {
 
       mostrarMensajeRecuperacionPadresPrueba(
+
         'mensajeRestablecerPasswordPadresPrueba',
+
         datos.mensaje ||
+
         'No fue posible restablecer la contraseña.',
+
         'error'
       );
 
+
       return;
     }
+
 
     sessionStorage.removeItem(
       CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
 
+
     ocultarSesionPadresPrueba();
+
 
     const campoUID =
 
@@ -2180,17 +2693,23 @@ async function restablecerPasswordRecuperacionPadresPrueba(
         'uidPadresPrueba'
       );
 
+
     if (campoUID) {
 
       campoUID.value =
         uid;
     }
 
+
     mostrarMensajePadresPrueba(
+
       datos.mensaje ||
+
       'Contraseña restablecida correctamente. Ya puedes iniciar sesión.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -2198,19 +2717,29 @@ async function restablecerPasswordRecuperacionPadresPrueba(
       error
     );
 
+
     mostrarMensajeRecuperacionPadresPrueba(
+
       'mensajeRestablecerPasswordPadresPrueba',
+
       error.message ||
+
       'No fue posible conectar con el servidor.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Cambiando...',
+
       'Cambiar contraseña'
     );
   }
@@ -2223,14 +2752,22 @@ function cancelarRecuperacionPadresPrueba() {
     CLAVE_UID_RECUPERACION_PADRES_PRUEBA
   );
 
+
   ocultarSesionPadresPrueba();
 
+
   mostrarMensajePadresPrueba(
+
     '',
+
     'info'
   );
 }
 
+
+// ============================================================
+// NAVEGACIÓN
+// ============================================================
 
 function mostrarModuloPadresPrueba(
   nombre,
@@ -2254,6 +2791,7 @@ function mostrarModuloPadresPrueba(
       }
     );
 
+
   document
     .querySelectorAll(
       '[data-modulo-padres]'
@@ -2269,22 +2807,32 @@ function mostrarModuloPadresPrueba(
           boton.dataset.moduloPadres ===
           nombre;
 
+
         boton.classList.toggle(
+
           'activo',
+
           activo
         );
 
+
         boton.setAttribute(
+
           'aria-current',
+
           activo
+
             ? 'page'
+
             : 'false'
         );
       }
     );
 
+
   MODULO_ACTUAL_PADRES_PRUEBA =
     nombre;
+
 
   if (
     forzar ||
@@ -2294,7 +2842,9 @@ function mostrarModuloPadresPrueba(
   ) {
 
     cargarModuloPadresPrueba(
+
       nombre,
+
       forzar
     );
   }
@@ -2315,6 +2865,7 @@ async function cargarModuloPadresPrueba(
 
     return;
   }
+
 
   const cargadores = {
 
@@ -2340,6 +2891,7 @@ async function cargarModuloPadresPrueba(
       cargarPerfilPadresPrueba
   };
 
+
   if (
     cargadores[nombre]
   ) {
@@ -2348,6 +2900,10 @@ async function cargarModuloPadresPrueba(
   }
 }
 
+
+// ============================================================
+// ASISTENCIA
+// ============================================================
 
 function limpiarAsistenciaPadresPrueba() {
 
@@ -2366,6 +2922,7 @@ function limpiarAsistenciaPadresPrueba() {
       '0'
   };
 
+
   Object
     .entries(
       valores
@@ -2379,14 +2936,17 @@ function limpiarAsistenciaPadresPrueba() {
         const id =
           entrada[0];
 
+
         const valor =
           entrada[1];
+
 
         const elemento =
 
           elementoPadresPrueba(
             id
           );
+
 
         if (elemento) {
 
@@ -2396,15 +2956,23 @@ function limpiarAsistenciaPadresPrueba() {
       }
     );
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajeAsistenciaPadresPrueba',
+
     '',
+
     'info'
   );
 
+
   mostrarFilaMensajePadresPrueba(
+
     'cuerpoTablaAsistenciaPadresPrueba',
+
     4,
+
     'Todavía no se ha consultado la asistencia.'
   );
 }
@@ -2420,25 +2988,33 @@ function mostrarAsistenciaPadresPrueba(
       'cuerpoTablaAsistenciaPadresPrueba'
     );
 
+
   if (!cuerpo) {
 
     return;
   }
+
 
   if (
     !historial.length
   ) {
 
     mostrarFilaMensajePadresPrueba(
+
       'cuerpoTablaAsistenciaPadresPrueba',
+
       4,
+
       'No existen registros de asistencia para mostrar.'
     );
+
 
     return;
   }
 
+
   cuerpo.replaceChildren();
+
 
   historial.forEach(
 
@@ -2452,6 +3028,7 @@ function mostrarAsistenciaPadresPrueba(
           'tr'
         );
 
+
       fila.appendChild(
 
         crearCeldaPadresPrueba(
@@ -2459,7 +3036,9 @@ function mostrarAsistenciaPadresPrueba(
           formatearFechaPadresPrueba(
 
             primerValorPadresPrueba(
+
               registro,
+
               [
                 'fecha',
                 'fechaClave',
@@ -2470,6 +3049,7 @@ function mostrarAsistenciaPadresPrueba(
         )
       );
 
+
       fila.appendChild(
 
         crearCeldaPadresPrueba(
@@ -2477,7 +3057,9 @@ function mostrarAsistenciaPadresPrueba(
           formatearHoraPadresPrueba(
 
             primerValorPadresPrueba(
+
               registro,
+
               [
                 'hora',
                 'HORA'
@@ -2487,12 +3069,15 @@ function mostrarAsistenciaPadresPrueba(
         )
       );
 
+
       fila.appendChild(
 
         crearCeldaPadresPrueba(
 
           primerValorPadresPrueba(
+
             registro,
+
             [
               'estado',
               'estatus',
@@ -2504,12 +3089,15 @@ function mostrarAsistenciaPadresPrueba(
         )
       );
 
+
       fila.appendChild(
 
         crearCeldaPadresPrueba(
 
           primerValorPadresPrueba(
+
             registro,
+
             [
               'puntualidad',
               'PUNTUALIDAD'
@@ -2517,6 +3105,7 @@ function mostrarAsistenciaPadresPrueba(
           )
         )
       );
+
 
       cuerpo.appendChild(
         fila
@@ -2534,31 +3123,44 @@ async function cargarAsistenciaPadresPrueba() {
       CLAVE_TOKEN_PADRES_PRUEBA
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnActualizarAsistenciaPadresPrueba'
     );
 
+
   if (!token) {
 
     finalizarSesionInvalidaPadresPrueba();
 
+
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Consultando...',
+
     'Actualizar'
   );
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajeAsistenciaPadresPrueba',
+
     'Consultando la asistencia...',
+
     'info'
   );
+
 
   try {
 
@@ -2572,6 +3174,7 @@ async function cargarAsistenciaPadresPrueba() {
         token:
           token
       });
+
 
     if (
       !datos.success
@@ -2587,19 +3190,26 @@ async function cargarAsistenciaPadresPrueba() {
           datos.mensaje
         );
 
+
         return;
       }
 
+
       throw new Error(
+
         datos.mensaje ||
+
         'No fue posible consultar la asistencia.'
       );
     }
 
+
     const historial =
 
       primerArregloPadresPrueba(
+
         datos,
+
         [
           'historial',
           'asistenciasDetalle',
@@ -2608,6 +3218,7 @@ async function cargarAsistenciaPadresPrueba() {
         ]
       );
 
+
     const resumen = {
 
       totalAsistenciasPadresPrueba:
@@ -2615,29 +3226,37 @@ async function cargarAsistenciaPadresPrueba() {
         numeroPadresPrueba(
 
           primerValorPadresPrueba(
+
             datos,
+
             [
               'asistencias',
               'totalAsistencias'
             ],
+
             0
           )
         ),
+
 
       totalFaltasPadresPrueba:
 
         numeroPadresPrueba(
 
           primerValorPadresPrueba(
+
             datos,
+
             [
               'faltas',
               'inasistencias',
               'totalFaltas'
             ],
+
             0
           )
         ),
+
 
       porcentajeAsistenciaPadresPrueba:
 
@@ -2645,11 +3264,14 @@ async function cargarAsistenciaPadresPrueba() {
           numeroPadresPrueba(
 
             primerValorPadresPrueba(
+
               datos,
+
               [
                 'porcentaje',
                 'porcentajeAsistencia'
               ],
+
               0
             )
           ) +
@@ -2657,9 +3279,12 @@ async function cargarAsistenciaPadresPrueba() {
           '%'
         ),
 
+
       totalRegistrosAsistenciaPadresPrueba:
+
         historial.length
     };
+
 
     Object
       .entries(
@@ -2674,14 +3299,17 @@ async function cargarAsistenciaPadresPrueba() {
           const id =
             entrada[0];
 
+
           const valor =
             entrada[1];
+
 
           const elemento =
 
             elementoPadresPrueba(
               id
             );
+
 
           if (elemento) {
 
@@ -2691,21 +3319,30 @@ async function cargarAsistenciaPadresPrueba() {
         }
       );
 
+
     mostrarAsistenciaPadresPrueba(
       historial
     );
+
 
     MODULOS_CARGADOS_PADRES_PRUEBA.add(
       'asistencia'
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajeAsistenciaPadresPrueba',
+
       historial.length
+
         ? 'Información de asistencia actualizada correctamente.'
+
         : 'Todavía no existen registros de asistencia.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -2713,24 +3350,38 @@ async function cargarAsistenciaPadresPrueba() {
       error
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajeAsistenciaPadresPrueba',
+
       error.message ||
+
       'No fue posible consultar la asistencia.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Consultando...',
+
       'Actualizar'
     );
   }
 }
 
+
+// ============================================================
+// TABLAS DE REPORTES, JUSTIFICANTES, CITATORIOS Y CALIFICACIONES
+// ============================================================
 
 const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
 
@@ -2767,6 +3418,7 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
     singular:
       'reporte',
 
+
     fila: function (
       item
     ) {
@@ -2776,7 +3428,9 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
         formatearFechaPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'fecha',
               'fechaReporte',
@@ -2785,10 +3439,13 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         formatearHoraPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'hora',
               'horaReporte',
@@ -2797,8 +3454,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'tipo',
             'tipoReporte',
@@ -2806,8 +3466,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'docente',
             'registradoPor',
@@ -2816,8 +3479,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'descripcion',
             'motivo',
@@ -2826,8 +3492,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'accionTomada',
             'accion',
@@ -2836,8 +3505,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'estatus',
             'estado',
@@ -2882,6 +3554,7 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
     singular:
       'justificante',
 
+
     fila: function (
       item
     ) {
@@ -2889,7 +3562,9 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
       let tipo =
 
         primerValorPadresPrueba(
+
           item,
+
           [
             'tipo',
             'tipoJustificante',
@@ -2897,16 +3572,20 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         );
 
+
       let solicita =
 
         primerValorPadresPrueba(
+
           item,
+
           [
             'solicita',
             'solicitante',
             'SOLICITA'
           ]
         );
+
 
       if (
         String(tipo).toUpperCase() ===
@@ -2919,6 +3598,7 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           item.tipoOtro;
       }
 
+
       if (
         String(solicita).toUpperCase() ===
           'OTRO' &&
@@ -2930,12 +3610,15 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           item.solicitaOtro;
       }
 
+
       return [
 
         formatearFechaPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'fecha',
               'fechaJustificante',
@@ -2944,16 +3627,21 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         tipo,
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'motivo',
             'descripcion',
             'MOTIVO'
           ]
         ),
+
 
         solicita
       ];
@@ -2994,6 +3682,7 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
     singular:
       'citatorio',
 
+
     fila: function (
       item
     ) {
@@ -3003,7 +3692,9 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
         formatearFechaPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'fechaCitatorio',
               'fecha',
@@ -3012,10 +3703,13 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         formatearHoraPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'horaCitatorio',
               'hora',
@@ -3024,8 +3718,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'motivo',
             'descripcion',
@@ -3033,8 +3730,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'responsable',
             'registradoPor',
@@ -3042,8 +3742,11 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'seguimiento',
             'estatus',
@@ -3089,6 +3792,7 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
     singular:
       'materia',
 
+
     fila: function (
       item
     ) {
@@ -3096,7 +3800,9 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
       return [
 
         primerValorPadresPrueba(
+
           item,
+
           [
             'materia',
             'Materia',
@@ -3104,10 +3810,13 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           ]
         ),
 
+
         formatearCalificacionPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'p1',
               'periodo1',
@@ -3116,10 +3825,13 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         formatearCalificacionPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'p2',
               'periodo2',
@@ -3128,10 +3840,13 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         formatearCalificacionPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'p3',
               'periodo3',
@@ -3140,10 +3855,13 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         formatearCalificacionPadresPrueba(
 
           primerValorPadresPrueba(
+
             item,
+
             [
               'promedio',
               'promedioFinal'
@@ -3151,13 +3869,17 @@ const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
           )
         ),
 
+
         primerValorPadresPrueba(
+
           item,
+
           [
             'situacion',
             'estado',
             'estatus'
           ],
+
           'Sin calificar'
         )
       ];
@@ -3177,25 +3899,33 @@ function mostrarTablaModuloPadresPrueba(
       configuracion.cuerpo
     );
 
+
   if (!cuerpo) {
 
     return;
   }
+
 
   if (
     !registros.length
   ) {
 
     mostrarFilaMensajePadresPrueba(
+
       configuracion.cuerpo,
+
       configuracion.columnas,
+
       configuracion.vacio
     );
+
 
     return;
   }
 
+
   cuerpo.replaceChildren();
+
 
   registros.forEach(
 
@@ -3208,6 +3938,7 @@ function mostrarTablaModuloPadresPrueba(
         document.createElement(
           'tr'
         );
+
 
       configuracion
         .fila(
@@ -3223,6 +3954,7 @@ function mostrarTablaModuloPadresPrueba(
             let clase =
               '';
 
+
             if (
               configuracion ===
               CONFIGURACION_TABLAS_PADRES_PRUEBA.calificaciones
@@ -3236,6 +3968,7 @@ function mostrarTablaModuloPadresPrueba(
                   'celda-promedio-padres-prueba';
               }
 
+
               if (
                 indice === 5
               ) {
@@ -3245,15 +3978,19 @@ function mostrarTablaModuloPadresPrueba(
               }
             }
 
+
             fila.appendChild(
 
               crearCeldaPadresPrueba(
+
                 valor,
+
                 clase
               )
             );
           }
         );
+
 
       cuerpo.appendChild(
         fila
@@ -3273,11 +4010,13 @@ async function cargarTablaModuloPadresPrueba(
       nombre
     ];
 
+
   const token =
 
     sessionStorage.getItem(
       CLAVE_TOKEN_PADRES_PRUEBA
     );
+
 
   const boton =
 
@@ -3285,25 +4024,37 @@ async function cargarTablaModuloPadresPrueba(
       configuracion.boton
     );
 
+
   if (!token) {
 
     finalizarSesionInvalidaPadresPrueba();
 
+
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Consultando...',
+
     'Actualizar'
   );
 
+
   mostrarMensajeModuloPadresPrueba(
+
     configuracion.mensaje,
+
     configuracion.consultando,
+
     'info'
   );
+
 
   try {
 
@@ -3317,6 +4068,7 @@ async function cargarTablaModuloPadresPrueba(
         token:
           token
       });
+
 
     if (
       !datos.success
@@ -3332,11 +4084,15 @@ async function cargarTablaModuloPadresPrueba(
           datos.mensaje
         );
 
+
         return;
       }
 
+
       throw new Error(
+
         datos.mensaje ||
+
         (
           'No fue posible consultar ' +
           nombre +
@@ -3345,25 +4101,36 @@ async function cargarTablaModuloPadresPrueba(
       );
     }
 
+
     const registros =
 
       primerArregloPadresPrueba(
+
         datos,
+
         configuracion.claves
       );
 
+
     mostrarTablaModuloPadresPrueba(
+
       configuracion,
+
       registros
     );
+
 
     MODULOS_CARGADOS_PADRES_PRUEBA.add(
       nombre
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       configuracion.mensaje,
+
       registros.length
+
         ? (
           'Se encontraron ' +
           registros.length +
@@ -3371,9 +4138,12 @@ async function cargarTablaModuloPadresPrueba(
           configuracion.singular +
           '(s).'
         )
+
         : configuracion.vacio,
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -3381,23 +4151,33 @@ async function cargarTablaModuloPadresPrueba(
       error
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       configuracion.mensaje,
+
       error.message ||
+
       (
         'No fue posible consultar ' +
         nombre +
         '.'
       ),
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Consultando...',
+
       'Actualizar'
     );
   }
@@ -3436,6 +4216,10 @@ function cargarCalificacionesPadresPrueba() {
 }
 
 
+// ============================================================
+// RIESGO ESCOLAR
+// ============================================================
+
 function limpiarRiesgoPadresPrueba() {
 
   const tarjeta =
@@ -3444,11 +4228,13 @@ function limpiarRiesgoPadresPrueba() {
       'tarjetaRiesgoPadresPrueba'
     );
 
+
   const nivel =
 
     elementoPadresPrueba(
       'nivelRiesgoPadresPrueba'
     );
+
 
   const puntaje =
 
@@ -3456,17 +4242,21 @@ function limpiarRiesgoPadresPrueba() {
       'puntajeRiesgoPadresPrueba'
     );
 
+
   const lista =
 
     elementoPadresPrueba(
       'listaMotivosRiesgoPadresPrueba'
     );
 
+
   if (tarjeta) {
 
     tarjeta.className =
+
       'tarjeta-riesgo-padres-prueba riesgo-sin-datos';
   }
+
 
   if (nivel) {
 
@@ -3474,15 +4264,18 @@ function limpiarRiesgoPadresPrueba() {
       'Sin consultar';
   }
 
+
   if (puntaje) {
 
     puntaje.textContent =
       '0';
   }
 
+
   if (lista) {
 
     lista.replaceChildren();
+
 
     const item =
 
@@ -3490,17 +4283,24 @@ function limpiarRiesgoPadresPrueba() {
         'li'
       );
 
+
     item.textContent =
+
       'Todavía no se ha consultado el riesgo escolar.';
+
 
     lista.appendChild(
       item
     );
   }
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajeRiesgoPadresPrueba',
+
     '',
+
     'info'
   );
 }
@@ -3516,11 +4316,13 @@ function mostrarRiesgoPadresPrueba(
 
     respuesta;
 
+
   const tarjeta =
 
     elementoPadresPrueba(
       'tarjetaRiesgoPadresPrueba'
     );
+
 
   const nivelElemento =
 
@@ -3528,11 +4330,13 @@ function mostrarRiesgoPadresPrueba(
       'nivelRiesgoPadresPrueba'
     );
 
+
   const puntajeElemento =
 
     elementoPadresPrueba(
       'puntajeRiesgoPadresPrueba'
     );
+
 
   const lista =
 
@@ -3540,19 +4344,24 @@ function mostrarRiesgoPadresPrueba(
       'listaMotivosRiesgoPadresPrueba'
     );
 
+
   const nivel =
 
     String(
 
       primerValorPadresPrueba(
+
         datos,
+
         [
           'nivel',
           'nivelRiesgo',
           'riesgo'
         ],
+
         'SIN RIESGO'
       )
+
     )
       .trim()
       .toUpperCase()
@@ -3561,24 +4370,31 @@ function mostrarRiesgoPadresPrueba(
         ' '
       );
 
+
   const puntaje =
 
     numeroPadresPrueba(
 
       primerValorPadresPrueba(
+
         datos,
+
         [
           'puntaje',
           'puntos'
         ],
+
         0
       )
     );
 
+
   const motivos =
 
     primerArregloPadresPrueba(
+
       datos,
+
       [
         'motivos',
         'factores',
@@ -3586,11 +4402,13 @@ function mostrarRiesgoPadresPrueba(
       ]
     );
 
+
   if (nivelElemento) {
 
     nivelElemento.textContent =
       nivel;
   }
+
 
   if (puntajeElemento) {
 
@@ -3598,10 +4416,12 @@ function mostrarRiesgoPadresPrueba(
       String(puntaje);
   }
 
+
   if (tarjeta) {
 
     tarjeta.className =
       'tarjeta-riesgo-padres-prueba';
+
 
     tarjeta.classList.add(
 
@@ -3627,9 +4447,11 @@ function mostrarRiesgoPadresPrueba(
     );
   }
 
+
   if (lista) {
 
     lista.replaceChildren();
+
 
     const factores =
 
@@ -3648,6 +4470,7 @@ function mostrarRiesgoPadresPrueba(
             : 'No se recibieron factores detallados.'
         ];
 
+
     factores.forEach(
 
       function (
@@ -3660,6 +4483,7 @@ function mostrarRiesgoPadresPrueba(
             'li'
           );
 
+
         item.textContent =
 
           typeof motivo === 'object'
@@ -3667,7 +4491,9 @@ function mostrarRiesgoPadresPrueba(
             ? textoPadresPrueba(
 
               primerValorPadresPrueba(
+
                 motivo,
+
                 [
                   'motivo',
                   'descripcion',
@@ -3679,6 +4505,7 @@ function mostrarRiesgoPadresPrueba(
             : textoPadresPrueba(
               motivo
             );
+
 
         lista.appendChild(
           item
@@ -3697,31 +4524,44 @@ async function cargarRiesgoPadresPrueba() {
       CLAVE_TOKEN_PADRES_PRUEBA
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnActualizarRiesgoPadresPrueba'
     );
 
+
   if (!token) {
 
     finalizarSesionInvalidaPadresPrueba();
 
+
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Consultando...',
+
     'Actualizar'
   );
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajeRiesgoPadresPrueba',
+
     'Calculando el indicador de riesgo...',
+
     'info'
   );
+
 
   try {
 
@@ -3735,6 +4575,7 @@ async function cargarRiesgoPadresPrueba() {
         token:
           token
       });
+
 
     if (
       !datos.success
@@ -3750,28 +4591,39 @@ async function cargarRiesgoPadresPrueba() {
           datos.mensaje
         );
 
+
         return;
       }
 
+
       throw new Error(
+
         datos.mensaje ||
+
         'No fue posible consultar el riesgo.'
       );
     }
+
 
     mostrarRiesgoPadresPrueba(
       datos
     );
 
+
     MODULOS_CARGADOS_PADRES_PRUEBA.add(
       'riesgo'
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajeRiesgoPadresPrueba',
+
       'Indicador de riesgo actualizado correctamente.',
+
       'exito'
     );
+
 
   } catch (error) {
 
@@ -3779,24 +4631,43 @@ async function cargarRiesgoPadresPrueba() {
       error
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajeRiesgoPadresPrueba',
+
       error.message ||
+
       'No fue posible consultar el riesgo escolar.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Consultando...',
+
       'Actualizar'
     );
   }
 }
 
+
+// ============================================================
+// PERFIL DEL TUTOR
+// ============================================================
+
+
+// ============================================================
+// NORMALIZAR LA RESPUESTA DEL PERFIL
+// ============================================================
 
 function normalizarPerfilPadresPrueba(
   respuesta
@@ -3811,6 +4682,7 @@ function normalizarPerfilPadresPrueba(
 
       : respuesta || {};
 
+
   const alumnoObjeto =
 
     perfil.alumno &&
@@ -3820,6 +4692,7 @@ function normalizarPerfilPadresPrueba(
 
       : {};
 
+
   const tutorObjeto =
 
     perfil.tutor &&
@@ -3828,6 +4701,7 @@ function normalizarPerfilPadresPrueba(
       ? perfil.tutor
 
       : {};
+
 
   const nombreAlumno =
 
@@ -3844,15 +4718,19 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'nombreAlumno',
           'nombre',
           'ALUMNO'
         ],
+
         ''
       )
     );
+
 
   const grado =
 
@@ -3866,14 +4744,18 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'grado',
           'GRADO'
         ],
+
         ''
       )
     );
+
 
   const grupo =
 
@@ -3887,14 +4769,18 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'grupo',
           'GRUPO'
         ],
+
         ''
       )
     );
+
 
   const nombreTutor =
 
@@ -3910,14 +4796,18 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'nombreTutor',
           'NOMBRE_TUTOR'
         ],
+
         ''
       )
     );
+
 
   const telefonoTutor =
 
@@ -3932,15 +4822,19 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'telefonoTutor',
           'telefono',
           'TELEFONO_TUTOR'
         ],
+
         ''
       )
     );
+
 
   const correoTutor =
 
@@ -3955,15 +4849,19 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'correoTutor',
           'correo',
           'CORREO_TUTOR'
         ],
+
         ''
       )
     );
+
 
   const autorizaWhatsApp =
 
@@ -3977,14 +4875,18 @@ function normalizarPerfilPadresPrueba(
       ],
 
       primerValorPadresPrueba(
+
         perfil,
+
         [
           'autorizaWhatsApp',
           'AUTORIZA_WHATSAPP'
         ],
+
         'NO'
       )
     );
+
 
   return {
 
@@ -4033,6 +4935,10 @@ function normalizarPerfilPadresPrueba(
 }
 
 
+// ============================================================
+// LIMPIAR PERFIL
+// ============================================================
+
 function limpiarPerfilPadresPrueba() {
 
   const textos = [
@@ -4043,6 +4949,7 @@ function limpiarPerfilPadresPrueba() {
 
     'perfilTutorPadresPrueba'
   ];
+
 
   textos.forEach(
 
@@ -4056,6 +4963,7 @@ function limpiarPerfilPadresPrueba() {
           id
         );
 
+
       if (elemento) {
 
         elemento.textContent =
@@ -4063,6 +4971,7 @@ function limpiarPerfilPadresPrueba() {
       }
     }
   );
+
 
   const campos = [
 
@@ -4072,6 +4981,7 @@ function limpiarPerfilPadresPrueba() {
 
     'passwordActualPerfilPadresPrueba'
   ];
+
 
   campos.forEach(
 
@@ -4085,6 +4995,7 @@ function limpiarPerfilPadresPrueba() {
           id
         );
 
+
       if (campo) {
 
         campo.value =
@@ -4093,11 +5004,13 @@ function limpiarPerfilPadresPrueba() {
     }
   );
 
+
   const autorizaWhatsApp =
 
     elementoPadresPrueba(
       'autorizaWhatsAppPadresPrueba'
     );
+
 
   if (autorizaWhatsApp) {
 
@@ -4105,13 +5018,21 @@ function limpiarPerfilPadresPrueba() {
       false;
   }
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajePerfilPadresPrueba',
+
     '',
+
     'info'
   );
 }
 
+
+// ============================================================
+// MOSTRAR DATOS DEL PERFIL
+// ============================================================
 
 function mostrarPerfilPadresPrueba(
   respuesta
@@ -4123,11 +5044,13 @@ function mostrarPerfilPadresPrueba(
       respuesta
     );
 
+
   const alumno =
 
     elementoPadresPrueba(
       'perfilAlumnoPadresPrueba'
     );
+
 
   const gradoGrupo =
 
@@ -4135,11 +5058,13 @@ function mostrarPerfilPadresPrueba(
       'perfilGrupoPadresPrueba'
     );
 
+
   const tutor =
 
     elementoPadresPrueba(
       'perfilTutorPadresPrueba'
     );
+
 
   const telefono =
 
@@ -4147,11 +5072,13 @@ function mostrarPerfilPadresPrueba(
       'telefonoTutorPadresPrueba'
     );
 
+
   const correo =
 
     elementoPadresPrueba(
       'correoTutorPadresPrueba'
     );
+
 
   const autorizaWhatsApp =
 
@@ -4159,11 +5086,13 @@ function mostrarPerfilPadresPrueba(
       'autorizaWhatsAppPadresPrueba'
     );
 
+
   if (alumno) {
 
     alumno.textContent =
       perfil.nombreAlumno;
   }
+
 
   if (gradoGrupo) {
 
@@ -4180,9 +5109,12 @@ function mostrarPerfilPadresPrueba(
           ' · '
         );
 
+
     gradoGrupo.textContent =
+
       textoGrupo || '—';
   }
+
 
   if (tutor) {
 
@@ -4190,17 +5122,20 @@ function mostrarPerfilPadresPrueba(
       perfil.nombreTutor;
   }
 
+
   if (telefono) {
 
     telefono.value =
       perfil.telefonoTutor;
   }
 
+
   if (correo) {
 
     correo.value =
       perfil.correoTutor;
   }
+
 
   if (autorizaWhatsApp) {
 
@@ -4210,6 +5145,10 @@ function mostrarPerfilPadresPrueba(
 }
 
 
+// ============================================================
+// CONSULTAR PERFIL
+// ============================================================
+
 async function cargarPerfilPadresPrueba() {
 
   const token =
@@ -4218,11 +5157,13 @@ async function cargarPerfilPadresPrueba() {
       CLAVE_TOKEN_PADRES_PRUEBA
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnActualizarPerfilPadresPrueba'
     );
+
 
   if (!token) {
 
@@ -4231,18 +5172,28 @@ async function cargarPerfilPadresPrueba() {
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Consultando...',
+
     'Actualizar datos'
   );
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajePerfilPadresPrueba',
+
     'Consultando los datos del tutor...',
+
     'info'
   );
+
 
   try {
 
@@ -4256,6 +5207,7 @@ async function cargarPerfilPadresPrueba() {
         token:
           token
       });
+
 
     if (
       !datos.success
@@ -4274,25 +5226,34 @@ async function cargarPerfilPadresPrueba() {
         return;
       }
 
+
       throw new Error(
+
         datos.mensaje ||
         'No fue posible consultar el perfil.'
       );
     }
 
+
     mostrarPerfilPadresPrueba(
       datos
     );
+
 
     MODULOS_CARGADOS_PADRES_PRUEBA.add(
       'perfil'
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajePerfilPadresPrueba',
-      'Datos del tutor actualizados correctamente.',
-      'exito'
+
+      '',
+
+      'info'
     );
+
 
   } catch (error) {
 
@@ -4300,24 +5261,37 @@ async function cargarPerfilPadresPrueba() {
       error
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajePerfilPadresPrueba',
+
       error.message ||
       'No fue posible consultar el perfil.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Consultando...',
+
       'Actualizar datos'
     );
   }
 }
 
+
+// ============================================================
+// ACTUALIZAR DATOS DEL PERFIL
+// ============================================================
 
 async function actualizarPerfilPadresPrueba(
   evento
@@ -4325,11 +5299,13 @@ async function actualizarPerfilPadresPrueba(
 
   evento.preventDefault();
 
+
   const token =
 
     sessionStorage.getItem(
       CLAVE_TOKEN_PADRES_PRUEBA
     );
+
 
   const telefono =
 
@@ -4341,6 +5317,7 @@ async function actualizarPerfilPadresPrueba(
 
     ).trim();
 
+
   const correo =
 
     String(
@@ -4351,6 +5328,7 @@ async function actualizarPerfilPadresPrueba(
 
     ).trim();
 
+
   const autorizaWhatsApp =
 
     elementoPadresPrueba(
@@ -4359,6 +5337,7 @@ async function actualizarPerfilPadresPrueba(
 
       ? 'SI'
       : 'NO';
+
 
   const passwordActual =
 
@@ -4369,11 +5348,13 @@ async function actualizarPerfilPadresPrueba(
       )?.value || ''
     );
 
+
   const boton =
 
     elementoPadresPrueba(
       'btnGuardarPerfilPadresPrueba'
     );
+
 
   if (!token) {
 
@@ -4382,16 +5363,21 @@ async function actualizarPerfilPadresPrueba(
     return;
   }
 
+
   if (!passwordActual) {
 
     mostrarMensajeModuloPadresPrueba(
+
       'mensajePerfilPadresPrueba',
+
       'Escribe la contraseña actual para autorizar el cambio.',
+
       'info'
     );
 
     return;
   }
+
 
   if (
     correo &&
@@ -4401,26 +5387,39 @@ async function actualizarPerfilPadresPrueba(
   ) {
 
     mostrarMensajeModuloPadresPrueba(
+
       'mensajePerfilPadresPrueba',
+
       'El correo electrónico no tiene un formato válido.',
+
       'error'
     );
 
     return;
   }
 
+
   cambiarEstadoBotonPadresPrueba(
+
     boton,
+
     true,
+
     'Guardando...',
+
     'Guardar datos de contacto'
   );
 
+
   mostrarMensajeModuloPadresPrueba(
+
     'mensajePerfilPadresPrueba',
+
     'Guardando los datos de contacto...',
+
     'info'
   );
+
 
   try {
 
@@ -4453,6 +5452,7 @@ async function actualizarPerfilPadresPrueba(
           passwordActual
       });
 
+
     if (
       !datos.success
     ) {
@@ -4470,15 +5470,20 @@ async function actualizarPerfilPadresPrueba(
         return;
       }
 
+
       mostrarMensajeModuloPadresPrueba(
+
         'mensajePerfilPadresPrueba',
+
         datos.mensaje ||
         'No fue posible actualizar los datos.',
+
         'error'
       );
 
       return;
     }
+
 
     const campoPassword =
 
@@ -4486,24 +5491,68 @@ async function actualizarPerfilPadresPrueba(
         'passwordActualPerfilPadresPrueba'
       );
 
+
     if (campoPassword) {
 
       campoPassword.value =
         '';
     }
 
+
     MODULOS_CARGADOS_PADRES_PRUEBA.delete(
       'perfil'
     );
 
+
     await cargarPerfilPadresPrueba();
 
-    mostrarMensajeModuloPadresPrueba(
-      'mensajePerfilPadresPrueba',
+
+    const mensajeExitoPerfil =
+
       datos.mensaje ||
-      'Los datos de contacto se actualizaron correctamente.',
+      'Los datos de contacto se actualizaron correctamente.';
+
+
+    mostrarMensajeModuloPadresPrueba(
+
+      'mensajePerfilPadresPrueba',
+
+      mensajeExitoPerfil,
+
       'exito'
     );
+
+
+    window.setTimeout(
+
+      function () {
+
+        const mensajePerfil =
+
+          elementoPadresPrueba(
+            'mensajePerfilPadresPrueba'
+          );
+
+
+        if (
+          mensajePerfil &&
+          mensajePerfil.textContent === mensajeExitoPerfil
+        ) {
+
+          mostrarMensajeModuloPadresPrueba(
+
+            'mensajePerfilPadresPrueba',
+
+            '',
+
+            'info'
+          );
+        }
+      },
+
+      4000
+    );
+
 
   } catch (error) {
 
@@ -4511,24 +5560,36 @@ async function actualizarPerfilPadresPrueba(
       error
     );
 
+
     mostrarMensajeModuloPadresPrueba(
+
       'mensajePerfilPadresPrueba',
+
       error.message ||
       'No fue posible actualizar los datos.',
+
       'error'
     );
+
 
   } finally {
 
     cambiarEstadoBotonPadresPrueba(
+
       boton,
+
       false,
+
       'Guardando...',
+
       'Guardar datos de contacto'
     );
   }
 }
 
+// ============================================================
+// EVENTOS
+// ============================================================
 
 document.addEventListener(
 
@@ -4599,6 +5660,7 @@ document.addEventListener(
       ]
     ];
 
+
     eventos.forEach(
 
       function (
@@ -4608,11 +5670,14 @@ document.addEventListener(
         const id =
           configuracion[0];
 
+
         const tipo =
           configuracion[1];
 
+
         const funcion =
           configuracion[2];
+
 
         const elemento =
 
@@ -4620,15 +5685,19 @@ document.addEventListener(
             id
           );
 
+
         if (elemento) {
 
           elemento.addEventListener(
+
             tipo,
+
             funcion
           );
         }
       }
     );
+
 
     document
       .querySelectorAll(
@@ -4647,12 +5716,14 @@ document.addEventListener(
             function () {
 
               mostrarModuloPadresPrueba(
+
                 boton.dataset.moduloPadres
               );
             }
           );
         }
       );
+
 
     const actualizaciones = [
 
@@ -4692,6 +5763,7 @@ document.addEventListener(
       ]
     ];
 
+
     actualizaciones.forEach(
 
       function (
@@ -4701,8 +5773,10 @@ document.addEventListener(
         const id =
           configuracion[0];
 
+
         const modulo =
           configuracion[1];
+
 
         const boton =
 
@@ -4710,10 +5784,12 @@ document.addEventListener(
             id
           );
 
+
         if (!boton) {
 
           return;
         }
+
 
         boton.addEventListener(
 
@@ -4725,14 +5801,18 @@ document.addEventListener(
               modulo
             );
 
+
             cargarModuloPadresPrueba(
+
               modulo,
+
               true
             );
           }
         );
       }
     );
+
 
     restaurarSesionPadresPrueba();
   }
