@@ -1,5 +1,5 @@
 const API_PADRES =
-  'https://script.google.com/macros/s/AKfycbwhEotOOOxDEHfVZNZEv3URseUjm21ynuvYiQELe9wM7QETNZZuMrYEni6bgDtSVeVw/exec';
+  'https://script.google.com/macros/s/AKfycbzot5BIsffX7iD2eVmjHpwB8Tdm3RTbJ8fY54AOsvDWbpOBCE7cooahxbHplrbX2AiuWA/exec';
 
 const CLAVE_TOKEN_PADRES_PRUEBA =
   'CEGRAC_TOKEN_PADRES_PRUEBA';
