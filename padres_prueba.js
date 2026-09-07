@@ -1,87 +1,52 @@
-// ============================================================
-// PORTAL DE PADRES CEGRAC V3
-// FRONTEND FINAL
-//
-// API:
-// Portal_Padres_CEGRAC_API v3.0.0
-//
-// Arquitectura:
-// LOGIN
-//   ↓
-// TOKEN
-//   ↓
-// EXPEDIENTE COMPLETO
-//   ↓
-// TODOS LOS MÓDULOS
-//
-// No se realizan consultas independientes para cada módulo.
-// ============================================================
-
-
-// ============================================================
-// CONFIGURACIÓN
-// ============================================================
-
 const API_PADRES =
-  'https://script.google.com/macros/s/AKfycbx19ZnCy8cW3vij13WhUILuL8RW1vPy9Yar0WanzRAJimWM1E9CIj3NzQb1e5RAmKK4Vg/exec';
+  'https://script.google.com/macros/s/AKfycbwhEotOOOxDEHfVZNZEv3URseUjm21ynuvYiQELe9wM7QETNZZuMrYEni6bgDtSVeVw/exec';
 
-const CLAVE_TOKEN_PADRES =
-  'CEGRAC_TOKEN_PADRES_V3';
+const CLAVE_TOKEN_PADRES_PRUEBA =
+  'CEGRAC_TOKEN_PADRES_PRUEBA';
 
-const CLAVE_UID_RECUPERACION =
-  'CEGRAC_UID_RECUPERACION_PADRES_V3';
+const CLAVE_UID_RECUPERACION_PADRES_PRUEBA =
+  'CEGRAC_UID_RECUPERACION_PADRES_PRUEBA';
 
+const MODULOS_CARGADOS_PADRES_PRUEBA =
+  new Set();
 
-// ============================================================
-// ESTADO LOCAL DEL PORTAL
-// ============================================================
-
-let EXPEDIENTE_PADRES = null;
-
-let MODULO_ACTUAL_PADRES =
-  'resumen';
-
-let EXPEDIENTE_CARGANDO =
-  false;
+let MODULO_ACTUAL_PADRES_PRUEBA =
+  'asistencia';
 
 
-// ============================================================
-// UTILIDADES GENERALES
-// ============================================================
+function elementoPadresPrueba(id) {
 
-function elemento(id) {
   return document.getElementById(id);
 }
 
 
-function texto(valor, reemplazo = '—') {
+function textoPadresPrueba(
+  valor,
+  reemplazo = '—'
+) {
 
-  if (
-    valor === undefined ||
-    valor === null
-  ) {
-    return reemplazo;
-  }
+  const texto =
+    String(valor ?? '').trim();
 
-  const resultado =
-    String(valor).trim();
-
-  return resultado || reemplazo;
+  return texto || reemplazo;
 }
 
 
-function numero(valor, reemplazo = 0) {
+function numeroPadresPrueba(
+  valor,
+  reemplazo = 0
+) {
 
-  const resultado =
+  const numero =
     Number(valor);
 
-  return Number.isFinite(resultado)
-    ? resultado
+  return Number.isFinite(numero)
+    ? numero
     : reemplazo;
 }
 
 
-function primerValor(
+function primerValorPadresPrueba(
   objeto,
   claves,
   reemplazo = ''
@@ -91,6 +56,7 @@ function primerValor(
     !objeto ||
     typeof objeto !== 'object'
   ) {
+
     return reemplazo;
   }
 
@@ -115,7 +81,7 @@ function primerValor(
 }
 
 
-function primerArreglo(
+function primerArregloPadresPrueba(
   objeto,
   claves
 ) {
@@ -124,6 +90,7 @@ function primerArreglo(
     !objeto ||
     typeof objeto !== 'object'
   ) {
+
     return [];
   }
 
@@ -145,18 +112,141 @@ function primerArreglo(
 }
 
 
-function formatearFecha(valor) {
+function mostrarMensajeElementoPadresPrueba(
+  id,
+  mensaje,
+  tipo = 'info'
+) {
 
-  const valorTexto =
+  const elemento =
+    elementoPadresPrueba(id);
+
+  if (!elemento) {
+
+    return;
+  }
+
+  elemento.textContent =
+    mensaje || '';
+
+  elemento.classList.remove(
+    'mensaje-exito-padres-prueba',
+    'mensaje-error-padres-prueba',
+    'mensaje-info-padres-prueba'
+  );
+
+  const clase =
+
+    tipo === 'exito'
+
+      ? 'mensaje-exito-padres-prueba'
+
+      : tipo === 'error'
+
+        ? 'mensaje-error-padres-prueba'
+
+        : 'mensaje-info-padres-prueba';
+
+  elemento.classList.add(
+    clase
+  );
+}
+
+
+function mostrarMensajePadresPrueba(
+  mensaje,
+  tipo = 'info'
+) {
+
+  mostrarMensajeElementoPadresPrueba(
+    'mensajePadresPrueba',
+    mensaje,
+    tipo
+  );
+}
+
+
+function mostrarMensajeCambioPasswordPadresPrueba(
+  mensaje,
+  tipo = 'info'
+) {
+
+  mostrarMensajeElementoPadresPrueba(
+    'mensajeCambioPasswordPadresPrueba',
+    mensaje,
+    tipo
+  );
+}
+
+
+function mostrarMensajeRecuperacionPadresPrueba(
+  id,
+  mensaje,
+  tipo = 'info'
+) {
+
+  mostrarMensajeElementoPadresPrueba(
+    id,
+    mensaje,
+    tipo
+  );
+}
+
+
+function mostrarMensajeModuloPadresPrueba(
+  id,
+  mensaje,
+  tipo = 'info'
+) {
+
+  mostrarMensajeElementoPadresPrueba(
+    id,
+    mensaje,
+    tipo
+  );
+}
+
+
+function cambiarEstadoBotonPadresPrueba(
+  boton,
+  cargando,
+  textoCargando,
+  textoNormal
+) {
+
+  if (!boton) {
+
+    return;
+  }
+
+  boton.disabled =
+    Boolean(cargando);
+
+  boton.textContent =
+
+    cargando
+
+      ? textoCargando
+
+      : textoNormal;
+}
+
+
+function formatearFechaPadresPrueba(
+  valor
+) {
+
+  const texto =
     String(valor ?? '').trim();
 
-  if (!valorTexto) {
+  if (!texto) {
+
     return '—';
   }
 
-
   const iso =
-    valorTexto.match(
+
+    texto.match(
       /^(\d{4})-(\d{2})-(\d{2})/
     );
 
@@ -171,26 +261,36 @@ function formatearFecha(valor) {
     );
   }
 
+  const latina =
 
-  const mexicana =
-    valorTexto.match(
+    texto.match(
       /^(\d{1,2})\/(\d{1,2})\/(\d{4})/
     );
 
-  if (mexicana) {
+  if (latina) {
 
     return (
-      mexicana[1].padStart(2, '0') +
+
+      latina[1].padStart(
+        2,
+        '0'
+      ) +
+
       '/' +
-      mexicana[2].padStart(2, '0') +
+
+      latina[2].padStart(
+        2,
+        '0'
+      ) +
+
       '/' +
-      mexicana[3]
+
+      latina[3]
     );
   }
 
-
   const fecha =
-    new Date(valorTexto);
+    new Date(texto);
 
   if (
     !Number.isNaN(
@@ -201,168 +301,143 @@ function formatearFecha(valor) {
     return new Intl.DateTimeFormat(
       'es-MX',
       {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
+        day:
+          '2-digit',
+
+        month:
+          '2-digit',
+
+        year:
+          'numeric'
       }
     ).format(fecha);
   }
 
-
-  return valorTexto;
+  return texto;
 }
 
 
-function formatearHora(valor) {
+function formatearHoraPadresPrueba(
+  valor
+) {
 
-  const valorTexto =
+  const texto =
     String(valor ?? '').trim();
 
-  if (!valorTexto) {
+  if (!texto) {
+
     return '—';
   }
 
   const hora =
-    valorTexto.match(
+
+    texto.match(
       /(\d{1,2}):(\d{2})(?::\d{2})?/
     );
 
-  if (!hora) {
-    return valorTexto;
-  }
+  return hora
 
-  return (
-    hora[1].padStart(2, '0') +
-    ':' +
-    hora[2]
-  );
+    ? (
+      hora[1].padStart(
+        2,
+        '0'
+      ) +
+
+      ':' +
+
+      hora[2]
+    )
+
+    : texto;
 }
 
 
-function formatearCalificacion(valor) {
+function formatearCalificacionPadresPrueba(
+  valor
+) {
 
   if (
     valor === undefined ||
     valor === null ||
     String(valor).trim() === ''
   ) {
+
     return '—';
   }
 
-  const numeroValor =
+  const numero =
     Number(valor);
 
   if (
-    !Number.isFinite(
-      numeroValor
-    )
+    !Number.isFinite(numero)
   ) {
+
     return String(valor);
   }
 
-  return Number.isInteger(
-    numeroValor
-  )
-    ? String(numeroValor)
-    : numeroValor.toFixed(1);
+  return Number.isInteger(numero)
+
+    ? String(numero)
+
+    : numero.toFixed(1);
 }
 
 
-function cambiarBoton(
-  boton,
-  cargando,
-  textoCargando,
-  textoNormal
-) {
-
-  if (!boton) {
-    return;
-  }
-
-  boton.disabled =
-    Boolean(cargando);
-
-  boton.textContent =
-    cargando
-      ? textoCargando
-      : textoNormal;
-}
-
-
-function mostrarMensaje(
-  id,
-  mensaje,
-  tipo = 'info'
-) {
-
-  const campo =
-    elemento(id);
-
-  if (!campo) {
-    return;
-  }
-
-  campo.textContent =
-    mensaje || '';
-
-  campo.classList.remove(
-    'mensaje-exito-padres-prueba',
-    'mensaje-error-padres-prueba',
-    'mensaje-info-padres-prueba'
-  );
-
-  campo.classList.add(
-
-    tipo === 'exito'
-      ? 'mensaje-exito-padres-prueba'
-
-      : tipo === 'error'
-        ? 'mensaje-error-padres-prueba'
-
-        : 'mensaje-info-padres-prueba'
-  );
-}
-
-
-function crearCelda(
+function crearCeldaPadresPrueba(
   valor,
   clase = ''
 ) {
 
   const celda =
-    document.createElement('td');
+
+    document.createElement(
+      'td'
+    );
 
   celda.textContent =
-    texto(valor);
+    textoPadresPrueba(valor);
 
   if (clase) {
-    celda.classList.add(clase);
+
+    celda.classList.add(
+      clase
+    );
   }
 
   return celda;
 }
 
 
-function mostrarFilaVacia(
-  id,
+function mostrarFilaMensajePadresPrueba(
+  idCuerpo,
   columnas,
   mensaje
 ) {
 
   const cuerpo =
-    elemento(id);
+
+    elementoPadresPrueba(
+      idCuerpo
+    );
 
   if (!cuerpo) {
+
     return;
   }
 
   cuerpo.replaceChildren();
 
   const fila =
-    document.createElement('tr');
+
+    document.createElement(
+      'tr'
+    );
 
   const celda =
-    document.createElement('td');
+
+    document.createElement(
+      'td'
+    );
 
   celda.colSpan =
     columnas;
@@ -370,110 +445,40 @@ function mostrarFilaVacia(
   celda.textContent =
     mensaje;
 
-  celda.className =
-    'celda-mensaje-tabla-padres-prueba';
+  celda.classList.add(
+    'celda-mensaje-tabla-padres-prueba'
+  );
 
-  fila.appendChild(celda);
+  fila.appendChild(
+    celda
+  );
 
-  cuerpo.appendChild(fila);
-}
-
-
-// ============================================================
-// API
-// ============================================================
-
-async function enviarPost(datos) {
-
-  const respuesta =
-    await fetch(
-      API_PADRES,
-      {
-        method: 'POST',
-        redirect: 'follow',
-        body: JSON.stringify(datos)
-      }
-    );
-
-
-  const textoRespuesta =
-    await respuesta.text();
-
-
-  let json;
-
-  try {
-
-    json =
-      JSON.parse(
-        textoRespuesta
-      );
-
-  } catch (error) {
-
-    console.error(
-      'Respuesta recibida:',
-      textoRespuesta
-    );
-
-    throw new Error(
-      'El servidor no devolvió una respuesta JSON válida.'
-    );
-  }
-
-
-  if (!respuesta.ok) {
-
-    throw new Error(
-      json.mensaje ||
-      'La solicitud terminó con un error HTTP.'
-    );
-  }
-
-
-  return json;
-}
-
-
-// ============================================================
-// SESIÓN
-// ============================================================
-
-function obtenerToken() {
-
-  return sessionStorage.getItem(
-    CLAVE_TOKEN_PADRES
+  cuerpo.appendChild(
+    fila
   );
 }
 
 
-function eliminarSesionLocal() {
-
-  sessionStorage.removeItem(
-    CLAVE_TOKEN_PADRES
-  );
-
-  sessionStorage.removeItem(
-    CLAVE_UID_RECUPERACION
-  );
-
-  EXPEDIENTE_PADRES =
-    null;
-}
-
-
-function sesionInvalida(datos) {
+function respuestaSesionInvalidaPadresPrueba(
+  datos
+) {
 
   const codigo =
+
     String(
+
       datos?.codigo ||
+
       datos?.error ||
+
       ''
+
     ).toUpperCase();
 
   return (
 
-    datos?.sesionValida === false ||
+    datos?.sesionValida ===
+      false ||
 
     codigo ===
       'SESION_INVALIDA' ||
@@ -487,253 +492,413 @@ function sesionInvalida(datos) {
 }
 
 
-function cerrarPortalPorSesionInvalida(
+function finalizarSesionInvalidaPadresPrueba(
   mensaje
 ) {
 
-  eliminarSesionLocal();
+  sessionStorage.removeItem(
+    CLAVE_TOKEN_PADRES_PRUEBA
+  );
 
-  ocultarPortal();
+  MODULOS_CARGADOS_PADRES_PRUEBA.clear();
 
-  mostrarMensaje(
-    'mensajePadresPrueba',
+  ocultarSesionPadresPrueba();
+
+  mostrarMensajePadresPrueba(
+
     mensaje ||
-      'La sesión terminó. Ingresa nuevamente.',
+    'La sesión terminó. Ingresa nuevamente.',
+
     'info'
   );
 }
 
 
-// ============================================================
-// PANTALLAS DE ACCESO
-// ============================================================
+async function enviarPostPadresPrueba(
+  datos
+) {
 
-function mostrarEncabezadoPublico(
+  if (
+    !String(
+      API_PADRES || ''
+    ).trim()
+  ) {
+
+    throw new Error(
+      'Todavía no se ha colocado la URL de la API.'
+    );
+  }
+
+  const respuesta =
+
+    await fetch(
+
+      API_PADRES,
+
+      {
+        method:
+          'POST',
+
+        redirect:
+          'follow',
+
+        body:
+          JSON.stringify(
+            datos
+          )
+      }
+    );
+
+  const texto =
+
+    await respuesta.text();
+
+  let json;
+
+  try {
+
+    json =
+      JSON.parse(
+        texto
+      );
+
+  } catch (error) {
+
+    console.error(
+      'Respuesta recibida:',
+      texto
+    );
+
+    throw new Error(
+      'El servidor no devolvió una respuesta JSON válida.'
+    );
+  }
+
+  if (
+    !respuesta.ok
+  ) {
+
+    throw new Error(
+
+      json.mensaje ||
+
+      'La solicitud terminó con un error HTTP.'
+    );
+  }
+
+  return json;
+}
+
+
+function mostrarEncabezadoPublicoPadresPrueba(
   mostrar
 ) {
 
   const encabezado =
-    elemento(
+
+    elementoPadresPrueba(
       'encabezadoPublicoPadresPrueba'
     );
 
   if (encabezado) {
+
     encabezado.hidden =
       !mostrar;
   }
 }
 
 
-function mostrarBotonRecuperacion(
+function mostrarBotonRecuperacionPadresPrueba(
   mostrar
 ) {
 
   const boton =
-    elemento(
+
+    elementoPadresPrueba(
       'btnMostrarRecuperacionPadresPrueba'
     );
 
   if (boton) {
+
     boton.hidden =
       !mostrar;
   }
 }
 
 
-function ocultarCambioPassword() {
+function ocultarCambioPasswordInicialPadresPrueba() {
 
   const panel =
-    elemento(
+
+    elementoPadresPrueba(
       'panelCambioPasswordPadresPrueba'
     );
 
+  const nuevo =
+
+    elementoPadresPrueba(
+      'nuevoPasswordInicialPadresPrueba'
+    );
+
+  const confirmar =
+
+    elementoPadresPrueba(
+      'confirmarPasswordInicialPadresPrueba'
+    );
+
   if (panel) {
+
     panel.hidden =
       true;
   }
 
-  [
-    'nuevoPasswordInicialPadresPrueba',
-    'confirmarPasswordInicialPadresPrueba'
-  ].forEach(
-    function(id) {
+  if (nuevo) {
 
-      const campo =
-        elemento(id);
+    nuevo.value =
+      '';
+  }
 
-      if (campo) {
-        campo.value =
-          '';
-      }
-    }
-  );
+  if (confirmar) {
 
-  mostrarMensaje(
-    'mensajeCambioPasswordPadresPrueba',
+    confirmar.value =
+      '';
+  }
+
+  mostrarMensajeCambioPasswordPadresPrueba(
     '',
     'info'
   );
 }
 
 
-function ocultarRecuperacion() {
+function ocultarPanelesRecuperacionPadresPrueba() {
 
   const solicitar =
-    elemento(
+
+    elementoPadresPrueba(
       'panelSolicitarRecuperacionPadresPrueba'
     );
 
   const restablecer =
-    elemento(
+
+    elementoPadresPrueba(
       'panelRestablecerPasswordPadresPrueba'
     );
 
   if (solicitar) {
+
     solicitar.hidden =
       true;
   }
 
   if (restablecer) {
+
     restablecer.hidden =
       true;
   }
+
+  [
+
+    'codigoRecuperacionPadresPrueba',
+
+    'nuevoPasswordRecuperacionPadresPrueba',
+
+    'confirmarPasswordRecuperacionPadresPrueba'
+
+  ].forEach(
+
+    function (
+      id
+    ) {
+
+      const campo =
+
+        elementoPadresPrueba(
+          id
+        );
+
+      if (campo) {
+
+        campo.value =
+          '';
+      }
+    }
+  );
+
+  mostrarMensajeRecuperacionPadresPrueba(
+    'mensajeSolicitarRecuperacionPadresPrueba',
+    '',
+    'info'
+  );
+
+  mostrarMensajeRecuperacionPadresPrueba(
+    'mensajeRestablecerPasswordPadresPrueba',
+    '',
+    'info'
+  );
 }
 
 
-function mostrarCambioPassword(
+function mostrarCambioPasswordInicialPadresPrueba(
   datos
 ) {
 
-  ocultarRecuperacion();
+  ocultarPanelesRecuperacionPadresPrueba();
 
-  mostrarEncabezadoPublico(true);
+  mostrarEncabezadoPublicoPadresPrueba(
+    true
+  );
 
-  mostrarBotonRecuperacion(false);
-
+  mostrarBotonRecuperacionPadresPrueba(
+    false
+  );
 
   const login =
-    elemento(
+
+    elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
 
   const panel =
-    elemento(
+
+    elementoPadresPrueba(
       'panelPadresPrueba'
     );
 
   const cambio =
-    elemento(
+
+    elementoPadresPrueba(
       'panelCambioPasswordPadresPrueba'
     );
 
   const alumno =
-    elemento(
+
+    elementoPadresPrueba(
       'alumnoCambioPasswordPadresPrueba'
     );
 
-
   if (login) {
+
     login.hidden =
       true;
   }
 
   if (panel) {
+
     panel.hidden =
       true;
   }
 
   if (cambio) {
+
     cambio.hidden =
       false;
   }
 
-
   if (alumno) {
 
     alumno.textContent =
+
       datos?.alumno?.nombre
 
-        ? 'Alumno: ' +
+        ? (
+          'Alumno: ' +
           datos.alumno.nombre
+        )
 
         : 'Cuenta del Portal de Padres';
   }
 
-
-  mostrarMensaje(
-    'mensajeCambioPasswordPadresPrueba',
+  mostrarMensajeCambioPasswordPadresPrueba(
     'Escribe y confirma una nueva contraseña.',
     'info'
   );
 }
 
 
-function mostrarSolicitudRecuperacion() {
+function mostrarSolicitudRecuperacionPadresPrueba() {
 
-  ocultarCambioPassword();
-  ocultarRecuperacion();
+  ocultarCambioPasswordInicialPadresPrueba();
 
-  mostrarEncabezadoPublico(true);
-  mostrarBotonRecuperacion(false);
+  ocultarPanelesRecuperacionPadresPrueba();
 
+  mostrarEncabezadoPublicoPadresPrueba(
+    true
+  );
+
+  mostrarBotonRecuperacionPadresPrueba(
+    false
+  );
 
   const login =
-    elemento(
+
+    elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
 
   const panel =
-    elemento(
+
+    elementoPadresPrueba(
       'panelPadresPrueba'
     );
 
   const solicitar =
-    elemento(
+
+    elementoPadresPrueba(
       'panelSolicitarRecuperacionPadresPrueba'
     );
 
+  const uidLogin =
+
+    String(
+
+      elementoPadresPrueba(
+        'uidPadresPrueba'
+      )?.value ||
+
+      ''
+
+    ).trim();
+
+  const uidRecuperacion =
+
+    elementoPadresPrueba(
+      'uidRecuperacionPadresPrueba'
+    );
 
   if (login) {
+
     login.hidden =
       true;
   }
 
   if (panel) {
+
     panel.hidden =
       true;
   }
 
   if (solicitar) {
+
     solicitar.hidden =
       false;
   }
 
-
-  const uidLogin =
-    String(
-      elemento(
-        'uidPadresPrueba'
-      )?.value || ''
-    ).trim();
-
-
-  const uidRecuperacion =
-    elemento(
-      'uidRecuperacionPadresPrueba'
-    );
-
-
   if (
-    uidLogin &&
-    uidRecuperacion
+    uidRecuperacion &&
+    uidLogin
   ) {
 
     uidRecuperacion.value =
       uidLogin;
   }
 
+  mostrarMensajePadresPrueba(
+    '',
+    'info'
+  );
 
-  mostrarMensaje(
+  mostrarMensajeRecuperacionPadresPrueba(
     'mensajeSolicitarRecuperacionPadresPrueba',
     'Escribe el UID del alumno para solicitar el código.',
     'info'
@@ -741,2456 +906,123 @@ function mostrarSolicitudRecuperacion() {
 }
 
 
-function mostrarRestablecimientoRecuperacion() {
+function mostrarRestablecimientoRecuperacionPadresPrueba() {
 
-  ocultarCambioPassword();
+  ocultarCambioPasswordInicialPadresPrueba();
 
-  mostrarEncabezadoPublico(true);
-  mostrarBotonRecuperacion(false);
+  mostrarEncabezadoPublicoPadresPrueba(
+    true
+  );
 
+  mostrarBotonRecuperacionPadresPrueba(
+    false
+  );
 
   const login =
-    elemento(
+
+    elementoPadresPrueba(
       'formLoginPadresPrueba'
     );
 
   const panel =
-    elemento(
+
+    elementoPadresPrueba(
       'panelPadresPrueba'
     );
 
   const solicitar =
-    elemento(
+
+    elementoPadresPrueba(
       'panelSolicitarRecuperacionPadresPrueba'
     );
 
   const restablecer =
-    elemento(
+
+    elementoPadresPrueba(
       'panelRestablecerPasswordPadresPrueba'
     );
 
-
   if (login) {
+
     login.hidden =
       true;
   }
 
   if (panel) {
+
     panel.hidden =
       true;
   }
 
   if (solicitar) {
+
     solicitar.hidden =
       true;
   }
 
   if (restablecer) {
+
     restablecer.hidden =
       false;
   }
 }
 
 
-// ============================================================
-// LOGIN
-// ============================================================
-
-async function iniciarSesion(evento) {
-
-  evento.preventDefault();
-
-  const uid =
-    String(
-      elemento('uidPadresPrueba')?.value || ''
-    ).trim();
-
-  const password =
-    String(
-      elemento('passwordPadresPrueba')?.value || ''
-    );
-
-  const boton =
-    elemento('btnIngresarPadresPrueba');
-
-  if (!uid || !password) {
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'Escribe el UID y la contraseña.',
-      'info'
-    );
-
-    return;
-  }
-
-  cambiarBoton(
-    boton,
-    true,
-    'Ingresando...',
-    'Ingresar'
-  );
-
-  mostrarMensaje(
-    'mensajePadresPrueba',
-    'Validando la cuenta...',
-    'info'
-  );
-
-  try {
-
-    const datos =
-      await enviarPost({
-
-        accion: 'loginPadres',
-
-        uid: uid,
-
-        password: password
-      });
-
-
-    if (
-      !datos.success ||
-      !datos.token
-    ) {
-
-      throw new Error(
-        datos.mensaje ||
-        'No fue posible iniciar sesión.'
-      );
-    }
-
-
-    sessionStorage.setItem(
-      CLAVE_TOKEN_PADRES,
-      datos.token
-    );
-
-
-    sessionStorage.removeItem(
-      CLAVE_UID_RECUPERACION
-    );
-
-
-    const campoPassword =
-      elemento('passwordPadresPrueba');
-
-    if (campoPassword) {
-      campoPassword.value = '';
-    }
-
-
-    // ========================================================
-    // CAMBIO DE CONTRASEÑA INICIAL
-    // ========================================================
-
-    if (datos.requiereCambioPassword) {
-
-      mostrarCambioPassword(datos);
-
-      mostrarMensaje(
-        'mensajePadresPrueba',
-        'Acceso correcto. Debes cambiar la contraseña inicial.',
-        'info'
-      );
-
-      return;
-    }
-
-
-    // ========================================================
-    // MOSTRAR EL PORTAL
-    // ========================================================
-
-    mostrarPortal();
-
-
-    // ========================================================
-    // CARGAR EXPEDIENTE COMPLETO
-    // ========================================================
-
-    const cargado =
-      await cargarExpedienteCompleto(true);
-
-
-    if (!cargado) {
-
-      mostrarMensaje(
-        'mensajePadresPrueba',
-        'La sesión inició correctamente, pero no fue posible cargar el expediente escolar.',
-        'error'
-      );
-
-      return;
-    }
-
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'Bienvenido al Portal de Padres CEGRAC.',
-      'exito'
-    );
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    eliminarSesionLocal();
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      error.message ||
-      'No fue posible conectar con el servidor.',
-      'error'
-    );
-
-
-  } finally {
-
-    cambiarBoton(
-      boton,
-      false,
-      'Ingresando...',
-      'Ingresar'
-    );
-  }
-}
-
-
-// ============================================================
-// CARGA DEL EXPEDIENTE COMPLETO
-// ============================================================
-
-async function cargarExpedienteCompleto(
-  mostrarCarga = true
-) {
-
-  const token =
-    obtenerToken();
-
-
-  if (!token) {
-
-    cerrarPortalPorSesionInvalida();
-
-    return false;
-  }
-
-
-  if (EXPEDIENTE_CARGANDO) {
-    return false;
-  }
-
-
-  EXPEDIENTE_CARGANDO =
-    true;
-
-
-  const boton =
-    elemento(
-      'btnActualizarExpedientePadresPrueba'
-    );
-
-
-  if (mostrarCarga) {
-
-    cambiarBoton(
-      boton,
-      true,
-      'Actualizando...',
-      'Actualizar información'
-    );
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'Consultando el expediente escolar...',
-      'info'
-    );
-  }
-
-
-  try {
-
-    const respuesta =
-      await enviarPost({
-
-        accion:
-          'obtenerExpedienteAlumnoPadre',
-
-        token:
-          token
-      });
-
-
-    if (
-      !respuesta.success
-    ) {
-
-      if (
-        sesionInvalida(
-          respuesta
-        )
-      ) {
-
-        cerrarPortalPorSesionInvalida(
-          respuesta.mensaje
-        );
-
-        return false;
-      }
-
-
-      throw new Error(
-        respuesta.mensaje ||
-        'No fue posible obtener el expediente escolar.'
-      );
-    }
-
-
-    if (
-      respuesta.sesionValida === false
-    ) {
-
-      cerrarPortalPorSesionInvalida(
-        respuesta.mensaje
-      );
-
-      return false;
-    }
-
-
-    EXPEDIENTE_PADRES =
-      normalizarExpediente(
-        respuesta
-      );
-
-
-    renderizarExpediente();
-
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'Información escolar actualizada correctamente.',
-      'exito'
-    );
-
-
-    return true;
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      error.message ||
-        'No fue posible consultar el expediente.',
-      'error'
-    );
-
-    return false;
-
-
-  } finally {
-
-    EXPEDIENTE_CARGANDO =
-      false;
-
-
-    if (mostrarCarga) {
-
-      cambiarBoton(
-        boton,
-        false,
-        'Actualizando...',
-        'Actualizar información'
-      );
-    }
-  }
-}
-
-
-// ============================================================
-// NORMALIZACIÓN DEL EXPEDIENTE V3
-//
-// Se acepta tanto:
-// respuesta directamente
-// como:
-// respuesta.expediente
-//
-// Esto permite que el Portal sea resistente a la envoltura
-// JSON utilizada por el backend.
-// ============================================================
-
-function normalizarExpediente(
-  respuesta
-) {
-
-  const expediente =
-    (
-      respuesta?.expediente &&
-      typeof respuesta.expediente === 'object'
-    )
-      ? respuesta.expediente
-      : respuesta;
-
-
-  const alumnoOrigen =
-    (
-      expediente?.alumno &&
-      typeof expediente.alumno === 'object'
-    )
-      ? expediente.alumno
-      : {};
-
-
-  const tutorOrigen =
-    (
-      expediente?.tutor &&
-      typeof expediente.tutor === 'object'
-    )
-      ? expediente.tutor
-      : (
-        expediente?.perfil?.tutor &&
-        typeof expediente.perfil.tutor === 'object'
-      )
-        ? expediente.perfil.tutor
-        : {};
-
-
-  const asistenciaOrigen =
-    (
-      expediente?.asistencia &&
-      typeof expediente.asistencia === 'object'
-    )
-      ? expediente.asistencia
-      : {};
-
-
-  const calificacionesOrigen =
-    (
-      expediente?.calificaciones &&
-      typeof expediente.calificaciones === 'object'
-    )
-      ? expediente.calificaciones
-      : {};
-
-
-  const riesgoOrigen =
-    (
-      expediente?.riesgo &&
-      typeof expediente.riesgo === 'object'
-    )
-      ? expediente.riesgo
-      : {};
-
-
-  const alumnoNombre =
-    typeof expediente?.alumno === 'string'
-      ? expediente.alumno
-      : primerValor(
-          alumnoOrigen,
-          [
-            'nombre',
-            'alumno',
-            'nombreAlumno',
-            'ALUMNO'
-          ],
-          ''
-        );
-
-
-  const grado =
-    primerValor(
-      alumnoOrigen,
-      [
-        'grado',
-        'GRADO'
-      ],
-      expediente?.grado || ''
-    );
-
-
-  const grupo =
-    primerValor(
-      alumnoOrigen,
-      [
-        'grupo',
-        'GRUPO'
-      ],
-      expediente?.grupo || ''
-    );
-
-
-  const nombreTutor =
-    primerValor(
-      tutorOrigen,
-      [
-        'nombre',
-        'nombreTutor',
-        'tutor',
-        'NOMBRE_TUTOR'
-      ],
-      primerValor(
-        expediente?.perfil || {},
-        [
-          'nombreTutor',
-          'NOMBRE_TUTOR'
-        ],
-        ''
-      )
-    );
-
-
-  const telefonoTutor =
-    primerValor(
-      tutorOrigen,
-      [
-        'telefono',
-        'telefonoTutor',
-        'TELEFONO_TUTOR'
-      ],
-      primerValor(
-        expediente?.perfil || {},
-        [
-          'telefonoTutor',
-          'telefono',
-          'TELEFONO_TUTOR'
-        ],
-        ''
-      )
-    );
-
-
-  const correoTutor =
-    primerValor(
-      tutorOrigen,
-      [
-        'correo',
-        'correoTutor',
-        'CORREO_TUTOR'
-      ],
-      primerValor(
-        expediente?.perfil || {},
-        [
-          'correoTutor',
-          'correo',
-          'CORREO_TUTOR'
-        ],
-        ''
-      )
-    );
-
-
-  const asistenciaHistorial =
-    primerArreglo(
-      asistenciaOrigen,
-      [
-        'historial',
-        'asistenciasDetalle',
-        'registros',
-        'datos'
-      ]
-    ).length
-
-      ? primerArreglo(
-          asistenciaOrigen,
-          [
-            'historial',
-            'asistenciasDetalle',
-            'registros',
-            'datos'
-          ]
-        )
-
-      : primerArreglo(
-          expediente,
-          [
-            'historialAsistencia',
-            'asistenciasDetalle'
-          ]
-        );
-
-
-  const reportes =
-    primerArreglo(
-      expediente,
-      [
-        'reportes',
-        'reportesAlumnos'
-      ]
-    );
-
-
-  const justificantes =
-    primerArreglo(
-      expediente,
-      [
-        'justificantes'
-      ]
-    );
-
-
-  const citatorios =
-    primerArreglo(
-      expediente,
-      [
-        'citatorios'
-      ]
-    );
-
-
-  const pasesSalida =
-    primerArreglo(
-      expediente,
-      [
-        'pasesSalida',
-        'pases_salida',
-        'pases'
-      ]
-    );
-
-
-  const seguimientos =
-    primerArreglo(
-      expediente,
-      [
-        'seguimientos',
-        'seguimientoTutorial',
-        'seguimiento'
-      ]
-    );
-
-
-  const materias =
-    primerArreglo(
-      calificacionesOrigen,
-      [
-        'materias',
-        'calificaciones',
-        'registros',
-        'datos'
-      ]
-    ).length
-
-      ? primerArreglo(
-          calificacionesOrigen,
-          [
-            'materias',
-            'calificaciones',
-            'registros',
-            'datos'
-          ]
-        )
-
-      : primerArreglo(
-          expediente,
-          [
-            'materias',
-            'calificaciones'
-          ]
-        );
-
-
-  return {
-
-    success:
-      true,
-
-    sesionValida:
-      expediente.sesionValida !== false,
-
-    cicloEscolar:
-      texto(
-        expediente.cicloEscolar,
-        '2026-2027'
-      ),
-
-    alumno: {
-
-      uid:
-        primerValor(
-          alumnoOrigen,
-          [
-            'uid',
-            'RFID',
-            'id'
-          ],
-          expediente.uid || ''
-        ),
-
-      nombre:
-        texto(
-          alumnoNombre,
-          'Alumno'
-        ),
-
-      grado:
-        texto(
-          grado,
-          ''
-        ),
-
-      grupo:
-        texto(
-          grupo,
-          ''
-        )
-    },
-
-    tutor: {
-
-      nombre:
-        texto(
-          nombreTutor,
-          ''
-        ),
-
-      telefono:
-        texto(
-          telefonoTutor,
-          ''
-        ),
-
-      correo:
-        texto(
-          correoTutor,
-          ''
-        )
-    },
-
-    asistencia: {
-
-      asistencias:
-        numero(
-          primerValor(
-            asistenciaOrigen,
-            [
-              'asistencias',
-              'totalAsistencias'
-            ],
-            expediente.asistencias || 0
-          )
-        ),
-
-      faltas:
-        numero(
-          primerValor(
-            asistenciaOrigen,
-            [
-              'faltas',
-              'inasistencias',
-              'totalFaltas'
-            ],
-            expediente.faltas || 0
-          )
-        ),
-
-      porcentaje:
-        numero(
-          primerValor(
-            asistenciaOrigen,
-            [
-              'porcentaje',
-              'porcentajeAsistencia'
-            ],
-            expediente.porcentajeAsistencia || 0
-          )
-        ),
-
-      historial:
-        asistenciaHistorial
-    },
-
-    reportes:
-      reportes,
-
-    justificantes:
-      justificantes,
-
-    citatorios:
-      citatorios,
-
-    calificaciones: {
-
-      materias:
-        materias,
-
-      promedioGeneral:
-        numero(
-          primerValor(
-            calificacionesOrigen,
-            [
-              'promedioGeneral',
-              'promedio',
-              'promedioFinal'
-            ],
-            expediente.promedioGeneral || 0
-          )
-        )
-    },
-
-    pasesSalida:
-      pasesSalida,
-
-    seguimientos:
-      seguimientos,
-
-    riesgo: {
-
-      nivel:
-        texto(
-          primerValor(
-            riesgoOrigen,
-            [
-              'nivel',
-              'nivelRiesgo',
-              'riesgo'
-            ],
-            expediente.nivelRiesgo ||
-            expediente.riesgo ||
-            'SIN RIESGO'
-          ),
-          'SIN RIESGO'
-        )
-          .toUpperCase()
-          .replace(
-            /_/g,
-            ' '
-          ),
-
-      puntaje:
-        numero(
-          primerValor(
-            riesgoOrigen,
-            [
-              'puntaje',
-              'puntos'
-            ],
-            expediente.puntajeRiesgo || 0
-          )
-        ),
-
-      motivos:
-        primerArreglo(
-          riesgoOrigen,
-          [
-            'motivos',
-            'factores',
-            'razones'
-          ]
-        ),
-
-      indicadores:
-        riesgoOrigen.indicadores || {}
-    }
-  };
-}
-
-
-// ============================================================
-// RENDERIZADO GENERAL
-// ============================================================
-
-function renderizarExpediente() {
-
-  if (
-    !EXPEDIENTE_PADRES
-  ) {
-    return;
-  }
-
-
-  renderizarIdentidad();
-
-  renderizarResumen();
-
-  renderizarAsistencia();
-
-  renderizarReportes();
-
-  renderizarJustificantes();
-
-  renderizarCitatorios();
-
-  renderizarCalificaciones();
-
-  renderizarPasesSalida();
-
-  renderizarSeguimientos();
-
-  renderizarRiesgo();
-
-  renderizarPerfil();
-}
-
-
-// ============================================================
-// IDENTIDAD
-// ============================================================
-
-function renderizarIdentidad() {
-
-  const alumno =
-    EXPEDIENTE_PADRES.alumno;
-
-
-  const nombre =
-    elemento(
-      'nombreAlumnoPadresPrueba'
-    );
-
-  const grado =
-    elemento(
-      'gradoAlumnoPadresPrueba'
-    );
-
-  const grupo =
-    elemento(
-      'grupoAlumnoPadresPrueba'
-    );
-
-
-  if (nombre) {
-    nombre.textContent =
-      texto(
-        alumno.nombre,
-        'Alumno'
-      );
-  }
-
-  if (grado) {
-    grado.textContent =
-      texto(
-        alumno.grado,
-        'Sin grado'
-      );
-  }
-
-  if (grupo) {
-    grupo.textContent =
-      texto(
-        alumno.grupo,
-        'Sin grupo'
-      );
-  }
-
-
-  const ciclo =
-    elemento(
-      'cicloEscolarPadresPrueba'
-    );
-
-  if (ciclo) {
-    ciclo.textContent =
-      EXPEDIENTE_PADRES.cicloEscolar;
-  }
-}
-
-
-// ============================================================
-// RESUMEN
-// ============================================================
-
-function renderizarResumen() {
-
-  const asistencia =
-    EXPEDIENTE_PADRES.asistencia;
-
-
-  const valores = {
-
-    resumenAsistenciasPadresPrueba:
-      asistencia.asistencias,
-
-    resumenFaltasPadresPrueba:
-      asistencia.faltas,
-
-    resumenPorcentajePadresPrueba:
-      asistencia.porcentaje + '%',
-
-    resumenReportesPadresPrueba:
-      EXPEDIENTE_PADRES.reportes.length,
-
-    resumenCitatoriosPadresPrueba:
-      EXPEDIENTE_PADRES.citatorios.length,
-
-    resumenPromedioPadresPrueba:
-      EXPEDIENTE_PADRES.calificaciones
-        .promedioGeneral > 0
-
-        ? formatearCalificacion(
-            EXPEDIENTE_PADRES
-              .calificaciones
-              .promedioGeneral
-          )
-
-        : '—',
-
-    resumenRiesgoPadresPrueba:
-      EXPEDIENTE_PADRES.riesgo.nivel
-  };
-
-
-  Object.entries(
-    valores
-  ).forEach(
-    function([id, valor]) {
-
-      const campo =
-        elemento(id);
-
-      if (campo) {
-        campo.textContent =
-          String(valor);
-      }
-    }
-  );
-}
-
-
-// ============================================================
-// ASISTENCIA
-// ============================================================
-
-function renderizarAsistencia() {
-
-  const asistencia =
-    EXPEDIENTE_PADRES.asistencia;
-
-
-  const valores = {
-
-    totalAsistenciasPadresPrueba:
-      asistencia.asistencias,
-
-    totalFaltasPadresPrueba:
-      asistencia.faltas,
-
-    porcentajeAsistenciaPadresPrueba:
-      asistencia.porcentaje + '%',
-
-    totalRegistrosAsistenciaPadresPrueba:
-      asistencia.historial.length
-  };
-
-
-  Object.entries(
-    valores
-  ).forEach(
-    function([id, valor]) {
-
-      const campo =
-        elemento(id);
-
-      if (campo) {
-        campo.textContent =
-          String(valor);
-      }
-    }
-  );
-
-
-  const cuerpo =
-    elemento(
-      'cuerpoTablaAsistenciaPadresPrueba'
-    );
-
-
-  if (!cuerpo) {
-    return;
-  }
-
-
-  if (
-    !asistencia.historial.length
-  ) {
-
-    mostrarFilaVacia(
-      'cuerpoTablaAsistenciaPadresPrueba',
-      4,
-      'No existen registros de asistencia para mostrar.'
-    );
-
-    return;
-  }
-
-
-  cuerpo.replaceChildren();
-
-
-  asistencia.historial.forEach(
-    function(registro) {
-
-      const fila =
-        document.createElement('tr');
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearFecha(
-            primerValor(
-              registro,
-              [
-                'fecha',
-                'fechaClave',
-                'FECHA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearHora(
-            primerValor(
-              registro,
-              [
-                'hora',
-                'HORA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            registro,
-            [
-              'estado',
-              'estatus',
-              'ESTATUS'
-            ]
-          ),
-          'celda-estado-asistencia-padres-prueba'
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            registro,
-            [
-              'puntualidad',
-              'PUNTUALIDAD'
-            ]
-          )
-        )
-      );
-
-
-      cuerpo.appendChild(fila);
-    }
-  );
-}
-
-
-// ============================================================
-// TABLAS GENERALES
-// ============================================================
-
-function renderizarTabla(
-  id,
-  registros,
-  columnas,
-  mensajeVacio,
-  construirFila
-) {
-
-  const cuerpo =
-    elemento(id);
-
-  if (!cuerpo) {
-    return;
-  }
-
-
-  if (!registros.length) {
-
-    mostrarFilaVacia(
-      id,
-      columnas,
-      mensajeVacio
-    );
-
-    return;
-  }
-
-
-  cuerpo.replaceChildren();
-
-
-  registros.forEach(
-    function(registro) {
-
-      const fila =
-        document.createElement('tr');
-
-
-      construirFila(
-        registro,
-        fila
-      );
-
-
-      cuerpo.appendChild(fila);
-    }
-  );
-}
-
-
-// ============================================================
-// REPORTES
-// ============================================================
-
-function renderizarReportes() {
-
-  renderizarTabla(
-
-    'cuerpoTablaReportesPadresPrueba',
-
-    EXPEDIENTE_PADRES.reportes,
-
-    7,
-
-    'No existen reportes escolares registrados.',
-
-    function(item, fila) {
-
-      fila.appendChild(
-        crearCelda(
-          formatearFecha(
-            primerValor(
-              item,
-              [
-                'fecha',
-                'fechaReporte',
-                'FECHA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearHora(
-            primerValor(
-              item,
-              [
-                'hora',
-                'horaReporte',
-                'HORA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'tipo',
-              'tipoReporte',
-              'TIPO'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'docente',
-              'registradoPor',
-              'responsable',
-              'DOCENTE'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'descripcion',
-              'motivo',
-              'detalle',
-              'DESCRIPCION'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'accionTomada',
-              'accion',
-              'medida',
-              'ACCION_TOMADA'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'estatus',
-              'estado',
-              'ESTATUS'
-            ]
-          )
-        )
-      );
-    }
-  );
-}
-
-
-// ============================================================
-// JUSTIFICANTES
-// ============================================================
-
-function renderizarJustificantes() {
-
-  renderizarTabla(
-
-    'cuerpoTablaJustificantesPadresPrueba',
-
-    EXPEDIENTE_PADRES.justificantes,
-
-    4,
-
-    'No existen justificantes registrados.',
-
-    function(item, fila) {
-
-      let tipo =
-        primerValor(
-          item,
-          [
-            'tipo',
-            'tipoJustificante',
-            'TIPO'
-          ]
-        );
-
-
-      let solicita =
-        primerValor(
-          item,
-          [
-            'solicita',
-            'solicitante',
-            'SOLICITA'
-          ]
-        );
-
-
-      if (
-        String(tipo).toUpperCase() ===
-          'OTRO' &&
-        item.tipoOtro
-      ) {
-
-        tipo =
-          'Otro: ' +
-          item.tipoOtro;
-      }
-
-
-      if (
-        String(solicita).toUpperCase() ===
-          'OTRO' &&
-        item.solicitaOtro
-      ) {
-
-        solicita =
-          'Otro: ' +
-          item.solicitaOtro;
-      }
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearFecha(
-            primerValor(
-              item,
-              [
-                'fecha',
-                'fechaJustificante',
-                'FECHA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(tipo)
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'motivo',
-              'descripcion',
-              'MOTIVO'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(solicita)
-      );
-    }
-  );
-}
-
-
-// ============================================================
-// CITATORIOS
-// ============================================================
-
-function renderizarCitatorios() {
-
-  renderizarTabla(
-
-    'cuerpoTablaCitatoriosPadresPrueba',
-
-    EXPEDIENTE_PADRES.citatorios,
-
-    5,
-
-    'No existen citatorios registrados.',
-
-    function(item, fila) {
-
-      fila.appendChild(
-        crearCelda(
-          formatearFecha(
-            primerValor(
-              item,
-              [
-                'fechaCitatorio',
-                'fecha',
-                'FECHA_CITATORIO'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearHora(
-            primerValor(
-              item,
-              [
-                'horaCitatorio',
-                'hora',
-                'HORA_CITATORIO'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'motivo',
-              'descripcion',
-              'MOTIVO'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'responsable',
-              'registradoPor',
-              'RESPONSABLE'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'seguimiento',
-              'estatus',
-              'observaciones',
-              'SEGUIMIENTO'
-            ]
-          )
-        )
-      );
-    }
-  );
-}
-
-
-// ============================================================
-// CALIFICACIONES
-// ============================================================
-
-function renderizarCalificaciones() {
-
-  const materias =
-    EXPEDIENTE_PADRES
-      .calificaciones
-      .materias;
-
-
-  renderizarTabla(
-
-    'cuerpoTablaCalificacionesPadresPrueba',
-
-    materias,
-
-    6,
-
-    'No existen calificaciones registradas.',
-
-    function(item, fila) {
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'materia',
-              'Materia',
-              'MATERIA'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearCalificacion(
-            primerValor(
-              item,
-              [
-                'p1',
-                'periodo1',
-                'primerPeriodo'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearCalificacion(
-            primerValor(
-              item,
-              [
-                'p2',
-                'periodo2',
-                'segundoPeriodo'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearCalificacion(
-            primerValor(
-              item,
-              [
-                'p3',
-                'periodo3',
-                'tercerPeriodo'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearCalificacion(
-            primerValor(
-              item,
-              [
-                'promedio',
-                'promedioFinal'
-              ]
-            )
-          ),
-          'celda-promedio-padres-prueba'
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'situacion',
-              'estado',
-              'estatus'
-            ],
-            'Sin calificar'
-          ),
-          'celda-situacion-padres-prueba'
-        )
-      );
-    }
-  );
-
-
-  const promedio =
-    elemento(
-      'promedioGeneralPadresPrueba'
-    );
-
-
-  if (promedio) {
-
-    promedio.textContent =
-      EXPEDIENTE_PADRES
-        .calificaciones
-        .promedioGeneral > 0
-
-        ? formatearCalificacion(
-            EXPEDIENTE_PADRES
-              .calificaciones
-              .promedioGeneral
-          )
-
-        : '—';
-  }
-}
-
-
-// ============================================================
-// PASES DE SALIDA
-// ============================================================
-
-function renderizarPasesSalida() {
-
-  renderizarTabla(
-
-    'cuerpoTablaPasesSalidaPadresPrueba',
-
-    EXPEDIENTE_PADRES.pasesSalida,
-
-    6,
-
-    'No existen pases de salida registrados.',
-
-    function(item, fila) {
-
-      fila.appendChild(
-        crearCelda(
-          formatearFecha(
-            primerValor(
-              item,
-              [
-                'fecha',
-                'FECHA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          formatearHora(
-            primerValor(
-              item,
-              [
-                'hora',
-                'HORA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'motivo',
-              'descripcion',
-              'MOTIVO'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'persona',
-              'autorizadoPor',
-              'responsable',
-              'NOMBRE_AUTORIZA'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'horaSalida',
-              'HORA_SALIDA'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'estatus',
-              'estado',
-              'ESTATUS'
-            ]
-          )
-        )
-      );
-    }
-  );
-}
-
-
-// ============================================================
-// SEGUIMIENTO TUTORIAL
-// ============================================================
-
-function renderizarSeguimientos() {
-
-  renderizarTabla(
-
-    'cuerpoTablaSeguimientoPadresPrueba',
-
-    EXPEDIENTE_PADRES.seguimientos,
-
-    6,
-
-    'No existen registros de seguimiento tutorial.',
-
-    function(item, fila) {
-
-      fila.appendChild(
-        crearCelda(
-          formatearFecha(
-            primerValor(
-              item,
-              [
-                'fecha',
-                'FECHA'
-              ]
-            )
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'tipo',
-              'tipoSeguimiento',
-              'TIPO'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'motivo',
-              'descripcion',
-              'MOTIVO'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'responsable',
-              'docente',
-              'RESPONSABLE'
-            ]
-          )
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'proximoSeguimiento',
-              'fechaProxima',
-              'FECHA_PROXIMA'
-            ]
-          )
-            ? formatearFecha(
-                primerValor(
-                  item,
-                  [
-                    'proximoSeguimiento',
-                    'fechaProxima',
-                    'FECHA_PROXIMA'
-                  ]
-                )
-              )
-            : '—'
-        )
-      );
-
-
-      fila.appendChild(
-        crearCelda(
-          primerValor(
-            item,
-            [
-              'estatus',
-              'estado',
-              'ESTATUS'
-            ]
-          )
-        )
-      );
-    }
-  );
-}
-
-
-// ============================================================
-// RIESGO
-// ============================================================
-
-function renderizarRiesgo() {
-
-  const riesgo =
-    EXPEDIENTE_PADRES.riesgo;
-
-
-  const tarjeta =
-    elemento(
-      'tarjetaRiesgoPadresPrueba'
-    );
-
-  const nivel =
-    elemento(
-      'nivelRiesgoPadresPrueba'
-    );
-
-  const puntaje =
-    elemento(
-      'puntajeRiesgoPadresPrueba'
-    );
-
-  const lista =
-    elemento(
-      'listaMotivosRiesgoPadresPrueba'
-    );
-
-
-  if (nivel) {
-    nivel.textContent =
-      riesgo.nivel;
-  }
-
-
-  if (puntaje) {
-    puntaje.textContent =
-      String(
-        riesgo.puntaje
-      );
-  }
-
-
-  if (tarjeta) {
-
-    tarjeta.className =
-      'tarjeta-riesgo-padres-prueba';
-
-
-    tarjeta.classList.add(
-
-      riesgo.nivel.includes('ALTO')
-        ? 'riesgo-alto'
-
-        : riesgo.nivel.includes('MEDIO')
-          ? 'riesgo-medio'
-
-          : riesgo.nivel.includes('BAJO')
-            ? 'riesgo-bajo'
-
-            : 'riesgo-sin-riesgo'
-    );
-  }
-
-
-  if (lista) {
-
-    lista.replaceChildren();
-
-
-    const motivos =
-      riesgo.motivos.length
-
-        ? riesgo.motivos
-
-        : [
-            riesgo.nivel.includes(
-              'SIN RIESGO'
-            )
-              ? 'No se identificaron factores de riesgo.'
-              : 'No se recibieron factores detallados.'
-          ];
-
-
-    motivos.forEach(
-      function(motivo) {
-
-        const item =
-          document.createElement('li');
-
-
-        item.textContent =
-
-          typeof motivo === 'object'
-
-            ? texto(
-                primerValor(
-                  motivo,
-                  [
-                    'motivo',
-                    'descripcion',
-                    'texto'
-                  ]
-                )
-              )
-
-            : texto(
-                motivo
-              );
-
-
-        lista.appendChild(item);
-      }
-    );
-  }
-
-
-  const indicadores =
-    riesgo.indicadores || {};
-
-
-  const inasistencias =
-    elemento(
-      'indicadorInasistenciasPadresPrueba'
-    );
-
-  const reportes =
-    elemento(
-      'indicadorReportesRiesgoPadresPrueba'
-    );
-
-  const citatorios =
-    elemento(
-      'indicadorCitatoriosRiesgoPadresPrueba'
-    );
-
-  const pases =
-    elemento(
-      'indicadorPasesRiesgoPadresPrueba'
-    );
-
-
-  if (inasistencias) {
-    inasistencias.textContent =
-      numero(
-        indicadores.inasistencias,
-        EXPEDIENTE_PADRES.asistencia.faltas
-      );
-  }
-
-  if (reportes) {
-    reportes.textContent =
-      numero(
-        indicadores.reportes,
-        EXPEDIENTE_PADRES.reportes.length
-      );
-  }
-
-  if (citatorios) {
-    citatorios.textContent =
-      numero(
-        indicadores.citatorios,
-        EXPEDIENTE_PADRES.citatorios.length
-      );
-  }
-
-  if (pases) {
-    pases.textContent =
-      numero(
-        indicadores.pasesSalida,
-        EXPEDIENTE_PADRES.pasesSalida.length
-      );
-  }
-}
-
-
-// ============================================================
-// PERFIL
-// ============================================================
-
-function renderizarPerfil() {
-
-  const perfil =
-    EXPEDIENTE_PADRES;
-
-
-  const alumno =
-    elemento(
-      'perfilAlumnoPadresPrueba'
-    );
-
-  const gradoGrupo =
-    elemento(
-      'perfilGrupoPadresPrueba'
-    );
-
-  const tutor =
-    elemento(
-      'perfilTutorPadresPrueba'
-    );
-
-  const telefono =
-    elemento(
-      'telefonoTutorPadresPrueba'
-    );
-
-  const correo =
-    elemento(
-      'correoTutorPadresPrueba'
-    );
-
-
-  if (alumno) {
-
-    alumno.textContent =
-      texto(
-        perfil.alumno.nombre
-      );
-  }
-
-
-  if (gradoGrupo) {
-
-    gradoGrupo.textContent =
-      [
-        perfil.alumno.grado,
-        perfil.alumno.grupo
-      ]
-        .filter(Boolean)
-        .join(' · ') || '—';
-  }
-
-
-  if (tutor) {
-
-    tutor.textContent =
-      texto(
-        perfil.tutor.nombre
-      );
-  }
-
-
-  if (telefono) {
-
-    telefono.value =
-      perfil.tutor.telefono === '—'
-        ? ''
-        : perfil.tutor.telefono;
-  }
-
-
-  if (correo) {
-
-    correo.value =
-      perfil.tutor.correo === '—'
-        ? ''
-        : perfil.tutor.correo;
-  }
-}
-
-
-// ============================================================
-// MOSTRAR / OCULTAR PORTAL
-// ============================================================
-
-function mostrarPortal() {
-
-  ocultarCambioPassword();
-  ocultarRecuperacion();
-
-  mostrarEncabezadoPublico(false);
-  mostrarBotonRecuperacion(false);
-
-
-  const login =
-    elemento(
-      'formLoginPadresPrueba'
-    );
-
-  const panel =
-    elemento(
-      'panelPadresPrueba'
-    );
-
-
-  if (login) {
-    login.hidden =
-      true;
-  }
-
-  if (panel) {
-    panel.hidden =
-      false;
-  }
-
-
-  mostrarModulo(
-    'resumen'
-  );
-}
-
-
-function ocultarPortal() {
-
-  const login =
-    elemento(
-      'formLoginPadresPrueba'
-    );
-
-  const panel =
-    elemento(
-      'panelPadresPrueba'
-    );
-
-
-  if (login) {
-    login.hidden =
-      false;
-  }
-
-  if (panel) {
-    panel.hidden =
-      true;
-  }
-
-
-  mostrarEncabezadoPublico(true);
-  mostrarBotonRecuperacion(true);
-
-
-  limpiarPortal();
-}
-
-
-function limpiarPortal() {
-
-  EXPEDIENTE_PADRES =
-    null;
-
-
-  const campos =
-    [
-      'nombreAlumnoPadresPrueba',
-      'gradoAlumnoPadresPrueba',
-      'grupoAlumnoPadresPrueba',
-      'cicloEscolarPadresPrueba'
-    ];
-
-
-  campos.forEach(
-    function(id) {
-
-      const campo =
-        elemento(id);
-
-      if (campo) {
-        campo.textContent =
-          '—';
-      }
-    }
-  );
-
-
-  [
-    'cuerpoTablaAsistenciaPadresPrueba',
-    'cuerpoTablaReportesPadresPrueba',
-    'cuerpoTablaJustificantesPadresPrueba',
-    'cuerpoTablaCitatoriosPadresPrueba',
-    'cuerpoTablaCalificacionesPadresPrueba',
-    'cuerpoTablaPasesSalidaPadresPrueba',
-    'cuerpoTablaSeguimientoPadresPrueba'
-  ].forEach(
-    function(id) {
-
-      const cuerpo =
-        elemento(id);
-
-      if (cuerpo) {
-        cuerpo.replaceChildren();
-      }
-    }
-  );
-
-
-  const riesgo =
-    elemento(
-      'nivelRiesgoPadresPrueba'
-    );
-
-  if (riesgo) {
-    riesgo.textContent =
-      'Sin consultar';
-  }
-
-
-  const puntaje =
-    elemento(
-      'puntajeRiesgoPadresPrueba'
-    );
-
-  if (puntaje) {
-    puntaje.textContent =
-      '0';
-  }
-
-
-  [
-    'telefonoTutorPadresPrueba',
-    'correoTutorPadresPrueba',
-    'passwordActualPerfilPadresPrueba'
-  ].forEach(
-    function(id) {
-
-      const campo =
-        elemento(id);
-
-      if (campo) {
-        campo.value =
-          '';
-      }
-    }
-  );
-}
-
-
-// ============================================================
-// NAVEGACIÓN
-// ============================================================
-
-function mostrarModulo(
-  nombre
-) {
-
-  document
-    .querySelectorAll(
-      '[data-vista-padres]'
-    )
-    .forEach(
-      function(vista) {
-
-        vista.hidden =
-          vista.dataset.vistaPadres !==
-          nombre;
-      }
-    );
-
-
-  document
-    .querySelectorAll(
-      '[data-modulo-padres]'
-    )
-    .forEach(
-      function(boton) {
-
-        const activo =
-          boton.dataset.moduloPadres ===
-          nombre;
-
-
-        boton.classList.toggle(
-          'activo',
-          activo
-        );
-
-
-        boton.setAttribute(
-          'aria-current',
-          activo
-            ? 'page'
-            : 'false'
-        );
-      }
-    );
-
-
-  MODULO_ACTUAL_PADRES =
-    nombre;
-}
-
-
-// ============================================================
-// ACTUALIZAR EXPEDIENTE
-// ============================================================
-
-async function actualizarExpediente() {
-
-  await cargarExpedienteCompleto(
-    true
-  );
-}
-
-
-// ============================================================
-// CAMBIO DE CONTRASEÑA INICIAL
-// ============================================================
-
-async function cambiarPasswordInicial(
+async function cambiarPasswordInicialPadresPrueba(
   evento
 ) {
 
   evento.preventDefault();
 
-
   const token =
-    obtenerToken();
 
-
-  if (!token) {
-
-    cerrarPortalPorSesionInvalida();
-
-    return;
-  }
-
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
 
   const nuevo =
-    String(
-      elemento(
-        'nuevoPasswordInicialPadresPrueba'
-      )?.value || ''
-    ).trim();
 
+    String(
+
+      elementoPadresPrueba(
+        'nuevoPasswordInicialPadresPrueba'
+      )?.value ||
+
+      ''
+
+    ).trim();
 
   const confirmar =
+
     String(
-      elemento(
+
+      elementoPadresPrueba(
         'confirmarPasswordInicialPadresPrueba'
-      )?.value || ''
+      )?.value ||
+
+      ''
+
     ).trim();
 
-
   const boton =
-    elemento(
+
+    elementoPadresPrueba(
       'btnCambiarPasswordInicialPadresPrueba'
     );
 
+  if (!token) {
+
+    finalizarSesionInvalidaPadresPrueba();
+
+    return;
+  }
 
   if (
     !nuevo ||
     !confirmar
   ) {
 
-    mostrarMensaje(
-      'mensajeCambioPasswordPadresPrueba',
+    mostrarMensajeCambioPasswordPadresPrueba(
       'Escribe y confirma la nueva contraseña.',
       'info'
     );
@@ -3198,13 +1030,11 @@ async function cambiarPasswordInicial(
     return;
   }
 
-
   if (
     nuevo.length < 6
   ) {
 
-    mostrarMensaje(
-      'mensajeCambioPasswordPadresPrueba',
+    mostrarMensajeCambioPasswordPadresPrueba(
       'La contraseña debe tener al menos 6 caracteres.',
       'error'
     );
@@ -3212,13 +1042,11 @@ async function cambiarPasswordInicial(
     return;
   }
 
-
   if (
     nuevo !== confirmar
   ) {
 
-    mostrarMensaje(
-      'mensajeCambioPasswordPadresPrueba',
+    mostrarMensajeCambioPasswordPadresPrueba(
       'Las contraseñas no coinciden.',
       'error'
     );
@@ -3226,14 +1054,12 @@ async function cambiarPasswordInicial(
     return;
   }
 
-
   if (
     nuevo.toLowerCase() ===
     'escuela'
   ) {
 
-    mostrarMensaje(
-      'mensajeCambioPasswordPadresPrueba',
+    mostrarMensajeCambioPasswordPadresPrueba(
       'La nueva contraseña debe ser diferente de la contraseña inicial.',
       'error'
     );
@@ -3241,19 +1067,23 @@ async function cambiarPasswordInicial(
     return;
   }
 
-
-  cambiarBoton(
+  cambiarEstadoBotonPadresPrueba(
     boton,
     true,
     'Guardando...',
     'Guardar nueva contraseña'
   );
 
+  mostrarMensajeCambioPasswordPadresPrueba(
+    'Actualizando la contraseña...',
+    'info'
+  );
 
   try {
 
     const datos =
-      await enviarPost({
+
+      await enviarPostPadresPrueba({
 
         accion:
           'cambiarPasswordInicialPadre',
@@ -3268,31 +1098,31 @@ async function cambiarPasswordInicial(
           confirmar
       });
 
-
     if (
       !datos.success
     ) {
 
       if (
-        sesionInvalida(
+        respuestaSesionInvalidaPadresPrueba(
           datos
         )
       ) {
 
-        cerrarPortalPorSesionInvalida(
+        finalizarSesionInvalidaPadresPrueba(
           datos.mensaje
         );
 
         return;
       }
 
-
-      throw new Error(
+      mostrarMensajeCambioPasswordPadresPrueba(
         datos.mensaje ||
-        'No fue posible actualizar la contraseña.'
+        'No fue posible actualizar la contraseña.',
+        'error'
       );
-    }
 
+      return;
+    }
 
     if (
       !datos.token
@@ -3303,35 +1133,36 @@ async function cambiarPasswordInicial(
       );
     }
 
-
     sessionStorage.setItem(
-      CLAVE_TOKEN_PADRES,
+      CLAVE_TOKEN_PADRES_PRUEBA,
       datos.token
     );
 
-
-    ocultarCambioPassword();
-
-    await cargarExpedienteCompleto(
-      true
+    mostrarSesionPadresPrueba(
+      datos
     );
 
+    mostrarMensajePadresPrueba(
+      datos.mensaje ||
+      'Contraseña actualizada correctamente.',
+      'exito'
+    );
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    mostrarMensaje(
-      'mensajeCambioPasswordPadresPrueba',
+    mostrarMensajeCambioPasswordPadresPrueba(
       error.message ||
-        'No fue posible actualizar la contraseña.',
+      'No fue posible actualizar la contraseña.',
       'error'
     );
 
-
   } finally {
 
-    cambiarBoton(
+    cambiarEstadoBotonPadresPrueba(
       boton,
       false,
       'Guardando...',
@@ -3341,34 +1172,654 @@ async function cambiarPasswordInicial(
 }
 
 
-// ============================================================
-// RECUPERACIÓN
-// ============================================================
+function mostrarSesionPadresPrueba(
+  datos
+) {
 
-async function solicitarCodigoRecuperacion(
+  ocultarCambioPasswordInicialPadresPrueba();
+
+  ocultarPanelesRecuperacionPadresPrueba();
+
+  mostrarEncabezadoPublicoPadresPrueba(
+    false
+  );
+
+  mostrarBotonRecuperacionPadresPrueba(
+    false
+  );
+
+  const login =
+
+    elementoPadresPrueba(
+      'formLoginPadresPrueba'
+    );
+
+  const panel =
+
+    elementoPadresPrueba(
+      'panelPadresPrueba'
+    );
+
+  const alumno =
+    datos?.alumno || {};
+
+  if (login) {
+
+    login.hidden =
+      true;
+  }
+
+  if (panel) {
+
+    panel.hidden =
+      false;
+  }
+
+  const nombre =
+
+    elementoPadresPrueba(
+      'nombreAlumnoPadresPrueba'
+    );
+
+  const grado =
+
+    elementoPadresPrueba(
+      'gradoAlumnoPadresPrueba'
+    );
+
+  const grupo =
+
+    elementoPadresPrueba(
+      'grupoAlumnoPadresPrueba'
+    );
+
+  const estado =
+
+    elementoPadresPrueba(
+      'estadoSesionPadresPrueba'
+    );
+
+  if (nombre) {
+
+    nombre.textContent =
+
+      textoPadresPrueba(
+        alumno.nombre,
+        'Alumno'
+      );
+  }
+
+  if (grado) {
+
+    grado.textContent =
+
+      textoPadresPrueba(
+        alumno.grado,
+        'Sin grado'
+      );
+  }
+
+  if (grupo) {
+
+    grupo.textContent =
+
+      textoPadresPrueba(
+        alumno.grupo,
+        'Sin grupo'
+      );
+  }
+
+  if (estado) {
+
+    estado.textContent =
+      'Sesión segura activa.';
+  }
+
+  MODULOS_CARGADOS_PADRES_PRUEBA.clear();
+
+  mostrarModuloPadresPrueba(
+    'asistencia',
+    true
+  );
+}
+
+
+function limpiarPortalPadresPrueba() {
+
+  MODULOS_CARGADOS_PADRES_PRUEBA.clear();
+
+  MODULO_ACTUAL_PADRES_PRUEBA =
+    'asistencia';
+
+  limpiarAsistenciaPadresPrueba();
+
+  mostrarFilaMensajePadresPrueba(
+    'cuerpoTablaReportesPadresPrueba',
+    7,
+    'Selecciona esta sección para consultar los reportes.'
+  );
+
+  mostrarFilaMensajePadresPrueba(
+    'cuerpoTablaJustificantesPadresPrueba',
+    4,
+    'Selecciona esta sección para consultar los justificantes.'
+  );
+
+  mostrarFilaMensajePadresPrueba(
+    'cuerpoTablaCitatoriosPadresPrueba',
+    5,
+    'Selecciona esta sección para consultar los citatorios.'
+  );
+
+  mostrarFilaMensajePadresPrueba(
+    'cuerpoTablaCalificacionesPadresPrueba',
+    6,
+    'Selecciona esta sección para consultar las calificaciones.'
+  );
+
+  [
+
+    'mensajeReportesPadresPrueba',
+
+    'mensajeJustificantesPadresPrueba',
+
+    'mensajeCitatoriosPadresPrueba',
+
+    'mensajeCalificacionesPadresPrueba'
+
+  ].forEach(
+
+    function (
+      id
+    ) {
+
+      mostrarMensajeModuloPadresPrueba(
+        id,
+        '',
+        'info'
+      );
+    }
+  );
+
+  limpiarRiesgoPadresPrueba();
+
+  limpiarPerfilPadresPrueba();
+}
+
+
+function ocultarSesionPadresPrueba() {
+
+  ocultarCambioPasswordInicialPadresPrueba();
+
+  ocultarPanelesRecuperacionPadresPrueba();
+
+  limpiarPortalPadresPrueba();
+
+  mostrarEncabezadoPublicoPadresPrueba(
+    true
+  );
+
+  mostrarBotonRecuperacionPadresPrueba(
+    true
+  );
+
+  const login =
+
+    elementoPadresPrueba(
+      'formLoginPadresPrueba'
+    );
+
+  const panel =
+
+    elementoPadresPrueba(
+      'panelPadresPrueba'
+    );
+
+  const uid =
+
+    elementoPadresPrueba(
+      'uidPadresPrueba'
+    );
+
+  const password =
+
+    elementoPadresPrueba(
+      'passwordPadresPrueba'
+    );
+
+  if (login) {
+
+    login.hidden =
+      false;
+  }
+
+  if (panel) {
+
+    panel.hidden =
+      true;
+  }
+
+  if (uid) {
+
+    uid.value =
+      '';
+  }
+
+  if (password) {
+
+    password.value =
+      '';
+  }
+}
+
+
+async function iniciarSesionPadresPrueba(
   evento
 ) {
 
   evento.preventDefault();
 
-
   const uid =
+
     String(
-      elemento(
-        'uidRecuperacionPadresPrueba'
-      )?.value || ''
+
+      elementoPadresPrueba(
+        'uidPadresPrueba'
+      )?.value ||
+
+      ''
+
     ).trim();
 
+  const password =
+
+    String(
+
+      elementoPadresPrueba(
+        'passwordPadresPrueba'
+      )?.value ||
+
+      ''
+    );
 
   const boton =
-    elemento(
+
+    elementoPadresPrueba(
+      'btnIngresarPadresPrueba'
+    );
+
+  if (
+    !uid ||
+    !password
+  ) {
+
+    mostrarMensajePadresPrueba(
+      'Escribe el UID y la contraseña.',
+      'info'
+    );
+
+    return;
+  }
+
+  cambiarEstadoBotonPadresPrueba(
+    boton,
+    true,
+    'Ingresando...',
+    'Ingresar'
+  );
+
+  mostrarMensajePadresPrueba(
+    'Validando la cuenta...',
+    'info'
+  );
+
+  try {
+
+    const datos =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'loginPadres',
+
+        uid:
+          uid,
+
+        password:
+          password
+      });
+
+    if (
+      !datos.success ||
+      !datos.token
+    ) {
+
+      mostrarMensajePadresPrueba(
+        datos.mensaje ||
+        'No fue posible iniciar sesión.',
+        'error'
+      );
+
+      return;
+    }
+
+    sessionStorage.setItem(
+      CLAVE_TOKEN_PADRES_PRUEBA,
+      datos.token
+    );
+
+    sessionStorage.removeItem(
+      CLAVE_UID_RECUPERACION_PADRES_PRUEBA
+    );
+
+    const campoPassword =
+
+      elementoPadresPrueba(
+        'passwordPadresPrueba'
+      );
+
+    if (campoPassword) {
+
+      campoPassword.value =
+        '';
+    }
+
+    if (
+      datos.requiereCambioPassword
+    ) {
+
+      mostrarCambioPasswordInicialPadresPrueba(
+        datos
+      );
+
+      mostrarMensajePadresPrueba(
+        'Acceso correcto. Debes cambiar la contraseña inicial.',
+        'info'
+      );
+
+      return;
+    }
+
+    mostrarSesionPadresPrueba(
+      datos
+    );
+
+    mostrarMensajePadresPrueba(
+      'Sesión iniciada correctamente.',
+      'exito'
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    mostrarMensajePadresPrueba(
+      error.message ||
+      'No fue posible conectar con el servidor.',
+      'error'
+    );
+
+  } finally {
+
+    cambiarEstadoBotonPadresPrueba(
+      boton,
+      false,
+      'Ingresando...',
+      'Ingresar'
+    );
+  }
+}
+
+
+async function cerrarSesionPadresPrueba() {
+
+  const token =
+
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+  const boton =
+
+    elementoPadresPrueba(
+      'btnCerrarSesionPadresPrueba'
+    );
+
+  cambiarEstadoBotonPadresPrueba(
+    boton,
+    true,
+    'Cerrando sesión...',
+    'Cerrar sesión'
+  );
+
+  try {
+
+    if (token) {
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'cerrarSesionPadres',
+
+        token:
+          token
+      });
+    }
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+  } finally {
+
+    sessionStorage.removeItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+    sessionStorage.removeItem(
+      CLAVE_UID_RECUPERACION_PADRES_PRUEBA
+    );
+
+    ocultarSesionPadresPrueba();
+
+    mostrarMensajePadresPrueba(
+      'Sesión cerrada correctamente.',
+      'exito'
+    );
+
+    cambiarEstadoBotonPadresPrueba(
+      boton,
+      false,
+      'Cerrando sesión...',
+      'Cerrar sesión'
+    );
+  }
+}
+
+
+async function restaurarSesionPadresPrueba() {
+
+  const token =
+
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+  if (!token) {
+
+    const uidRecuperacion =
+
+      sessionStorage.getItem(
+        CLAVE_UID_RECUPERACION_PADRES_PRUEBA
+      );
+
+    if (uidRecuperacion) {
+
+      const campo =
+
+        elementoPadresPrueba(
+          'uidRecuperacionPadresPrueba'
+        );
+
+      if (campo) {
+
+        campo.value =
+          uidRecuperacion;
+      }
+
+      mostrarRestablecimientoRecuperacionPadresPrueba();
+
+      mostrarMensajeRecuperacionPadresPrueba(
+        'mensajeRestablecerPasswordPadresPrueba',
+        'Escribe el código enviado al correo registrado.',
+        'info'
+      );
+
+      return;
+    }
+
+    ocultarSesionPadresPrueba();
+
+    return;
+  }
+
+  mostrarMensajePadresPrueba(
+    'Verificando la sesión...',
+    'info'
+  );
+
+  try {
+
+    const validacion =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'validarSesionPadres',
+
+        token:
+          token
+      });
+
+    if (
+      !validacion.success ||
+      !validacion.sesionValida
+    ) {
+
+      throw new Error(
+        validacion.mensaje ||
+        'La sesión ya no es válida.'
+      );
+    }
+
+    if (
+      validacion.requiereCambioPassword
+    ) {
+
+      mostrarCambioPasswordInicialPadresPrueba(
+        validacion
+      );
+
+      mostrarMensajePadresPrueba(
+        'Debes cambiar la contraseña inicial para continuar.',
+        'info'
+      );
+
+      return;
+    }
+
+    const respuestaPerfil =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'obtenerPerfilPadre',
+
+        token:
+          token
+      });
+
+    if (
+      !respuestaPerfil.success ||
+      respuestaPerfil.sesionValida === false
+    ) {
+
+      throw new Error(
+        respuestaPerfil.mensaje ||
+        'No fue posible recuperar el perfil.'
+      );
+    }
+
+    const perfil =
+
+      normalizarPerfilPadresPrueba(
+        respuestaPerfil
+      );
+
+    mostrarSesionPadresPrueba({
+
+      alumno: {
+
+        nombre:
+          perfil.nombreAlumno,
+
+        grado:
+          perfil.grado,
+
+        grupo:
+          perfil.grupo
+      }
+    });
+
+    mostrarMensajePadresPrueba(
+      'Sesión restaurada correctamente.',
+      'exito'
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    finalizarSesionInvalidaPadresPrueba(
+      'La sesión terminó. Ingresa nuevamente.'
+    );
+  }
+}
+
+
+async function solicitarCodigoRecuperacionPadresPrueba(
+  evento
+) {
+
+  evento.preventDefault();
+
+  const uid =
+
+    String(
+
+      elementoPadresPrueba(
+        'uidRecuperacionPadresPrueba'
+      )?.value ||
+
+      ''
+
+    ).trim();
+
+  const boton =
+
+    elementoPadresPrueba(
       'btnSolicitarCodigoPadresPrueba'
     );
 
-
   if (!uid) {
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeSolicitarRecuperacionPadresPrueba',
       'Escribe el UID del alumno.',
       'info'
@@ -3377,19 +1828,24 @@ async function solicitarCodigoRecuperacion(
     return;
   }
 
-
-  cambiarBoton(
+  cambiarEstadoBotonPadresPrueba(
     boton,
     true,
     'Enviando...',
     'Enviar código'
   );
 
+  mostrarMensajeRecuperacionPadresPrueba(
+    'mensajeSolicitarRecuperacionPadresPrueba',
+    'Procesando la solicitud...',
+    'info'
+  );
 
   try {
 
     const datos =
-      await enviarPost({
+
+      await enviarPostPadresPrueba({
 
         accion:
           'solicitarCodigoRecuperacionPadre',
@@ -3398,50 +1854,50 @@ async function solicitarCodigoRecuperacion(
           uid
       });
 
-
     if (
       !datos.success
     ) {
 
-      throw new Error(
+      mostrarMensajeRecuperacionPadresPrueba(
+        'mensajeSolicitarRecuperacionPadresPrueba',
         datos.mensaje ||
-        'No fue posible procesar la solicitud.'
+        'No fue posible procesar la recuperación.',
+        'error'
       );
+
+      return;
     }
 
-
     sessionStorage.setItem(
-      CLAVE_UID_RECUPERACION,
+      CLAVE_UID_RECUPERACION_PADRES_PRUEBA,
       uid
     );
 
+    mostrarRestablecimientoRecuperacionPadresPrueba();
 
-    mostrarRestablecimientoRecuperacion();
-
-
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       datos.mensaje ||
-        'Revisa el correo registrado y escribe el código recibido.',
+      'Revisa el correo registrado y escribe el código recibido.',
       'exito'
     );
 
-
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeSolicitarRecuperacionPadresPrueba',
       error.message ||
-        'No fue posible conectar con el servidor.',
+      'No fue posible conectar con el servidor.',
       'error'
     );
 
-
   } finally {
 
-    cambiarBoton(
+    cambiarEstadoBotonPadresPrueba(
       boton,
       false,
       'Enviando...',
@@ -3451,40 +1907,45 @@ async function solicitarCodigoRecuperacion(
 }
 
 
-async function reenviarCodigoRecuperacion() {
+async function reenviarCodigoRecuperacionPadresPrueba() {
 
   const uid =
+
     sessionStorage.getItem(
-      CLAVE_UID_RECUPERACION
+      CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
 
-
   const boton =
-    elemento(
+
+    elementoPadresPrueba(
       'btnReenviarCodigoPadresPrueba'
     );
 
-
   if (!uid) {
 
-    mostrarSolicitudRecuperacion();
+    mostrarSolicitudRecuperacionPadresPrueba();
 
     return;
   }
 
-
-  cambiarBoton(
+  cambiarEstadoBotonPadresPrueba(
     boton,
     true,
     'Enviando...',
     'Enviar otro código'
   );
 
+  mostrarMensajeRecuperacionPadresPrueba(
+    'mensajeRestablecerPasswordPadresPrueba',
+    'Procesando el nuevo envío...',
+    'info'
+  );
 
   try {
 
     const datos =
-      await enviarPost({
+
+      await enviarPostPadresPrueba({
 
         accion:
           'solicitarCodigoRecuperacionPadre',
@@ -3493,36 +1954,35 @@ async function reenviarCodigoRecuperacion() {
           uid
       });
 
-
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       datos.mensaje ||
-        (
-          datos.success
-            ? 'Solicitud procesada. Revisa nuevamente el correo.'
-            : 'No fue posible procesar la solicitud.'
-        ),
+      (
+        datos.success
+          ? 'Solicitud procesada. Revisa nuevamente el correo registrado.'
+          : 'No fue posible procesar la solicitud.'
+      ),
       datos.success
         ? 'exito'
         : 'error'
     );
 
-
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       error.message ||
-        'No fue posible conectar con el servidor.',
+      'No fue posible conectar con el servidor.',
       'error'
     );
 
-
   } finally {
 
-    cambiarBoton(
+    cambiarEstadoBotonPadresPrueba(
       boton,
       false,
       'Enviando...',
@@ -3532,65 +1992,75 @@ async function reenviarCodigoRecuperacion() {
 }
 
 
-async function restablecerPassword(
+async function restablecerPasswordRecuperacionPadresPrueba(
   evento
 ) {
 
   evento.preventDefault();
 
-
   const uid =
+
     sessionStorage.getItem(
-      CLAVE_UID_RECUPERACION
+      CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
 
-
   const codigo =
+
     String(
-      elemento(
+
+      elementoPadresPrueba(
         'codigoRecuperacionPadresPrueba'
-      )?.value || ''
+      )?.value ||
+
+      ''
+
     ).replace(
       /\D/g,
       ''
     );
 
-
   const nueva =
-    String(
-      elemento(
-        'nuevoPasswordRecuperacionPadresPrueba'
-      )?.value || ''
-    ).trim();
 
+    String(
+
+      elementoPadresPrueba(
+        'nuevoPasswordRecuperacionPadresPrueba'
+      )?.value ||
+
+      ''
+
+    ).trim();
 
   const confirmar =
+
     String(
-      elemento(
+
+      elementoPadresPrueba(
         'confirmarPasswordRecuperacionPadresPrueba'
-      )?.value || ''
+      )?.value ||
+
+      ''
+
     ).trim();
 
-
   const boton =
-    elemento(
+
+    elementoPadresPrueba(
       'btnRestablecerPasswordPadresPrueba'
     );
 
-
   if (!uid) {
 
-    mostrarSolicitudRecuperacion();
+    mostrarSolicitudRecuperacionPadresPrueba();
 
     return;
   }
-
 
   if (
     codigo.length !== 6
   ) {
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       'El código debe contener exactamente seis dígitos.',
       'error'
@@ -3599,12 +2069,11 @@ async function restablecerPassword(
     return;
   }
 
-
   if (
     nueva.length < 8
   ) {
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       'La nueva contraseña debe contener al menos 8 caracteres.',
       'error'
@@ -3613,12 +2082,11 @@ async function restablecerPassword(
     return;
   }
 
-
   if (
     nueva.length > 64
   ) {
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       'La nueva contraseña es demasiado larga.',
       'error'
@@ -3627,12 +2095,11 @@ async function restablecerPassword(
     return;
   }
 
-
   if (
     nueva !== confirmar
   ) {
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       'Las contraseñas no coinciden.',
       'error'
@@ -3641,13 +2108,12 @@ async function restablecerPassword(
     return;
   }
 
-
   if (
     nueva.toLowerCase() ===
     'escuela'
   ) {
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       'La nueva contraseña no puede ser la contraseña inicial.',
       'error'
@@ -3656,19 +2122,24 @@ async function restablecerPassword(
     return;
   }
 
-
-  cambiarBoton(
+  cambiarEstadoBotonPadresPrueba(
     boton,
     true,
     'Cambiando...',
     'Cambiar contraseña'
   );
 
+  mostrarMensajeRecuperacionPadresPrueba(
+    'mensajeRestablecerPasswordPadresPrueba',
+    'Validando el código...',
+    'info'
+  );
 
   try {
 
     const datos =
-      await enviarPost({
+
+      await enviarPostPadresPrueba({
 
         accion:
           'restablecerPasswordPadre',
@@ -3683,60 +2154,60 @@ async function restablecerPassword(
           nueva
       });
 
-
     if (
       !datos.success
     ) {
 
-      throw new Error(
+      mostrarMensajeRecuperacionPadresPrueba(
+        'mensajeRestablecerPasswordPadresPrueba',
         datos.mensaje ||
-        'No fue posible restablecer la contraseña.'
+        'No fue posible restablecer la contraseña.',
+        'error'
       );
+
+      return;
     }
 
-
     sessionStorage.removeItem(
-      CLAVE_UID_RECUPERACION
+      CLAVE_UID_RECUPERACION_PADRES_PRUEBA
     );
 
-
-    ocultarPortal();
-
+    ocultarSesionPadresPrueba();
 
     const campoUID =
-      elemento(
+
+      elementoPadresPrueba(
         'uidPadresPrueba'
       );
 
     if (campoUID) {
+
       campoUID.value =
         uid;
     }
 
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
+    mostrarMensajePadresPrueba(
       datos.mensaje ||
-        'Contraseña restablecida correctamente. Ya puedes iniciar sesión.',
+      'Contraseña restablecida correctamente. Ya puedes iniciar sesión.',
       'exito'
     );
 
-
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    mostrarMensaje(
+    mostrarMensajeRecuperacionPadresPrueba(
       'mensajeRestablecerPasswordPadresPrueba',
       error.message ||
-        'No fue posible conectar con el servidor.',
+      'No fue posible conectar con el servidor.',
       'error'
     );
 
-
   } finally {
 
-    cambiarBoton(
+    cambiarEstadoBotonPadresPrueba(
       boton,
       false,
       'Cambiando...',
@@ -3746,62 +2217,2174 @@ async function restablecerPassword(
 }
 
 
-// ============================================================
-// ACTUALIZAR PERFIL
-// ============================================================
+function cancelarRecuperacionPadresPrueba() {
 
-async function actualizarPerfil(
+  sessionStorage.removeItem(
+    CLAVE_UID_RECUPERACION_PADRES_PRUEBA
+  );
+
+  ocultarSesionPadresPrueba();
+
+  mostrarMensajePadresPrueba(
+    '',
+    'info'
+  );
+}
+
+
+function mostrarModuloPadresPrueba(
+  nombre,
+  forzar = false
+) {
+
+  document
+    .querySelectorAll(
+      '[data-vista-padres]'
+    )
+    .forEach(
+
+      function (
+        vista
+      ) {
+
+        vista.hidden =
+
+          vista.dataset.vistaPadres !==
+          nombre;
+      }
+    );
+
+  document
+    .querySelectorAll(
+      '[data-modulo-padres]'
+    )
+    .forEach(
+
+      function (
+        boton
+      ) {
+
+        const activo =
+
+          boton.dataset.moduloPadres ===
+          nombre;
+
+        boton.classList.toggle(
+          'activo',
+          activo
+        );
+
+        boton.setAttribute(
+          'aria-current',
+          activo
+            ? 'page'
+            : 'false'
+        );
+      }
+    );
+
+  MODULO_ACTUAL_PADRES_PRUEBA =
+    nombre;
+
+  if (
+    forzar ||
+    !MODULOS_CARGADOS_PADRES_PRUEBA.has(
+      nombre
+    )
+  ) {
+
+    cargarModuloPadresPrueba(
+      nombre,
+      forzar
+    );
+  }
+}
+
+
+async function cargarModuloPadresPrueba(
+  nombre,
+  forzar = false
+) {
+
+  if (
+    !forzar &&
+    MODULOS_CARGADOS_PADRES_PRUEBA.has(
+      nombre
+    )
+  ) {
+
+    return;
+  }
+
+  const cargadores = {
+
+    asistencia:
+      cargarAsistenciaPadresPrueba,
+
+    reportes:
+      cargarReportesPadresPrueba,
+
+    justificantes:
+      cargarJustificantesPadresPrueba,
+
+    citatorios:
+      cargarCitatoriosPadresPrueba,
+
+    calificaciones:
+      cargarCalificacionesPadresPrueba,
+
+    riesgo:
+      cargarRiesgoPadresPrueba,
+
+    perfil:
+      cargarPerfilPadresPrueba
+  };
+
+  if (
+    cargadores[nombre]
+  ) {
+
+    await cargadores[nombre]();
+  }
+}
+
+
+function limpiarAsistenciaPadresPrueba() {
+
+  const valores = {
+
+    totalAsistenciasPadresPrueba:
+      '0',
+
+    totalFaltasPadresPrueba:
+      '0',
+
+    porcentajeAsistenciaPadresPrueba:
+      '0%',
+
+    totalRegistrosAsistenciaPadresPrueba:
+      '0'
+  };
+
+  Object
+    .entries(
+      valores
+    )
+    .forEach(
+
+      function (
+        entrada
+      ) {
+
+        const id =
+          entrada[0];
+
+        const valor =
+          entrada[1];
+
+        const elemento =
+
+          elementoPadresPrueba(
+            id
+          );
+
+        if (elemento) {
+
+          elemento.textContent =
+            valor;
+        }
+      }
+    );
+
+  mostrarMensajeModuloPadresPrueba(
+    'mensajeAsistenciaPadresPrueba',
+    '',
+    'info'
+  );
+
+  mostrarFilaMensajePadresPrueba(
+    'cuerpoTablaAsistenciaPadresPrueba',
+    4,
+    'Todavía no se ha consultado la asistencia.'
+  );
+}
+
+
+function mostrarAsistenciaPadresPrueba(
+  historial
+) {
+
+  const cuerpo =
+
+    elementoPadresPrueba(
+      'cuerpoTablaAsistenciaPadresPrueba'
+    );
+
+  if (!cuerpo) {
+
+    return;
+  }
+
+  if (
+    !historial.length
+  ) {
+
+    mostrarFilaMensajePadresPrueba(
+      'cuerpoTablaAsistenciaPadresPrueba',
+      4,
+      'No existen registros de asistencia para mostrar.'
+    );
+
+    return;
+  }
+
+  cuerpo.replaceChildren();
+
+  historial.forEach(
+
+    function (
+      registro
+    ) {
+
+      const fila =
+
+        document.createElement(
+          'tr'
+        );
+
+      fila.appendChild(
+
+        crearCeldaPadresPrueba(
+
+          formatearFechaPadresPrueba(
+
+            primerValorPadresPrueba(
+              registro,
+              [
+                'fecha',
+                'fechaClave',
+                'FECHA'
+              ]
+            )
+          )
+        )
+      );
+
+      fila.appendChild(
+
+        crearCeldaPadresPrueba(
+
+          formatearHoraPadresPrueba(
+
+            primerValorPadresPrueba(
+              registro,
+              [
+                'hora',
+                'HORA'
+              ]
+            )
+          )
+        )
+      );
+
+      fila.appendChild(
+
+        crearCeldaPadresPrueba(
+
+          primerValorPadresPrueba(
+            registro,
+            [
+              'estado',
+              'estatus',
+              'ESTATUS'
+            ]
+          ),
+
+          'celda-estado-asistencia-padres-prueba'
+        )
+      );
+
+      fila.appendChild(
+
+        crearCeldaPadresPrueba(
+
+          primerValorPadresPrueba(
+            registro,
+            [
+              'puntualidad',
+              'PUNTUALIDAD'
+            ]
+          )
+        )
+      );
+
+      cuerpo.appendChild(
+        fila
+      );
+    }
+  );
+}
+
+
+async function cargarAsistenciaPadresPrueba() {
+
+  const token =
+
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+  const boton =
+
+    elementoPadresPrueba(
+      'btnActualizarAsistenciaPadresPrueba'
+    );
+
+  if (!token) {
+
+    finalizarSesionInvalidaPadresPrueba();
+
+    return;
+  }
+
+  cambiarEstadoBotonPadresPrueba(
+    boton,
+    true,
+    'Consultando...',
+    'Actualizar'
+  );
+
+  mostrarMensajeModuloPadresPrueba(
+    'mensajeAsistenciaPadresPrueba',
+    'Consultando la asistencia...',
+    'info'
+  );
+
+  try {
+
+    const datos =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'obtenerAsistenciaPadre',
+
+        token:
+          token
+      });
+
+    if (
+      !datos.success
+    ) {
+
+      if (
+        respuestaSesionInvalidaPadresPrueba(
+          datos
+        )
+      ) {
+
+        finalizarSesionInvalidaPadresPrueba(
+          datos.mensaje
+        );
+
+        return;
+      }
+
+      throw new Error(
+        datos.mensaje ||
+        'No fue posible consultar la asistencia.'
+      );
+    }
+
+    const historial =
+
+      primerArregloPadresPrueba(
+        datos,
+        [
+          'historial',
+          'asistenciasDetalle',
+          'registros',
+          'datos'
+        ]
+      );
+
+    const resumen = {
+
+      totalAsistenciasPadresPrueba:
+
+        numeroPadresPrueba(
+
+          primerValorPadresPrueba(
+            datos,
+            [
+              'asistencias',
+              'totalAsistencias'
+            ],
+            0
+          )
+        ),
+
+      totalFaltasPadresPrueba:
+
+        numeroPadresPrueba(
+
+          primerValorPadresPrueba(
+            datos,
+            [
+              'faltas',
+              'inasistencias',
+              'totalFaltas'
+            ],
+            0
+          )
+        ),
+
+      porcentajeAsistenciaPadresPrueba:
+
+        (
+          numeroPadresPrueba(
+
+            primerValorPadresPrueba(
+              datos,
+              [
+                'porcentaje',
+                'porcentajeAsistencia'
+              ],
+              0
+            )
+          ) +
+
+          '%'
+        ),
+
+      totalRegistrosAsistenciaPadresPrueba:
+        historial.length
+    };
+
+    Object
+      .entries(
+        resumen
+      )
+      .forEach(
+
+        function (
+          entrada
+        ) {
+
+          const id =
+            entrada[0];
+
+          const valor =
+            entrada[1];
+
+          const elemento =
+
+            elementoPadresPrueba(
+              id
+            );
+
+          if (elemento) {
+
+            elemento.textContent =
+              String(valor);
+          }
+        }
+      );
+
+    mostrarAsistenciaPadresPrueba(
+      historial
+    );
+
+    MODULOS_CARGADOS_PADRES_PRUEBA.add(
+      'asistencia'
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      'mensajeAsistenciaPadresPrueba',
+      historial.length
+        ? 'Información de asistencia actualizada correctamente.'
+        : 'Todavía no existen registros de asistencia.',
+      'exito'
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      'mensajeAsistenciaPadresPrueba',
+      error.message ||
+      'No fue posible consultar la asistencia.',
+      'error'
+    );
+
+  } finally {
+
+    cambiarEstadoBotonPadresPrueba(
+      boton,
+      false,
+      'Consultando...',
+      'Actualizar'
+    );
+  }
+}
+
+
+const CONFIGURACION_TABLAS_PADRES_PRUEBA = {
+
+  reportes: {
+
+    accion:
+      'obtenerReportesPadre',
+
+    boton:
+      'btnActualizarReportesPadresPrueba',
+
+    mensaje:
+      'mensajeReportesPadresPrueba',
+
+    cuerpo:
+      'cuerpoTablaReportesPadresPrueba',
+
+    columnas:
+      7,
+
+    claves:
+      [
+        'reportes',
+        'datos',
+        'registros'
+      ],
+
+    consultando:
+      'Consultando los reportes escolares...',
+
+    vacio:
+      'No existen reportes escolares registrados.',
+
+    singular:
+      'reporte',
+
+    fila: function (
+      item
+    ) {
+
+      return [
+
+        formatearFechaPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'fecha',
+              'fechaReporte',
+              'FECHA'
+            ]
+          )
+        ),
+
+        formatearHoraPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'hora',
+              'horaReporte',
+              'HORA'
+            ]
+          )
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'tipo',
+            'tipoReporte',
+            'TIPO'
+          ]
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'docente',
+            'registradoPor',
+            'responsable',
+            'DOCENTE'
+          ]
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'descripcion',
+            'motivo',
+            'detalle',
+            'DESCRIPCION'
+          ]
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'accionTomada',
+            'accion',
+            'medida',
+            'ACCION_TOMADA'
+          ]
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'estatus',
+            'estado',
+            'ESTATUS'
+          ]
+        )
+      ];
+    }
+  },
+
+
+  justificantes: {
+
+    accion:
+      'obtenerJustificantesPadre',
+
+    boton:
+      'btnActualizarJustificantesPadresPrueba',
+
+    mensaje:
+      'mensajeJustificantesPadresPrueba',
+
+    cuerpo:
+      'cuerpoTablaJustificantesPadresPrueba',
+
+    columnas:
+      4,
+
+    claves:
+      [
+        'justificantes',
+        'datos',
+        'registros'
+      ],
+
+    consultando:
+      'Consultando los justificantes...',
+
+    vacio:
+      'No existen justificantes registrados.',
+
+    singular:
+      'justificante',
+
+    fila: function (
+      item
+    ) {
+
+      let tipo =
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'tipo',
+            'tipoJustificante',
+            'TIPO'
+          ]
+        );
+
+      let solicita =
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'solicita',
+            'solicitante',
+            'SOLICITA'
+          ]
+        );
+
+      if (
+        String(tipo).toUpperCase() ===
+          'OTRO' &&
+        item.tipoOtro
+      ) {
+
+        tipo =
+          'Otro: ' +
+          item.tipoOtro;
+      }
+
+      if (
+        String(solicita).toUpperCase() ===
+          'OTRO' &&
+        item.solicitaOtro
+      ) {
+
+        solicita =
+          'Otro: ' +
+          item.solicitaOtro;
+      }
+
+      return [
+
+        formatearFechaPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'fecha',
+              'fechaJustificante',
+              'FECHA'
+            ]
+          )
+        ),
+
+        tipo,
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'motivo',
+            'descripcion',
+            'MOTIVO'
+          ]
+        ),
+
+        solicita
+      ];
+    }
+  },
+
+
+  citatorios: {
+
+    accion:
+      'obtenerCitatoriosPadre',
+
+    boton:
+      'btnActualizarCitatoriosPadresPrueba',
+
+    mensaje:
+      'mensajeCitatoriosPadresPrueba',
+
+    cuerpo:
+      'cuerpoTablaCitatoriosPadresPrueba',
+
+    columnas:
+      5,
+
+    claves:
+      [
+        'citatorios',
+        'datos',
+        'registros'
+      ],
+
+    consultando:
+      'Consultando los citatorios...',
+
+    vacio:
+      'No existen citatorios registrados.',
+
+    singular:
+      'citatorio',
+
+    fila: function (
+      item
+    ) {
+
+      return [
+
+        formatearFechaPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'fechaCitatorio',
+              'fecha',
+              'FECHA_CITATORIO'
+            ]
+          )
+        ),
+
+        formatearHoraPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'horaCitatorio',
+              'hora',
+              'HORA_CITATORIO'
+            ]
+          )
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'motivo',
+            'descripcion',
+            'MOTIVO'
+          ]
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'responsable',
+            'registradoPor',
+            'RESPONSABLE'
+          ]
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'seguimiento',
+            'estatus',
+            'observaciones',
+            'SEGUIMIENTO'
+          ]
+        )
+      ];
+    }
+  },
+
+
+  calificaciones: {
+
+    accion:
+      'obtenerCalificacionesPadre',
+
+    boton:
+      'btnActualizarCalificacionesPadresPrueba',
+
+    mensaje:
+      'mensajeCalificacionesPadresPrueba',
+
+    cuerpo:
+      'cuerpoTablaCalificacionesPadresPrueba',
+
+    columnas:
+      6,
+
+    claves:
+      [
+        'calificaciones',
+        'datos',
+        'materias'
+      ],
+
+    consultando:
+      'Consultando las calificaciones...',
+
+    vacio:
+      'No existen calificaciones registradas.',
+
+    singular:
+      'materia',
+
+    fila: function (
+      item
+    ) {
+
+      return [
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'materia',
+            'Materia',
+            'MATERIA'
+          ]
+        ),
+
+        formatearCalificacionPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'p1',
+              'periodo1',
+              'primerPeriodo'
+            ]
+          )
+        ),
+
+        formatearCalificacionPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'p2',
+              'periodo2',
+              'segundoPeriodo'
+            ]
+          )
+        ),
+
+        formatearCalificacionPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'p3',
+              'periodo3',
+              'tercerPeriodo'
+            ]
+          )
+        ),
+
+        formatearCalificacionPadresPrueba(
+
+          primerValorPadresPrueba(
+            item,
+            [
+              'promedio',
+              'promedioFinal'
+            ]
+          )
+        ),
+
+        primerValorPadresPrueba(
+          item,
+          [
+            'situacion',
+            'estado',
+            'estatus'
+          ],
+          'Sin calificar'
+        )
+      ];
+    }
+  }
+};
+
+
+function mostrarTablaModuloPadresPrueba(
+  configuracion,
+  registros
+) {
+
+  const cuerpo =
+
+    elementoPadresPrueba(
+      configuracion.cuerpo
+    );
+
+  if (!cuerpo) {
+
+    return;
+  }
+
+  if (
+    !registros.length
+  ) {
+
+    mostrarFilaMensajePadresPrueba(
+      configuracion.cuerpo,
+      configuracion.columnas,
+      configuracion.vacio
+    );
+
+    return;
+  }
+
+  cuerpo.replaceChildren();
+
+  registros.forEach(
+
+    function (
+      registro
+    ) {
+
+      const fila =
+
+        document.createElement(
+          'tr'
+        );
+
+      configuracion
+        .fila(
+          registro
+        )
+        .forEach(
+
+          function (
+            valor,
+            indice
+          ) {
+
+            let clase =
+              '';
+
+            if (
+              configuracion ===
+              CONFIGURACION_TABLAS_PADRES_PRUEBA.calificaciones
+            ) {
+
+              if (
+                indice === 4
+              ) {
+
+                clase =
+                  'celda-promedio-padres-prueba';
+              }
+
+              if (
+                indice === 5
+              ) {
+
+                clase =
+                  'celda-situacion-padres-prueba';
+              }
+            }
+
+            fila.appendChild(
+
+              crearCeldaPadresPrueba(
+                valor,
+                clase
+              )
+            );
+          }
+        );
+
+      cuerpo.appendChild(
+        fila
+      );
+    }
+  );
+}
+
+
+async function cargarTablaModuloPadresPrueba(
+  nombre
+) {
+
+  const configuracion =
+
+    CONFIGURACION_TABLAS_PADRES_PRUEBA[
+      nombre
+    ];
+
+  const token =
+
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+  const boton =
+
+    elementoPadresPrueba(
+      configuracion.boton
+    );
+
+  if (!token) {
+
+    finalizarSesionInvalidaPadresPrueba();
+
+    return;
+  }
+
+  cambiarEstadoBotonPadresPrueba(
+    boton,
+    true,
+    'Consultando...',
+    'Actualizar'
+  );
+
+  mostrarMensajeModuloPadresPrueba(
+    configuracion.mensaje,
+    configuracion.consultando,
+    'info'
+  );
+
+  try {
+
+    const datos =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          configuracion.accion,
+
+        token:
+          token
+      });
+
+    if (
+      !datos.success
+    ) {
+
+      if (
+        respuestaSesionInvalidaPadresPrueba(
+          datos
+        )
+      ) {
+
+        finalizarSesionInvalidaPadresPrueba(
+          datos.mensaje
+        );
+
+        return;
+      }
+
+      throw new Error(
+        datos.mensaje ||
+        (
+          'No fue posible consultar ' +
+          nombre +
+          '.'
+        )
+      );
+    }
+
+    const registros =
+
+      primerArregloPadresPrueba(
+        datos,
+        configuracion.claves
+      );
+
+    mostrarTablaModuloPadresPrueba(
+      configuracion,
+      registros
+    );
+
+    MODULOS_CARGADOS_PADRES_PRUEBA.add(
+      nombre
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      configuracion.mensaje,
+      registros.length
+        ? (
+          'Se encontraron ' +
+          registros.length +
+          ' ' +
+          configuracion.singular +
+          '(s).'
+        )
+        : configuracion.vacio,
+      'exito'
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      configuracion.mensaje,
+      error.message ||
+      (
+        'No fue posible consultar ' +
+        nombre +
+        '.'
+      ),
+      'error'
+    );
+
+  } finally {
+
+    cambiarEstadoBotonPadresPrueba(
+      boton,
+      false,
+      'Consultando...',
+      'Actualizar'
+    );
+  }
+}
+
+
+function cargarReportesPadresPrueba() {
+
+  return cargarTablaModuloPadresPrueba(
+    'reportes'
+  );
+}
+
+
+function cargarJustificantesPadresPrueba() {
+
+  return cargarTablaModuloPadresPrueba(
+    'justificantes'
+  );
+}
+
+
+function cargarCitatoriosPadresPrueba() {
+
+  return cargarTablaModuloPadresPrueba(
+    'citatorios'
+  );
+}
+
+
+function cargarCalificacionesPadresPrueba() {
+
+  return cargarTablaModuloPadresPrueba(
+    'calificaciones'
+  );
+}
+
+
+function limpiarRiesgoPadresPrueba() {
+
+  const tarjeta =
+
+    elementoPadresPrueba(
+      'tarjetaRiesgoPadresPrueba'
+    );
+
+  const nivel =
+
+    elementoPadresPrueba(
+      'nivelRiesgoPadresPrueba'
+    );
+
+  const puntaje =
+
+    elementoPadresPrueba(
+      'puntajeRiesgoPadresPrueba'
+    );
+
+  const lista =
+
+    elementoPadresPrueba(
+      'listaMotivosRiesgoPadresPrueba'
+    );
+
+  if (tarjeta) {
+
+    tarjeta.className =
+      'tarjeta-riesgo-padres-prueba riesgo-sin-datos';
+  }
+
+  if (nivel) {
+
+    nivel.textContent =
+      'Sin consultar';
+  }
+
+  if (puntaje) {
+
+    puntaje.textContent =
+      '0';
+  }
+
+  if (lista) {
+
+    lista.replaceChildren();
+
+    const item =
+
+      document.createElement(
+        'li'
+      );
+
+    item.textContent =
+      'Todavía no se ha consultado el riesgo escolar.';
+
+    lista.appendChild(
+      item
+    );
+  }
+
+  mostrarMensajeModuloPadresPrueba(
+    'mensajeRiesgoPadresPrueba',
+    '',
+    'info'
+  );
+}
+
+
+function mostrarRiesgoPadresPrueba(
+  respuesta
+) {
+
+  const datos =
+
+    respuesta.riesgo ||
+
+    respuesta;
+
+  const tarjeta =
+
+    elementoPadresPrueba(
+      'tarjetaRiesgoPadresPrueba'
+    );
+
+  const nivelElemento =
+
+    elementoPadresPrueba(
+      'nivelRiesgoPadresPrueba'
+    );
+
+  const puntajeElemento =
+
+    elementoPadresPrueba(
+      'puntajeRiesgoPadresPrueba'
+    );
+
+  const lista =
+
+    elementoPadresPrueba(
+      'listaMotivosRiesgoPadresPrueba'
+    );
+
+  const nivel =
+
+    String(
+
+      primerValorPadresPrueba(
+        datos,
+        [
+          'nivel',
+          'nivelRiesgo',
+          'riesgo'
+        ],
+        'SIN RIESGO'
+      )
+    )
+      .trim()
+      .toUpperCase()
+      .replace(
+        /_/g,
+        ' '
+      );
+
+  const puntaje =
+
+    numeroPadresPrueba(
+
+      primerValorPadresPrueba(
+        datos,
+        [
+          'puntaje',
+          'puntos'
+        ],
+        0
+      )
+    );
+
+  const motivos =
+
+    primerArregloPadresPrueba(
+      datos,
+      [
+        'motivos',
+        'factores',
+        'razones'
+      ]
+    );
+
+  if (nivelElemento) {
+
+    nivelElemento.textContent =
+      nivel;
+  }
+
+  if (puntajeElemento) {
+
+    puntajeElemento.textContent =
+      String(puntaje);
+  }
+
+  if (tarjeta) {
+
+    tarjeta.className =
+      'tarjeta-riesgo-padres-prueba';
+
+    tarjeta.classList.add(
+
+      nivel.includes(
+        'ALTO'
+      )
+
+        ? 'riesgo-alto'
+
+        : nivel.includes(
+          'MEDIO'
+        )
+
+          ? 'riesgo-medio'
+
+          : nivel.includes(
+            'BAJO'
+          )
+
+            ? 'riesgo-bajo'
+
+            : 'riesgo-sin-riesgo'
+    );
+  }
+
+  if (lista) {
+
+    lista.replaceChildren();
+
+    const factores =
+
+      motivos.length
+
+        ? motivos
+
+        : [
+
+          nivel.includes(
+            'SIN RIESGO'
+          )
+
+            ? 'No se identificaron factores de riesgo.'
+
+            : 'No se recibieron factores detallados.'
+        ];
+
+    factores.forEach(
+
+      function (
+        motivo
+      ) {
+
+        const item =
+
+          document.createElement(
+            'li'
+          );
+
+        item.textContent =
+
+          typeof motivo === 'object'
+
+            ? textoPadresPrueba(
+
+              primerValorPadresPrueba(
+                motivo,
+                [
+                  'motivo',
+                  'descripcion',
+                  'texto'
+                ]
+              )
+            )
+
+            : textoPadresPrueba(
+              motivo
+            );
+
+        lista.appendChild(
+          item
+        );
+      }
+    );
+  }
+}
+
+
+async function cargarRiesgoPadresPrueba() {
+
+  const token =
+
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+  const boton =
+
+    elementoPadresPrueba(
+      'btnActualizarRiesgoPadresPrueba'
+    );
+
+  if (!token) {
+
+    finalizarSesionInvalidaPadresPrueba();
+
+    return;
+  }
+
+  cambiarEstadoBotonPadresPrueba(
+    boton,
+    true,
+    'Consultando...',
+    'Actualizar'
+  );
+
+  mostrarMensajeModuloPadresPrueba(
+    'mensajeRiesgoPadresPrueba',
+    'Calculando el indicador de riesgo...',
+    'info'
+  );
+
+  try {
+
+    const datos =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'obtenerRiesgoAlumnoPadre',
+
+        token:
+          token
+      });
+
+    if (
+      !datos.success
+    ) {
+
+      if (
+        respuestaSesionInvalidaPadresPrueba(
+          datos
+        )
+      ) {
+
+        finalizarSesionInvalidaPadresPrueba(
+          datos.mensaje
+        );
+
+        return;
+      }
+
+      throw new Error(
+        datos.mensaje ||
+        'No fue posible consultar el riesgo.'
+      );
+    }
+
+    mostrarRiesgoPadresPrueba(
+      datos
+    );
+
+    MODULOS_CARGADOS_PADRES_PRUEBA.add(
+      'riesgo'
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      'mensajeRiesgoPadresPrueba',
+      'Indicador de riesgo actualizado correctamente.',
+      'exito'
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      'mensajeRiesgoPadresPrueba',
+      error.message ||
+      'No fue posible consultar el riesgo escolar.',
+      'error'
+    );
+
+  } finally {
+
+    cambiarEstadoBotonPadresPrueba(
+      boton,
+      false,
+      'Consultando...',
+      'Actualizar'
+    );
+  }
+}
+
+
+function normalizarPerfilPadresPrueba(
+  respuesta
+) {
+
+  const perfil =
+
+    respuesta?.perfil &&
+    typeof respuesta.perfil === 'object'
+
+      ? respuesta.perfil
+
+      : respuesta || {};
+
+  const alumnoObjeto =
+
+    perfil.alumno &&
+    typeof perfil.alumno === 'object'
+
+      ? perfil.alumno
+
+      : {};
+
+  const tutorObjeto =
+
+    perfil.tutor &&
+    typeof perfil.tutor === 'object'
+
+      ? perfil.tutor
+
+      : {};
+
+  const nombreAlumno =
+
+    primerValorPadresPrueba(
+
+      alumnoObjeto,
+
+      [
+        'nombre',
+        'alumno',
+        'nombreAlumno',
+        'NOMBRE',
+        'ALUMNO'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'nombreAlumno',
+          'nombre',
+          'ALUMNO'
+        ],
+        ''
+      )
+    );
+
+  const grado =
+
+    primerValorPadresPrueba(
+
+      alumnoObjeto,
+
+      [
+        'grado',
+        'GRADO'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'grado',
+          'GRADO'
+        ],
+        ''
+      )
+    );
+
+  const grupo =
+
+    primerValorPadresPrueba(
+
+      alumnoObjeto,
+
+      [
+        'grupo',
+        'GRUPO'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'grupo',
+          'GRUPO'
+        ],
+        ''
+      )
+    );
+
+  const nombreTutor =
+
+    primerValorPadresPrueba(
+
+      tutorObjeto,
+
+      [
+        'nombre',
+        'nombreTutor',
+        'tutor',
+        'NOMBRE_TUTOR'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'nombreTutor',
+          'NOMBRE_TUTOR'
+        ],
+        ''
+      )
+    );
+
+  const telefonoTutor =
+
+    primerValorPadresPrueba(
+
+      tutorObjeto,
+
+      [
+        'telefono',
+        'telefonoTutor',
+        'TELEFONO_TUTOR'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'telefonoTutor',
+          'telefono',
+          'TELEFONO_TUTOR'
+        ],
+        ''
+      )
+    );
+
+  const correoTutor =
+
+    primerValorPadresPrueba(
+
+      tutorObjeto,
+
+      [
+        'correo',
+        'correoTutor',
+        'CORREO_TUTOR'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'correoTutor',
+          'correo',
+          'CORREO_TUTOR'
+        ],
+        ''
+      )
+    );
+
+  const autorizaWhatsApp =
+
+    primerValorPadresPrueba(
+
+      tutorObjeto,
+
+      [
+        'autorizaWhatsApp',
+        'AUTORIZA_WHATSAPP'
+      ],
+
+      primerValorPadresPrueba(
+        perfil,
+        [
+          'autorizaWhatsApp',
+          'AUTORIZA_WHATSAPP'
+        ],
+        'NO'
+      )
+    );
+
+  return {
+
+    nombreAlumno:
+      textoPadresPrueba(
+        nombreAlumno
+      ),
+
+    grado:
+      textoPadresPrueba(
+        grado,
+        ''
+      ),
+
+    grupo:
+      textoPadresPrueba(
+        grupo,
+        ''
+      ),
+
+    nombreTutor:
+      textoPadresPrueba(
+        nombreTutor
+      ),
+
+    telefonoTutor:
+      String(
+        telefonoTutor || ''
+      ).trim(),
+
+    correoTutor:
+      String(
+        correoTutor || ''
+      ).trim(),
+
+    autorizaWhatsApp:
+      String(
+        autorizaWhatsApp || 'NO'
+      )
+        .trim()
+        .toUpperCase() === 'SI'
+
+        ? 'SI'
+        : 'NO'
+  };
+}
+
+
+function limpiarPerfilPadresPrueba() {
+
+  const textos = [
+
+    'perfilAlumnoPadresPrueba',
+
+    'perfilGrupoPadresPrueba',
+
+    'perfilTutorPadresPrueba'
+  ];
+
+  textos.forEach(
+
+    function (
+      id
+    ) {
+
+      const elemento =
+
+        elementoPadresPrueba(
+          id
+        );
+
+      if (elemento) {
+
+        elemento.textContent =
+          '—';
+      }
+    }
+  );
+
+  const campos = [
+
+    'telefonoTutorPadresPrueba',
+
+    'correoTutorPadresPrueba',
+
+    'passwordActualPerfilPadresPrueba'
+  ];
+
+  campos.forEach(
+
+    function (
+      id
+    ) {
+
+      const campo =
+
+        elementoPadresPrueba(
+          id
+        );
+
+      if (campo) {
+
+        campo.value =
+          '';
+      }
+    }
+  );
+
+  const autorizaWhatsApp =
+
+    elementoPadresPrueba(
+      'autorizaWhatsAppPadresPrueba'
+    );
+
+  if (autorizaWhatsApp) {
+
+    autorizaWhatsApp.checked =
+      false;
+  }
+
+  mostrarMensajeModuloPadresPrueba(
+    'mensajePerfilPadresPrueba',
+    '',
+    'info'
+  );
+}
+
+
+function mostrarPerfilPadresPrueba(
+  respuesta
+) {
+
+  const perfil =
+
+    normalizarPerfilPadresPrueba(
+      respuesta
+    );
+
+  const alumno =
+
+    elementoPadresPrueba(
+      'perfilAlumnoPadresPrueba'
+    );
+
+  const gradoGrupo =
+
+    elementoPadresPrueba(
+      'perfilGrupoPadresPrueba'
+    );
+
+  const tutor =
+
+    elementoPadresPrueba(
+      'perfilTutorPadresPrueba'
+    );
+
+  const telefono =
+
+    elementoPadresPrueba(
+      'telefonoTutorPadresPrueba'
+    );
+
+  const correo =
+
+    elementoPadresPrueba(
+      'correoTutorPadresPrueba'
+    );
+
+  const autorizaWhatsApp =
+
+    elementoPadresPrueba(
+      'autorizaWhatsAppPadresPrueba'
+    );
+
+  if (alumno) {
+
+    alumno.textContent =
+      perfil.nombreAlumno;
+  }
+
+  if (gradoGrupo) {
+
+    const textoGrupo =
+
+      [
+        perfil.grado,
+        perfil.grupo
+      ]
+        .filter(
+          Boolean
+        )
+        .join(
+          ' · '
+        );
+
+    gradoGrupo.textContent =
+      textoGrupo || '—';
+  }
+
+  if (tutor) {
+
+    tutor.textContent =
+      perfil.nombreTutor;
+  }
+
+  if (telefono) {
+
+    telefono.value =
+      perfil.telefonoTutor;
+  }
+
+  if (correo) {
+
+    correo.value =
+      perfil.correoTutor;
+  }
+
+  if (autorizaWhatsApp) {
+
+    autorizaWhatsApp.checked =
+      perfil.autorizaWhatsApp === 'SI';
+  }
+}
+
+
+async function cargarPerfilPadresPrueba() {
+
+  const token =
+
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
+
+  const boton =
+
+    elementoPadresPrueba(
+      'btnActualizarPerfilPadresPrueba'
+    );
+
+  if (!token) {
+
+    finalizarSesionInvalidaPadresPrueba();
+
+    return;
+  }
+
+  cambiarEstadoBotonPadresPrueba(
+    boton,
+    true,
+    'Consultando...',
+    'Actualizar datos'
+  );
+
+  mostrarMensajeModuloPadresPrueba(
+    'mensajePerfilPadresPrueba',
+    'Consultando los datos del tutor...',
+    'info'
+  );
+
+  try {
+
+    const datos =
+
+      await enviarPostPadresPrueba({
+
+        accion:
+          'obtenerPerfilPadre',
+
+        token:
+          token
+      });
+
+    if (
+      !datos.success
+    ) {
+
+      if (
+        respuestaSesionInvalidaPadresPrueba(
+          datos
+        )
+      ) {
+
+        finalizarSesionInvalidaPadresPrueba(
+          datos.mensaje
+        );
+
+        return;
+      }
+
+      throw new Error(
+        datos.mensaje ||
+        'No fue posible consultar el perfil.'
+      );
+    }
+
+    mostrarPerfilPadresPrueba(
+      datos
+    );
+
+    MODULOS_CARGADOS_PADRES_PRUEBA.add(
+      'perfil'
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      'mensajePerfilPadresPrueba',
+      'Datos del tutor actualizados correctamente.',
+      'exito'
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    mostrarMensajeModuloPadresPrueba(
+      'mensajePerfilPadresPrueba',
+      error.message ||
+      'No fue posible consultar el perfil.',
+      'error'
+    );
+
+  } finally {
+
+    cambiarEstadoBotonPadresPrueba(
+      boton,
+      false,
+      'Consultando...',
+      'Actualizar datos'
+    );
+  }
+}
+
+
+async function actualizarPerfilPadresPrueba(
   evento
 ) {
 
   evento.preventDefault();
 
-
   const token =
-    obtenerToken();
 
-
-  if (!token) {
-
-    cerrarPortalPorSesionInvalida();
-
-    return;
-  }
-
+    sessionStorage.getItem(
+      CLAVE_TOKEN_PADRES_PRUEBA
+    );
 
   const telefono =
+
     String(
-      elemento(
+
+      elementoPadresPrueba(
         'telefonoTutorPadresPrueba'
       )?.value || ''
-    ).trim();
 
+    ).trim();
 
   const correo =
+
     String(
-      elemento(
+
+      elementoPadresPrueba(
         'correoTutorPadresPrueba'
       )?.value || ''
+
     ).trim();
 
+  const autorizaWhatsApp =
+
+    elementoPadresPrueba(
+      'autorizaWhatsAppPadresPrueba'
+    )?.checked
+
+      ? 'SI'
+      : 'NO';
 
   const passwordActual =
+
     String(
-      elemento(
+
+      elementoPadresPrueba(
         'passwordActualPerfilPadresPrueba'
       )?.value || ''
     );
 
-
   const boton =
-    elemento(
+
+    elementoPadresPrueba(
       'btnGuardarPerfilPadresPrueba'
     );
 
+  if (!token) {
+
+    finalizarSesionInvalidaPadresPrueba();
+
+    return;
+  }
 
   if (!passwordActual) {
 
-    mostrarMensaje(
+    mostrarMensajeModuloPadresPrueba(
       'mensajePerfilPadresPrueba',
       'Escribe la contraseña actual para autorizar el cambio.',
       'info'
@@ -3810,7 +4393,6 @@ async function actualizarPerfil(
     return;
   }
 
-
   if (
     correo &&
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
@@ -3818,7 +4400,7 @@ async function actualizarPerfil(
     )
   ) {
 
-    mostrarMensaje(
+    mostrarMensajeModuloPadresPrueba(
       'mensajePerfilPadresPrueba',
       'El correo electrónico no tiene un formato válido.',
       'error'
@@ -3827,19 +4409,24 @@ async function actualizarPerfil(
     return;
   }
 
-
-  cambiarBoton(
+  cambiarEstadoBotonPadresPrueba(
     boton,
     true,
     'Guardando...',
     'Guardar datos de contacto'
   );
 
+  mostrarMensajeModuloPadresPrueba(
+    'mensajePerfilPadresPrueba',
+    'Guardando los datos de contacto...',
+    'info'
+  );
 
   try {
 
     const datos =
-      await enviarPost({
+
+      await enviarPostPadresPrueba({
 
         accion:
           'actualizarPerfilPadre',
@@ -3859,80 +4446,81 @@ async function actualizarPerfil(
         correoTutor:
           correo,
 
+        autorizaWhatsApp:
+          autorizaWhatsApp,
+
         passwordActual:
           passwordActual
       });
-
 
     if (
       !datos.success
     ) {
 
       if (
-        sesionInvalida(
+        respuestaSesionInvalidaPadresPrueba(
           datos
         )
       ) {
 
-        cerrarPortalPorSesionInvalida(
+        finalizarSesionInvalidaPadresPrueba(
           datos.mensaje
         );
 
         return;
       }
 
-
-      throw new Error(
+      mostrarMensajeModuloPadresPrueba(
+        'mensajePerfilPadresPrueba',
         datos.mensaje ||
-        'No fue posible actualizar los datos.'
+        'No fue posible actualizar los datos.',
+        'error'
       );
+
+      return;
     }
 
+    const campoPassword =
 
-    const passwordCampo =
-      elemento(
+      elementoPadresPrueba(
         'passwordActualPerfilPadresPrueba'
       );
 
-    if (passwordCampo) {
-      passwordCampo.value =
+    if (campoPassword) {
+
+      campoPassword.value =
         '';
     }
 
-
-    await cargarExpedienteCompleto(
-      true
-    );
-
-
-    mostrarModulo(
+    MODULOS_CARGADOS_PADRES_PRUEBA.delete(
       'perfil'
     );
 
+    await cargarPerfilPadresPrueba();
 
-    mostrarMensaje(
+    mostrarMensajeModuloPadresPrueba(
       'mensajePerfilPadresPrueba',
       datos.mensaje ||
-        'Los datos de contacto se actualizaron correctamente.',
+      'Los datos de contacto se actualizaron correctamente.',
       'exito'
     );
 
-
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
-    mostrarMensaje(
+    mostrarMensajeModuloPadresPrueba(
       'mensajePerfilPadresPrueba',
       error.message ||
-        'No fue posible actualizar los datos.',
+      'No fue posible actualizar los datos.',
       'error'
     );
 
-
   } finally {
 
-    cambiarBoton(
+    cambiarEstadoBotonPadresPrueba(
       boton,
       false,
       'Guardando...',
@@ -3942,389 +4530,123 @@ async function actualizarPerfil(
 }
 
 
-// ============================================================
-// CERRAR SESIÓN
-// ============================================================
-
-async function cerrarSesion() {
-
-  const token =
-    obtenerToken();
-
-
-  const boton =
-    elemento(
-      'btnCerrarSesionPadresPrueba'
-    );
-
-
-  cambiarBoton(
-    boton,
-    true,
-    'Cerrando sesión...',
-    'Cerrar sesión'
-  );
-
-
-  try {
-
-    if (token) {
-
-      await enviarPost({
-
-        accion:
-          'cerrarSesionPadres',
-
-        token:
-          token
-      });
-    }
-
-
-  } catch (error) {
-
-    console.error(error);
-
-
-  } finally {
-
-    eliminarSesionLocal();
-
-    ocultarPortal();
-
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'Sesión cerrada correctamente.',
-      'exito'
-    );
-
-
-    cambiarBoton(
-      boton,
-      false,
-      'Cerrando sesión...',
-      'Cerrar sesión'
-    );
-  }
-}
-
-
-// ============================================================
-// VALIDAR / RESTAURAR SESIÓN
-// ============================================================
-
-async function restaurarSesion() {
-
-  const token =
-    obtenerToken();
-
-
-  if (!token) {
-
-    ocultarPortal();
-
-    return;
-  }
-
-
-  mostrarMensaje(
-    'mensajePadresPrueba',
-    'Verificando la sesión...',
-    'info'
-  );
-
-
-  try {
-
-    const validacion =
-      await enviarPost({
-
-        accion:
-          'validarSesionPadres',
-
-        token:
-          token
-      });
-
-
-    if (
-      !validacion.success ||
-      !validacion.sesionValida
-    ) {
-
-      throw new Error(
-        validacion.mensaje ||
-        'La sesión ya no es válida.'
-      );
-    }
-
-
-    // ========================================================
-    // SI DEBE CAMBIAR CONTRASEÑA
-    // ========================================================
-
-    if (
-      validacion.requiereCambioPassword
-    ) {
-
-      mostrarCambioPassword(
-        validacion
-      );
-
-      return;
-    }
-
-
-    // ========================================================
-    // MOSTRAR PORTAL
-    // ========================================================
-
-    mostrarPortal();
-
-
-    // ========================================================
-    // CARGAR EXPEDIENTE COMPLETO
-    // ========================================================
-
-    const cargado =
-      await cargarExpedienteCompleto(false);
-
-
-    if (!cargado) {
-
-      throw new Error(
-        'No fue posible cargar el expediente escolar.'
-      );
-    }
-
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'Sesión restaurada correctamente.',
-      'exito'
-    );
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    eliminarSesionLocal();
-
-    ocultarPortal();
-
-    mostrarMensaje(
-      'mensajePadresPrueba',
-      'La sesión terminó. Ingresa nuevamente.',
-      'info'
-    );
-  }
-}
-
-
-// ============================================================
-// EVENTOS
-// ============================================================
-
 document.addEventListener(
+
   'DOMContentLoaded',
-  function() {
 
+  function () {
 
-    // LOGIN
-    const formularioLogin =
-      elemento(
-        'formLoginPadresPrueba'
-      );
+    const eventos = [
 
-    if (formularioLogin) {
-
-      formularioLogin.addEventListener(
+      [
+        'formLoginPadresPrueba',
         'submit',
-        iniciarSesion
-      );
-    }
+        iniciarSesionPadresPrueba
+      ],
 
-
-    // CERRAR SESIÓN
-    const cerrar =
-      elemento(
-        'btnCerrarSesionPadresPrueba'
-      );
-
-    if (cerrar) {
-
-      cerrar.addEventListener(
+      [
+        'btnCerrarSesionPadresPrueba',
         'click',
-        cerrarSesion
-      );
-    }
+        cerrarSesionPadresPrueba
+      ],
 
-
-    // CAMBIO PASSWORD
-    const formularioCambio =
-      elemento(
-        'formCambioPasswordPadresPrueba'
-      );
-
-    if (formularioCambio) {
-
-      formularioCambio.addEventListener(
+      [
+        'formCambioPasswordPadresPrueba',
         'submit',
-        cambiarPasswordInicial
-      );
-    }
+        cambiarPasswordInicialPadresPrueba
+      ],
 
-
-    // RECUPERACIÓN
-    const mostrarRecuperacion =
-      elemento(
-        'btnMostrarRecuperacionPadresPrueba'
-      );
-
-    if (mostrarRecuperacion) {
-
-      mostrarRecuperacion.addEventListener(
+      [
+        'btnMostrarRecuperacionPadresPrueba',
         'click',
-        mostrarSolicitudRecuperacion
-      );
-    }
+        mostrarSolicitudRecuperacionPadresPrueba
+      ],
 
-
-    const formularioSolicitar =
-      elemento(
-        'formSolicitarRecuperacionPadresPrueba'
-      );
-
-    if (formularioSolicitar) {
-
-      formularioSolicitar.addEventListener(
+      [
+        'formSolicitarRecuperacionPadresPrueba',
         'submit',
-        solicitarCodigoRecuperacion
-      );
-    }
+        solicitarCodigoRecuperacionPadresPrueba
+      ],
 
+      [
+        'btnVolverLoginDesdeRecuperacionPadresPrueba',
+        'click',
+        cancelarRecuperacionPadresPrueba
+      ],
 
-    const formularioRestablecer =
-      elemento(
-        'formRestablecerPasswordPadresPrueba'
-      );
-
-    if (formularioRestablecer) {
-
-      formularioRestablecer.addEventListener(
+      [
+        'formRestablecerPasswordPadresPrueba',
         'submit',
-        restablecerPassword
-      );
-    }
+        restablecerPasswordRecuperacionPadresPrueba
+      ],
 
-
-    const reenviar =
-      elemento(
-        'btnReenviarCodigoPadresPrueba'
-      );
-
-    if (reenviar) {
-
-      reenviar.addEventListener(
+      [
+        'btnReenviarCodigoPadresPrueba',
         'click',
-        reenviarCodigoRecuperacion
-      );
-    }
+        reenviarCodigoRecuperacionPadresPrueba
+      ],
 
-
-    const cancelar =
-      elemento(
-        'btnCancelarRecuperacionPadresPrueba'
-      );
-
-    if (cancelar) {
-
-      cancelar.addEventListener(
+      [
+        'btnCancelarRecuperacionPadresPrueba',
         'click',
-        function() {
+        cancelarRecuperacionPadresPrueba
+      ],
 
-          sessionStorage.removeItem(
-            CLAVE_UID_RECUPERACION
+      [
+        'formActualizarPerfilPadresPrueba',
+        'submit',
+        actualizarPerfilPadresPrueba
+      ]
+    ];
+
+    eventos.forEach(
+
+      function (
+        configuracion
+      ) {
+
+        const id =
+          configuracion[0];
+
+        const tipo =
+          configuracion[1];
+
+        const funcion =
+          configuracion[2];
+
+        const elemento =
+
+          elementoPadresPrueba(
+            id
           );
 
-          ocultarPortal();
+        if (elemento) {
 
-          mostrarMensaje(
-            'mensajePadresPrueba',
-            '',
-            'info'
+          elemento.addEventListener(
+            tipo,
+            funcion
           );
         }
-      );
-    }
+      }
+    );
 
-
-    const volverLogin =
-      elemento(
-        'btnVolverLoginDesdeRecuperacionPadresPrueba'
-      );
-
-    if (volverLogin) {
-
-      volverLogin.addEventListener(
-        'click',
-        function() {
-
-          sessionStorage.removeItem(
-            CLAVE_UID_RECUPERACION
-          );
-
-          ocultarPortal();
-        }
-      );
-    }
-
-
-    // PERFIL
-    const formularioPerfil =
-      elemento(
-        'formActualizarPerfilPadresPrueba'
-      );
-
-    if (formularioPerfil) {
-
-      formularioPerfil.addEventListener(
-        'submit',
-        actualizarPerfil
-      );
-    }
-
-
-    // ACTUALIZAR EXPEDIENTE
-    const actualizar =
-      elemento(
-        'btnActualizarExpedientePadresPrueba'
-      );
-
-    if (actualizar) {
-
-      actualizar.addEventListener(
-        'click',
-        actualizarExpediente
-      );
-    }
-
-
-    // MENÚ
     document
       .querySelectorAll(
         '[data-modulo-padres]'
       )
       .forEach(
-        function(boton) {
+
+        function (
+          boton
+        ) {
 
           boton.addEventListener(
-            'click',
-            function() {
 
-              mostrarModulo(
+            'click',
+
+            function () {
+
+              mostrarModuloPadresPrueba(
                 boton.dataset.moduloPadres
               );
             }
@@ -4332,31 +4654,86 @@ document.addEventListener(
         }
       );
 
+    const actualizaciones = [
 
-    // BOTONES ACTUALIZAR DE LOS MÓDULOS
-    //
-    // Todos utilizan el mismo expediente completo.
-    document
-      .querySelectorAll(
-        '[data-actualizar-expediente]'
-      )
-      .forEach(
-        function(boton) {
+      [
+        'btnActualizarAsistenciaPadresPrueba',
+        'asistencia'
+      ],
 
-          boton.addEventListener(
-            'click',
-            actualizarExpediente
+      [
+        'btnActualizarReportesPadresPrueba',
+        'reportes'
+      ],
+
+      [
+        'btnActualizarJustificantesPadresPrueba',
+        'justificantes'
+      ],
+
+      [
+        'btnActualizarCitatoriosPadresPrueba',
+        'citatorios'
+      ],
+
+      [
+        'btnActualizarCalificacionesPadresPrueba',
+        'calificaciones'
+      ],
+
+      [
+        'btnActualizarRiesgoPadresPrueba',
+        'riesgo'
+      ],
+
+      [
+        'btnActualizarPerfilPadresPrueba',
+        'perfil'
+      ]
+    ];
+
+    actualizaciones.forEach(
+
+      function (
+        configuracion
+      ) {
+
+        const id =
+          configuracion[0];
+
+        const modulo =
+          configuracion[1];
+
+        const boton =
+
+          elementoPadresPrueba(
+            id
           );
+
+        if (!boton) {
+
+          return;
         }
-      );
 
+        boton.addEventListener(
 
-    // ESTADO INICIAL
-    ocultarPortal();
+          'click',
 
+          function () {
 
-    // RESTAURAR SESIÓN
-    restaurarSesion();
+            MODULOS_CARGADOS_PADRES_PRUEBA.delete(
+              modulo
+            );
 
+            cargarModuloPadresPrueba(
+              modulo,
+              true
+            );
+          }
+        );
+      }
+    );
+
+    restaurarSesionPadresPrueba();
   }
 );
